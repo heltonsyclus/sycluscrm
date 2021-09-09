@@ -7,11 +7,43 @@
         <q-toolbar-title>
           Syclus CRM
         </q-toolbar-title>
-        <div>Notificação</div>
+        <div class="q-gutter-sm row items-center no-wrap">
+          <q-btn round dense flat color="grey-8" icon="notifications">
+            <q-badge color="blue" text-color="white" floating>
+              2
+            </q-badge>
+            <q-tooltip>Syclus Notificação</q-tooltip>
+          </q-btn>
+          <q-btn round dense flat color="text-grey-7" icon="apps">
+            <q-tooltip>Syclus Apps</q-tooltip>
+          </q-btn>
+          <q-btn round flat no-wrap>
+            <q-avatar size="26px">
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+            </q-avatar>
+            <q-tooltip>Colaborador</q-tooltip>
+            <q-menu auto-close>
+              <q-list dense>
+                <q-item clickable class="GL__menu-link">
+                  <q-item-section>Meu perfil</q-item-section>
+                </q-item>
+                <q-item clickable class="GL__menu-link">
+                  <q-item-section>Sair</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer  class="bg-primary text-white" v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer
+      class="bg-primary text-white flex-center"
+      v-model="leftDrawerOpen"
+      :width="180"
+      show-if-above
+      bordered
+    >
       <q-list>
         <EssentialLink
           v-for="link in essentialLinks"
@@ -34,17 +66,17 @@ const linksList = [
   {
     title: "Dashboard",
     icon: "dashboard",
-    router: "/"
+    link: ""
   },
   {
     title: "Atividades",
     icon: "description",
-    router: "/Atividades"
+    link: "/Atividades"
   },
   {
     title: "Projetos",
     icon: "assignment",
-    router: "/Projetos"
+    link: "/Projetos"
   },
   {
     title: "Clientes",
@@ -77,6 +109,7 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
 
     return {
+      Ocorrencia: 250,
       essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
