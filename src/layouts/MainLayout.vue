@@ -1,36 +1,18 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
+    <q-header class="bg-grey-1">
+      <q-toolbar class="text-primary">
+        <q-btn flat round dense icon="menu" @click="toggleLeftDrawer" />
+        <img src="../assets/syclus.png" alt="Syclus" />
         <q-toolbar-title>
-          Syclus 2.0
+          Syclus CRM
         </q-toolbar-title>
-
         <div>Notificação</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer  class="bg-primary text-white" v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          Menu Syclus
-        </q-item-label>
-
         <EssentialLink
           v-for="link in essentialLinks"
           :key="link.title"
@@ -46,59 +28,61 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
+import EssentialLink from "components/EssentialLink.vue";
 
 const linksList = [
-   {
-    title: 'Dashboard',
-    icon: 'dashboard',
+  {
+    title: "Dashboard",
+    icon: "dashboard",
+    router: "/"
   },
   {
-    title: 'Atividade',
-    icon: 'description',
+    title: "Atividades",
+    icon: "description",
+    router: "/Atividades"
   },
   {
-    title: 'Projeto',
-    icon: 'assignment',
-   
+    title: "Projetos",
+    icon: "assignment",
+    router: "/Projetos"
   },
   {
-    title: 'Cliente',
-    icon: 'supervisor_account',
+    title: "Clientes",
+    icon: "supervisor_account"
   },
   {
-    title: 'Ocorrência',
-    icon: 'done_all',
+    title: "Ocorrências",
+    icon: "done_all"
   },
   {
-    title: 'Agenda',
-    icon: 'event',
+    title: "Agenda",
+    icon: "event"
   },
   {
-    title: 'Workflow',
-    icon: 'account_tree',
+    title: "Workflow",
+    icon: "account_tree"
   }
 ];
 
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
 
   components: {
     EssentialLink
   },
 
-  setup () {
-    const leftDrawerOpen = ref(false)
+  setup() {
+    const leftDrawerOpen = ref(false);
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value;
       }
-    }
+    };
   }
-})
+});
 </script>

@@ -16,6 +16,13 @@ const routes = [
     ]
   },
 
+  {
+    path: '/atividade',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', name:'Atividade', component: () => import('pages/Atividade.vue') },
+    ]
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
