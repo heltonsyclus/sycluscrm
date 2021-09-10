@@ -1,14 +1,21 @@
 // app global css in SCSS form
 
-.my-card{
+.my-card {
   width: 100%;
   max-width: 300px;
-  min-height: 150px;  }
-
-.bg-active{
-  background-color: $positive
+  min-height: 150px;
+  max-height: 350px;
 }
 
-.bg-gray{
-  background-color: $positive
+
+.my-card-s {
+  width: 100%;
+  max-width: 300px;
+  min-height: 150px;
+  max-height: 200px;
+}
+
+
+.bg-active {
+  background-color: #64db63;
 }

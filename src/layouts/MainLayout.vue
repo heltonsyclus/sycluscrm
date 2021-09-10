@@ -2,14 +2,14 @@
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-grey-1">
       <q-toolbar class="text-primary">
-        <img src="../assets/syclus.png" alt="Syclus" />
-        <q-toolbar-title class="text-weight-bold">
+        <img src="../assets/syclus.png" alt="Syclus" class="rotate-225"/>
+        <q-toolbar-title class="text-weight-bold ">
           Syclus CRM
         </q-toolbar-title>
         <div class="q-gutter-sm row items-center no-wrap">
           <q-btn round dense flat color="grey-8" icon="notifications">
             <q-badge color="blue" text-color="white" floating>
-              2
+              {{result}}
             </q-badge>
             <q-tooltip>Syclus Notificação</q-tooltip>
           </q-btn>
@@ -71,6 +71,7 @@ export default defineComponent({
   name: "MainLayout",
   setup() {
     return {
+      result:4,
       Ocorrencia: 250,
       linksList: [
         {
