@@ -4,8 +4,8 @@
       <q-card class="my-card">
         <q-img src="https://placeimg.com/500/300/nature">
           <div class="absolute-bottom">
-            <div class="text-h6">Seja bem-vindo(a)</div>
-            <div class="text-subtitle2">Cliente Syclus</div>
+            <div class="text-h6">Seja bem-vindo(a),
+              <br>Cliente Syclus!</div>
           </div>
         </q-img>
 
@@ -41,7 +41,7 @@
               flat
               color="primary"
               class="full-width"
-              label="Problemas com o login"
+              label="Não consigo logar"
             />
           </div>
         </q-card-actions>

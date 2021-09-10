@@ -1,19 +1,17 @@
 <template>
-<BarraLayout/>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/syclus.png"
-    >
+  <BarraLayout />
+  <q-page class="q-pa-md">
+    <CardBase />
   </q-page>
 </template>
 
 <script>
-import BarraLayout from 'src/layouts/BarraLayout.vue';
-import { defineComponent } from 'vue';
+import CardBase from "src/components/CardBase.vue";
+import BarraLayout from "src/layouts/BarraLayout.vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  components: { BarraLayout },
-  name: 'PageIndex'
-})
+  components: { BarraLayout, CardBase },
+  name: "Index"
+});
 </script>

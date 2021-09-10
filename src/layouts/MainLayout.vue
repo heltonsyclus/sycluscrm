@@ -2,9 +2,8 @@
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-grey-1">
       <q-toolbar class="text-primary">
-        <q-btn flat round dense icon="menu" @click="toggleLeftDrawer" />
         <img src="../assets/syclus.png" alt="Syclus" />
-        <q-toolbar-title>
+        <q-toolbar-title class="text-weight-bold">
           Syclus CRM
         </q-toolbar-title>
         <div class="q-gutter-sm row items-center no-wrap">
@@ -38,21 +37,27 @@
     </q-header>
 
     <q-drawer
-      class="bg-primary text-white flex-center"
-      v-model="leftDrawerOpen"
-      :width="180"
+      class="bg-primary text-white no-scroll"
+      :width="58"
+      :breakpoint="500"
+      behavior="desktop"
       show-if-above
-      bordered
     >
-      <q-list>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
+      <q-toolbar>
+        <q-btn flat round dense icon="menu"/>
+      </q-toolbar>
+      <q-item
+        v-for="(list, index) in linksList"
+        :key="index"
+        :to="list.rota"
+        active-class="bg-active"
+        exact
+      >
+        <q-item-section avatar>
+          <q-icon :name="list.icon" />
+        </q-item-section>
+      </q-item>
     </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -60,62 +65,45 @@
 </template>
 
 <script>
-import EssentialLink from "components/EssentialLink.vue";
-
-const linksList = [
-  {
-    title: "Dashboard",
-    icon: "dashboard",
-    link: ""
-  },
-  {
-    title: "Atividades",
-    icon: "description",
-    link: "/Atividades"
-  },
-  {
-    title: "Projetos",
-    icon: "assignment",
-    link: "/Projetos"
-  },
-  {
-    title: "Clientes",
-    icon: "supervisor_account"
-  },
-  {
-    title: "Ocorrências",
-    icon: "done_all"
-  },
-  {
-    title: "Agenda",
-    icon: "event"
-  },
-  {
-    title: "Workflow",
-    icon: "account_tree"
-  }
-];
-
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "MainLayout",
-
-  components: {
-    EssentialLink
-  },
-
   setup() {
-    const leftDrawerOpen = ref(false);
-
     return {
       Ocorrencia: 250,
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      }
+      linksList: [
+        {
+          icon: "dashboard",
+          rota: "/"
+        },
+        {
+          icon: "description",
+          rota: "/atividade"
+        },
+        {
+          icon: "assignment",
+          rota: "/Projeto"
+        },
+        {
+          icon: "supervisor_account",
+          rota: "/Cliente"
+        },
+        {
+          icon: "done_all",
+          rota: "/Ocorrencia"
+        },
+        {
+          icon: "event",
+          rota: "/Agenda"
+        },
+        {
+          icon: "account_tree",
+          rota: "/Workflow"
+        }
+      ]
     };
   }
 });
 </script>
+<style></style>
