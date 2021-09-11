@@ -6,6 +6,9 @@
   min-height: 150px;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
 
 .my-card-s {
   width: 100%;
@@ -13,7 +16,6 @@
   min-height: 150px;
   max-height: 200px;
 }
-
 
 .bg-active {
   background-color: #64db63;
