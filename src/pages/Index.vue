@@ -1,5 +1,5 @@
 <template>
-  <BarraLayout />
+  <BarraLayout @OnClick="OnClickValor" :ConteudoBtn="TituloDashboard" />
   <q-page class="row">
     <CardBase
       class="q-ma-xs"
@@ -8,12 +8,11 @@
       :Titulo="ObjCard.Titulo"
       :BtnComando="ObjCard.BtnComando"
     />
-
     <q-page-sticky position="bottom-right" :offset="fabPos">
       <q-fab
         icon="add"
         direction="up"
-        color="accent"
+        color="primary"
         :disable="draggingFab"
         v-touch-pan.prevent.mouse="moveFab"
       >
@@ -35,13 +34,14 @@
 <script>
 import CardBase from "src/components/CardBase.vue";
 import BarraLayout from "src/layouts/BarraLayout.vue";
+import { Titulo } from "src/commands/titulos-barra-commands.js";
 import { Card } from "../commands/cards-commands.js";
 import { defineComponent } from "vue";
 import { ref } from "vue";
 
 export default defineComponent({
   components: { BarraLayout, CardBase },
-  mixins: [Card],
+  mixins: [Titulo, Card],
   name: "Index",
   setup() {
     const fabPos = ref([18, 18]);
@@ -55,22 +55,16 @@ export default defineComponent({
           fabPos.value[0] - ev.delta.x,
           fabPos.value[1] - ev.delta.y
         ];
-      },
-      CardDashboard: [
-        {
-          Titulo: "Atividade executada",
-          BtnComando: "btn-filtro"
-        },
-        {
-          Titulo: "Projeto",
-          BtnComando: "btn-itens"
-        },
-        {
-          Titulo: "Agenda",
-          BtnComando: "btn-itens"
-        }
-      ]
+      }
     };
+  },
+  methods: {
+    OnClickValor(ReceberIndex) {
+      //  alert(ReceberIndex);
+    }
+  },
+  created() {
+    return this.OnClickValor(0);
   }
 });
 </script>
