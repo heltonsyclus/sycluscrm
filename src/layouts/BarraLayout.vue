@@ -4,17 +4,37 @@
       <q-tab
         v-for="(btn, index) in ConteudoBtn"
         :key="index"
-        @click.prevent="onclickGrupo(index)"
-        :icon="btn.icon"
-        :label="btn.nome"
-        :name="btn.nome"
+        :label="btn.grupo"
+        :name="btn.grupo"
+        :icon="btn.icone"
+        :id_grupo="btn.id_grupo"
         class="capitalize"
+        @click.prevent="onclickGrupo(index)"
       />
       <q-space />
-      <q-btn flat round dense>
-        <q-icon name="apps" class="q-mx-md" />
+      <q-btn flat dense>
+        <q-icon name="settings" />
+        <q-menu
+          auto-close
+          class="flex"
+          style="width: 345px;"
+        >
+          <q-item
+            class="rounded-borders"
+            clickable
+            v-ripple.center
+            style="width: 115px"
+            v-for="(box, index) in ConteudoApp"
+            :key="index"
+          >
+            <q-item-section style="text-align:center;margin:0 auto">
+              <q-avatar style="text-align:center;margin:0 auto" :icon="box.icone" :color="box.cor" text-color="white" />
+              <q-item-label class="q-mt-sm">{{ box.card }} </q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-menu>
       </q-btn>
-      <q-btn flat round dense>
+      <q-btn flat dense>
         <q-icon name="help_outline" class="q-mx-md" />
       </q-btn>
     </q-tabs>
@@ -25,20 +45,27 @@
 import { defineComponent } from "vue";
 import { ref } from "vue";
 export default defineComponent({
-  props: ["ConteudoBtn"],
+  props: ["ConteudoBtn", "ConteudoApp"],
   name: "BarraLayout",
   setup() {
     return {
       tab: ref("mails")
     };
   },
+  data() {
+    return {
+      Valor: []
+    };
+  },
   methods: {
     onclickGrupo(ValorIndex) {
       this.$emit("OnClick", ValorIndex);
+      this.Valor = ValorIndex;
     }
   },
   created() {
-    return this.onclickGrupo(0);
+    this.onclickGrupo(0);
+    return;
   }
 });
 </script>

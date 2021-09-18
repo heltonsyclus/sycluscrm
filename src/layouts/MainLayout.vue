@@ -2,14 +2,21 @@
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-grey-1">
       <q-toolbar class="text-primary">
-        <img src="../assets/syclus.png" alt="Syclus" class="rotate-225"/>
+        <img src="../assets/syclus.png" alt="Syclus" class="rotate-225" />
         <q-toolbar-title class="text-weight-bold ">
           Syclus CRM
         </q-toolbar-title>
         <div class="q-gutter-sm row items-center no-wrap">
-          <q-btn round dense flat color="grey-8" icon="notifications">
+          <q-btn
+            round
+            dense
+            flat
+            color="grey-8"
+            icon="notifications"
+            to="/Notificacao"
+          >
             <q-badge color="blue" text-color="white" floating>
-              {{result}}
+              {{ result }}
             </q-badge>
             <q-tooltip>Syclus Notificação</q-tooltip>
           </q-btn>
@@ -35,45 +42,22 @@
         </div>
       </q-toolbar>
     </q-header>
-
-    <q-drawer
-      class="bg-primary text-white no-scroll"
-      :width="58"
-      :breakpoint="500"
-      behavior="desktop"
-      show-if-above
-    >
-      <q-toolbar>
-        <q-btn flat round dense icon="menu"/>
-      </q-toolbar>
-      <q-item
-        v-for="(list, index) in linksList"
-        :key="index"
-        :to="list.rota"
-        active-class="bg-active"
-        exact
-      >
-        <q-item-section avatar>
-          <q-icon :name="list.icon" />
-        </q-item-section>
-      </q-item>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+    <MenuFlutuante />
   </q-layout>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
+import MenuFlutuante from "./MenuFlutuante.vue";
 
 export default defineComponent({
+  components: { MenuFlutuante },
   name: "MainLayout",
   setup() {
     return {
-      result:4,
+      result: 4,
       Ocorrencia: 250,
+      MenuFlutuante: false,
       linksList: [
         {
           icon: "dashboard",
@@ -105,7 +89,6 @@ export default defineComponent({
         }
       ]
     };
-  }
+  },
 });
 </script>
-<style></style>

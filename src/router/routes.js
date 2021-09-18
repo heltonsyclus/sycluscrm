@@ -58,6 +58,13 @@ const routes = [
       { path: '', name:'workflow', component: () => import('pages/WorkFlow.vue') },
     ]
   },
+  {
+    path: '/notificacao',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', name:'notificacao', component: () => import('pages/Notificacao.vue') },
+    ]
+  },
   // Always leave this as last one,
   // but you can also remove it
   {

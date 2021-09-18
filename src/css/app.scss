@@ -1,22 +1,60 @@
 // app global css in SCSS form
-
+@mixin cards {
+  width: 100%;
+  overflow: auto;
+  max-width: 304px;
+  min-height: 200px;
+  margin: 10px 2px;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #eef4f8;
+}
+.capitalize {
+  text-transform: capitalize;
+}
 .my-card {
   width: 100%;
   max-width: 300px;
   min-height: 150px;
 }
-
-.capitalize {
-  text-transform: capitalize;
-}
-
 .my-card-s {
-  width: 100%;
-  max-width: 300px;
-  min-height: 150px;
-  max-height: 200px;
+  @include cards;
+  max-height: 240px;
 }
-
+.my-card-s-180x304 {
+  @include cards;
+  max-height: 180px;
+}
+.my-card-s-360-304 {
+  @include cards;
+  height: 360px;
+}
+.my-card-s-500-304 {
+  @include cards;
+  height: 500px;
+}
 .bg-active {
   background-color: #64db63;
+}
+.bg:hover {
+  background-color: rgb(184, 209, 255);
+  transition: 1s;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::webkit-scrollbar-track {
+  border-radius: 5px;
+  box-shadow: inset 0 0 10 rgba(0, 0, 0, 0.25);
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: $primary;
+}
+.textarea {
+  background-color: #fff;
+  border: 1px solid #bebcbc;
+  margin-top: 5px;
+  padding: 0px 10px;
 }
