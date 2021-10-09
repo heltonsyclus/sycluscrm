@@ -2,53 +2,54 @@
   <BarraLayout
     @OnClick="OnClickValor"
     :ConteudoBtn="Grupos"
-    :ConteudoApp="GrupoCardsOpcionais"
+    Aplicacao="AplicativosPesquisa"
   />
-  <q-page class="flex flex-center">
-    <CardBase
-      class="q-ma-xs"
-      v-for="(ObjCard, index) in GrupoCards"
+
+  <div class="column ContainerCardRetangular">
+    <CardRetangulo
+      v-for="(ObjCardRetangulo, index) in GrupoCardsRetangular"
       :key="index"
-      :id="ObjCard.id_card"
-      :card="ObjCard.card"
-      :ordem="ObjCard.ordem"
-      cor_header="bg-primary"
-      :btn_comando="ObjCard.btn_comando"
-      :tipo_card="ObjCard.tipo_card"
-      :sub_tipo="ObjCard.sub_tipo"
-      :conteudo_card="ObjCard.conteudo_card"
+      :card="ObjCardRetangulo.card"
+      :tipo_card_retangulo="ObjCardRetangulo.tipo_card_retangulo"
+      :sub_tipo="ObjCardRetangulo.sub_tipo"
     />
-  </q-page>
+  </div>
 </template>
 
 <script>
 import BarraLayout from "src/layouts/BarraLayout.vue";
+import CardRetangulo from "src/components/Cards/CardRetangulo.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
-  components: { BarraLayout },
-  name: "Notificacao",
+  components: { BarraLayout, CardRetangulo },
+  name: "Ocorrencia",
   data() {
     return {
       ObjDashboard: [],
       IndexGrupoAtual: 0,
+      Grupo: [],
       Grupos: [],
-      GrupoCards: [],
-      GrupoCardsOpcionais: []
+      GrupoCardsRetangular: []
     };
   },
   methods: {
     OnClickValor(IndexGrupo) {
       this.IndexGrupoAtual = IndexGrupo;
       this.Grupo = this.ObjDashboard["grupos"][IndexGrupo];
-      this.GrupoCards = this.Grupo["cards"];
-      this.GrupoCardsOpcionais = this.Grupo["cards_opcionais"];
+      this.GrupoCardsRetangular = this.Grupo["cards_retangulo"];
     }
   },
   created() {
     const json =
-      '{"id_dashboard":8,"dashboard":"Notificação","grupos":[{"id_grupo":1,"grupo":"Notificação","icone":"filter_list","cards":[{"id_card":31,"card":"card ocorrencia","ordem":1 }],"cards_opcionais":[{"id_card":31,"card":"card ocorrencia","ordem":1,"icone":"search","cor":"primary"}]}]}';
+      '{"id_dashboard":8,"dashboard":"Notificação","grupos":[{"id_grupo":1,"cards_retangulo":[{"id_card":1,"card":"Notificação 1","tipo_card_retangulo":"RetanguloNotificacao"},{"id_card":2,"card":"Notificação 2","tipo_card_retangulo":"RetanguloNotificacao"},{"id_card":3,"card":"Notificação 3","tipo_card_retangulo":"RetanguloNotificacao"}]}]}';
     this.ObjDashboard = JSON.parse(json);
     this.Grupos = this.ObjDashboard["grupos"];
   }
 });
 </script>
+
+<style>
+.ContainerCardRetangular {
+  width: 95%;
+}
+</style>

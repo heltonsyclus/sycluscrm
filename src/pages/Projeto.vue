@@ -3,6 +3,7 @@
     @OnClick="OnClickValor"
     :ConteudoBtn="Grupos"
     :ConteudoApp="GrupoCardsOpcionais"
+    Aplicacao="AplicativosPadrao"
   />
   <div class="row">
     <CardBase
@@ -43,6 +44,9 @@ export default defineComponent({
       this.Grupo = this.ObjDashboard["grupos"][IndexGrupo];
       this.GrupoCards = this.Grupo["cards"];
       this.GrupoCardsOpcionais = this.Grupo["cards_opcionais"];
+      if (this.IndexGrupoAtual === 1) {
+        this.$router.push({ name: "pesquisa" });
+      }
     }
   },
   created() {

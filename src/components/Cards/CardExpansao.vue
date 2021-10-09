@@ -7,13 +7,14 @@
       :key="index"
     >
       <q-expansion-item
+       dense="dense"
         expand-separator
         :label="resposta.TituloModelo"
         class="q-mb-md"
       >
         <q-card>
           <q-card-section class="text-dark flex justify-between items-center">
-            <p class="q-pt-md pl">{{ resposta.respostaModelo }}</p>
+            <p class="q-pt-md pl" style="font-weight:400;font-style:italic">{{ resposta.respostaModelo }}</p>
             <q-btn
               color="dark"
               round

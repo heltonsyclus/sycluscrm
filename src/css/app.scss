@@ -2,7 +2,7 @@
 @mixin cards {
   width: 100%;
   overflow: auto;
-  max-width: 304px;
+  width: 304px;
   min-height: 200px;
   margin: 10px 2px;
 }
@@ -14,9 +14,8 @@ body {
   text-transform: capitalize;
 }
 .my-card {
-  width: 100%;
-  max-width: 300px;
-  min-height: 150px;
+  width: 304px;
+  min-height: 140px;
 }
 .my-card-s {
   @include cards;
@@ -26,13 +25,23 @@ body {
   @include cards;
   max-height: 180px;
 }
-.my-card-s-360-304 {
+.my-card-s-270-304 {
   @include cards;
-  height: 360px;
+  height: 270px;
+  min-height: 250px;
 }
-.my-card-s-500-304 {
+.my-card-s-500-304 { 
   @include cards;
-  height: 500px;
+  min-height: 250px;
+  max-height: 500px;
+}
+.my-card-s-100mx-30 {
+  width: 100%;
+  overflow: auto;
+  min-height: 50px;
+  margin: 10px 2px 10px 20px;
+  padding: 3px 20px 0px 20px;
+  background-color: #fff;
 }
 .bg-active {
   background-color: #64db63;

@@ -1,20 +1,23 @@
 <template>
   <div
-    class="flex justify-between"
-    style="padding:0;margin:20px auto;width:90%;"
+    class="flex justify-between "
+    style="padding:0;margin:20px auto;width:95%;"
   >
-    <h1 style="height:40px;font-weight:400">
+    <h1 style="font-weight:600;letter-spacing: -8px;">
       {{ hoje }}
     </h1>
     <div>
-      <h5 style="height:40px;font-weight:500" class="capitalize	q-mb-xl">
+      <h5 style="font-weight:700" class="capitalize	">
         {{ mes }}
       </h5>
-      <p>Organize atividades!</p>
+      <p style="font-style:italic;color:#7E7D7D;font-weight:700">
+        Organize sua rotina!
+      </p>
       <q-btn
-        class="q-mt-xl"
+        unelevated
+        class="q-mt-xl capitalize"
         style="width:80px;margin-top:10px"
-        size="sm"
+        size="12px"
         color="primary"
         label="Veja mais"
         to="/Agenda"
@@ -40,5 +43,10 @@ export default {
 * {
   padding: 0px;
   margin: 0px;
+}
+
+h5,
+h1 {
+  color: rgb(0, 49, 114);
 }
 </style>

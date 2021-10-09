@@ -1,26 +1,25 @@
 <template>
-  <q-page class="flex flex-center bg-primary">
+  <q-page class="flex flex-center">
     <div>
       <q-card class="my-card">
         <q-card-actions class="q-pt-none full-width">
           <q-input
             v-model="email"
-            filled
+            dense
             type="email"
-            class="q-py-sm full-width"
+            class="q-pt-md full-width"
             label="E-mail"
           />
-          <div class="q-py-sm full-width">
+          <div class="q-mt-md full-width">
             <q-btn color="primary full-width">
-              <div class="ellipsis">Enviar</div>
+              <div class="full-width capitalize">Enviar</div>
             </q-btn>
-            <q-btn
-              flat
-              color="primary"
-              class="full-width"
-              label="Voltar"
-              @click="$router.push({name:'Login'})"
-            />
+            <p
+              @click="$router.push({ name: 'Login' })"
+              class="text-center q-pt-md text-primary"
+            >
+              Voltar
+            </p>
           </div>
         </q-card-actions>
       </q-card>
@@ -35,10 +34,9 @@ export default defineComponent({
   name: "ProblemaLogin",
   setup() {
     return {
-      email: ref(""),
+      email: ref("")
     };
-  },
-  
+  }
 });
 </script>
 

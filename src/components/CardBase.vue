@@ -1,15 +1,19 @@
 <template>
-    <q-card v-bind:class="[formato_card ? '' : formato_padrao, formato_card ]" flat bordered>  
-    <q-item class="items-center" :class="cor_header">
-      <q-item-section style="height:38px;font-weight:700;color:White">
+  <q-card
+    :class="[formato_card ? '' : formato_padrao, formato_card]"
+    flat
+    bordered
+  >
+    <q-item class="items-center" :class="cor_header" dense="dense">
+      <q-item-section style="height:40px;font-weight:700;color:White">
         {{ card }}
       </q-item-section>
       <q-btn
+        v-if="btn_comando === 'btn-itens'"
         round
         flat
         text-color="white"
         icon="more_vert"
-        v-if="btn_comando === 'btn-itens'"
       >
         <q-menu cover auto-close>
           <q-list>
@@ -23,40 +27,71 @@
         </q-menu>
       </q-btn>
 
+      <q-btn
+        v-if="btn_comando === 'btn-pause'"
+        round
+        flat
+        dense="dense"
+        text-color="red"
+        icon="pause_circle"
+        @click.prevent="btnSetaBaixa"
+      >
+      </q-btn>
+      <q-btn
+        v-if="btn_comando === 'btn-play'"
+        round
+        flat
+        text-color="green"
+        icon="play_circle"
+        @click.prevent="btnSetaBaixa"
+      >
+      </q-btn>
+
+      <q-btn
+        v-if="btn_comando === 'btn-seta-baixa'"
+        round
+        flat
+        text-color="grey-5"
+        icon="expand_more"
+        @click.prevent="btnSetaBaixa"
+      >
+      </q-btn>
+
+      <q-btn
+        v-if="btn_comando === 'btn-adicionar'"
+        round
+        flat
+        text-color="white"
+        icon="add"
+        @click.prevent="btnAdicionar"
+      >
+      </q-btn>
+
+      <q-btn
+        v-if="btn_comando === 'btn-editar'"
+        round
+        flat
+        text-color="white"
+        icon="mode_edit"
+        @click.prevent="btnEditar"
+      >
+      </q-btn>
       <div v-if="btn_comando === 'btn-filtro'">
-        <q-btn-dropdown
-          color="disabled capitalize"
-          label="Filtro"
-          class="no-shadow gray capitalize"
-          text-color="white"
-          style="width:100px"
-          flat
-        >
-          <q-list>
-            <q-item
-              clickable
-              v-close-popup
-              @click="onItemClick"
-              v-for="(filtro, index) in options"
-              :key="index"
-              size="xs"
-            >
-              <q-item-section>
-                <q-item-label>{{ filtro }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
+        <q-select v-model="model" :options="modelos" dense="dense" />
       </div>
     </q-item>
 
-    <q-card-section style="padding:0;margin:5px auto;width:95%;">
+    <q-card-section style="padding:0;margin:5px auto;width:95%">
       <CardSlide v-if="tipo_card === 'Slide'" />
       <CardAgenda v-if="tipo_card === 'Agenda'" />
       <CardExpansao v-if="tipo_card === 'Expansao'" />
       <CardGrafico v-if="tipo_card === 'Grafico'" />
-      <CardInput v-if="tipo_card === 'Input'" :funcao_card="sub_tipo" />
       <CardSecao v-if="tipo_card === 'Secao'" :funcao_card="sub_tipo" />
+      <CardInput
+        v-if="tipo_card === 'Input'"
+        :funcao_card="sub_tipo"
+        :conteudo_cards="layout_lin_col"
+      />
       <CardLista
         v-if="tipo_card === 'Lista'"
         :funcao_card="sub_tipo"
@@ -69,7 +104,6 @@
       />
     </q-card-section>
   </q-card>
-
 </template>
 
 <script>
@@ -97,22 +131,11 @@ export default {
   },
   setup() {
     return {
-      model: ref(null),
-      options: ["Hoje", "Semana", "Mês"],
-      formato_padrao:"my-card-s"
+      model: ref("Hoje"),
+      modelos: ["Hoje", "Semana", "Mês"],
+      formato_padrao: "my-card-s"
     };
-  },
-  created(){
-    /*
-    console.log(this.formato);
-    console.log(formato_card);
-    if (formato_card!=='') {
-      this.formato = formato_card;
-      console.log(this.formato)
-    }
-*/
-   
   }
 };
 </script>
-<style scoped></style>
+

@@ -1,26 +1,23 @@
 <template>
-  <q-page class="flex flex-center bg-primary">
+  <q-page class="flex flex-center">
     <div>
-      <q-card class="my-card">
-        <q-img src="https://placeimg.com/500/300/nature">
-          <div class="absolute-bottom">
-            <div class="text-h6">Seja bem-vindo(a),
-              <br>Cliente Syclus!</div>
-          </div>
+      <q-card class="my-card-s-500-304">
+        <q-img> 
+          <img src="../assets/Syclus-login.png">
         </q-img>
 
         <q-card-actions class="q-pt-none full-width">
           <q-input
             v-model="email"
-            filled
+            dense
             type="email"
-            class="q-py-sm full-width"
+            class="q-py-md full-width"
             label="E-mail"
           />
           <q-input
             class="full-width"
             v-model="password"
-            filled
+            dense
             label="Password"
             :type="isPwd ? 'password' : 'text'"
           >
@@ -32,17 +29,16 @@
               />
             </template>
           </q-input>
-          <div class="q-py-sm full-width">
-            <q-btn color="primary full-width" @click="$router.push({name:'Dashboard'})">
-              <div class="ellipsis">Logar</div>
+          <div class="q-py-lg full-width">
+            <q-btn color="primary full-width q-py-md" rounded @click="Logar">
+              <div class="capitalize h1">Logar</div>
             </q-btn>
-            <q-btn
-              @click="$router.push({name:'ProblemaLogin'})"
-              flat
-              color="primary"
-              class="full-width"
-              label="Não consigo logar"
-            />
+            <p
+              @click="$router.push({ name: 'ProblemaLogin' })"
+              class="text-center q-pt-md text-primary"
+            >
+              Esqueci minha senha!
+            </p>
           </div>
         </q-card-actions>
       </q-card>
@@ -52,22 +48,25 @@
 
 <script>
 import { defineComponent } from "vue";
-import { ref } from "vue";
 export default defineComponent({
   name: "Login",
-  setup() {
+  data() {
     return {
-      email: ref(""),
-      password: ref(""),
-      isPwd: ref(true)
+      email: "",
+      password: "",
+      isPwd: true
     };
   },
-  
+  methods: {
+    Logar() {
+      if (this.email === "helton@gmail.com" && this.password === "123456") {
+        this.$router.push({ name: "Dashboard" });
+      } else {
+        alert("Login Inválido!");
+      }
+    }
+  }
 });
 </script>
-
-<style lang="sass" scoped>
-.my-card
-  width: 100%
-  max-width: 300px
+<style>
 </style>

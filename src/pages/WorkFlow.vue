@@ -3,6 +3,7 @@
     @OnClick="OnClickValor"
     :ConteudoBtn="Grupos"
     :ConteudoApp="GrupoCardsOpcionais"
+    Aplicacao="AplicativosPadrao"
   />
   <div class="flex">
     <CardBase
@@ -47,7 +48,7 @@ export default defineComponent({
   },
   created() {
     const json =
-      '{"id_dashboard":7,"dashboard":"Workflow","grupos":[{"id_grupo":1,"grupo":"Criar Workflow","icone":"assignment_turned_in","cards":[{"id_card":31,"card":"Criar Workflow","ordem":1,"altura":300,"comprimento":250,"tipo_card":"Botao","sub_tipo":"lista-padrao","conteudo_card":["Crie sua Workflow de forma rápida e eficaz."]}],"cards_opcionais":[{"id_card":31,"card":"Criar Workflow","ordem":1,"icone":"search","cor":"primary"}]},{"id_grupo":2,"grupo":"Pesquisa","icone":"search","cards":[{"id_card":32,"card":"Pesquisa","ordem":1,"tipo_card":"Botao","sub_tipo":"lista-padrao","conteudo_card":["Pesquisa de Workflow."]}],"cards_opcionais":[{"id_card":32,"card":"Meus projetos","ordem":1,"icone":"search","cor":"orange"}]}]}';
+      '{"id_dashboard":7,"dashboard":"Workflow","grupos":[{"id_grupo":1,"grupo":"Criar Workflow","icone":"assignment_turned_in","cards":[{"id_card":31,"card":"Criar Workflow","ordem":1,"altura":300,"comprimento":250,"tipo_card":"Botao","sub_tipo":"lista-padrao","conteudo_card":["Crie sua Workflow de forma rápida e eficaz."]}],"cards_opcionais":[{"id_card":31,"card":"Criar Workflow","ordem":1,"icone":"search","cor":"primary"}]}]}';
     this.ObjDashboard = JSON.parse(json);
     this.Grupos = this.ObjDashboard["grupos"];
   }

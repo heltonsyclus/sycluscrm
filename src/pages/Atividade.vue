@@ -3,6 +3,7 @@
     @OnClick="OnClickValor"
     :ConteudoBtn="Grupos"
     :ConteudoApp="GrupoCardsOpcionais"
+    Aplicacao="AplicativosPadrao"
   />
   <div class="row">
     <CardBase
@@ -43,11 +44,14 @@ export default defineComponent({
       this.Grupo = this.ObjDashboard["grupos"][IndexGrupo];
       this.GrupoCards = this.Grupo["cards"];
       this.GrupoCardsOpcionais = this.Grupo["cards_opcionais"];
+      if (this.IndexGrupoAtual === 1) {
+        this.$router.push({ name: "pesquisa" });
+      }
     }
   },
   created() {
     const json =
-      '{"id_dashboard":2,"dashboard":"Atividade","grupos":[{"id_grupo":1,"grupo":"Criar Atividades","icone":"assignment_turned_in","cards":[{"id_card":31,"card":"Criar Atividade","ordem":1,"tipo_card":"Botao","sub_tipo":"lista-padrao","conteudo_card":["Crie sua atividade de forma rápida e eficaz."]}],"cards_opcionais":[{"id_card":31,"card":"Criar Atividade","ordem":1,"icone":"search","cor":"primary"}]},{"id_grupo":2,"grupo":"Pesquisa","icone":"search","cards":[{"id_card":32,"card":"Pesquisa","ordem":1,"tipo_card":"Botao","sub_tipo":"lista-padrao","conteudo_card":["Crie sua atividade de forma rápida e eficaz."]}],"cards_opcionais":[{"id_card":32,"card":"Meus projetos","ordem":1,"icone":"search","cor":"orange"}]}]}';
+      '{"id_dashboard":2,"dashboard":"Atividade","grupos":[{"id_grupo":1,"grupo":"Criar Atividades","icone":"assignment_turned_in","cards":[{"id_card":31,"card":"Criar Atividade","ordem":1,"altura":300,"comprimento":250,"tipo_card":"Botao","sub_tipo":"lista-padrao","conteudo_card":["Crie sua atividade de forma rápida e eficaz."]}],"cards_opcionais":[{"id_card":31,"card":"Criar Atividade","ordem":1,"icone":"search","cor":"primary"}]},{"id_grupo":2,"grupo":"Pesquisa","icone":"search","cards":[{"id_card":32,"card":"Pesquisa","ordem":1,"tipo_card":"Botao","sub_tipo":"lista-tags","conteudo_card":[{"tags":["Syclus 2.0","Desenvolvimento","Helton","Execução"],"entrada":"29/09/2021","saida":"29/09/2021"}]}],"cards_opcionais":[{"id_card":32,"card":"Meus projetos","ordem":1,"icone":"search","cor":"orange"}]}]}';
     this.ObjDashboard = JSON.parse(json);
     this.Grupos = this.ObjDashboard["grupos"];
   }

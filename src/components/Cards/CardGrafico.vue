@@ -1,6 +1,6 @@
 <template>
   <div>
-   <p>grafico</p> 
+   <p style="font-weight:700;color:DodgerBlue;padding:10px">grafico</p> 
   </div>
 </template>
 

@@ -3,7 +3,7 @@
     <q-header class="bg-grey-1">
       <q-toolbar class="text-primary">
         <img src="../assets/syclus.png" alt="Syclus" class="rotate-225" />
-        <q-toolbar-title class="text-weight-bold ">
+        <q-toolbar-title class="text-weight-bold " @click="$router.push({name:'Dashboard'})">
           Syclus CRM
         </q-toolbar-title>
         <div class="q-gutter-sm row items-center no-wrap">
@@ -13,7 +13,7 @@
             flat
             color="grey-8"
             icon="notifications"
-            to="/Notificacao"
+            @click="$router.push({name:'notificacao'})"
           >
             <q-badge color="blue" text-color="white" floating>
               {{ result }}
@@ -31,9 +31,9 @@
             <q-menu auto-close>
               <q-list dense>
                 <q-item clickable class="GL__menu-link">
-                  <q-item-section>Meu perfil</q-item-section>
+                  <q-item-section>Perfil</q-item-section>
                 </q-item>
-                <q-item clickable class="GL__menu-link">
+                <q-item clickable class="GL__menu-link" @click="$router.push({name:'Login'})">
                   <q-item-section>Sair</q-item-section>
                 </q-item>
               </q-list>

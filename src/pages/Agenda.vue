@@ -1,43 +1,92 @@
 <template>
-  <BarraLayout
-    @OnClick="OnClickValor"
-    :ConteudoBtn="Grupos"
-    :ConteudoApp="GrupoCardsOpcionais"
-  />
-
-  <q-page class="row">
-    <div class="col-3 window-height bg-grey-4">
-      <CardBase
-        class="q-ma-xs"
-        v-for="(ObjCard, index) in GrupoCards"
-        :key="index"
-        :id="ObjCard.id_card"
-        :card="ObjCard.card"
-        :ordem="ObjCard.ordem"
-        cor_header="bg-primary"
-        :btn_comando="ObjCard.btn_comando"
-        :tipo_card="ObjCard.tipo_card"
-        :sub_tipo="ObjCard.sub_tipo"
-        :conteudo_card="ObjCard.conteudo_card"
-      />
+  <div class="row">
+    <div
+      class="column col-3 window-height bg-grey-4"
+      style="padding:10px 18px"
+    >
+      <q-date v-model="date" minimal dense />
+      <q-card class="bg-primary" style="padding: 5px 5px;margin:10px 0px" dense>
+        <div class="flex justify-between items-center">
+          <span style="color:white;font-weight:700">Anotações</span>
+          <q-btn
+            round
+            dense
+            color="green"
+            size="10px"
+            icon="add"
+            @click.prevent="onClickAnotar"
+          />
+        </div>
+        <q-input
+          v-show="Bloco"
+          v-model="Anotacao"
+          filled
+          type="textarea"
+          style="margin:5px 0px"
+        />
+      </q-card>
     </div>
-  </q-page>
+
+    <div class="col-9">
+      <BarraLayout
+        @OnClick="OnClickValor"
+        :ConteudoBtn="Grupos"
+        :ConteudoApp="GrupoCardsOpcionais"
+        Aplicacao="AplicativosPadrao"
+      />
+      <div class="flex justify-between">
+        <q-btn
+          unelevated
+          rounded
+          dense
+          size="14px"
+          style="padding:0px 15px"
+          color="light-blue-9"
+          text-color="white"
+          class="q-mt-xs q-ml-sm capitalize"
+          label="Adicionar"
+          @click="darkDialog = true"
+        />
+        <q-select
+          v-model="filtro"
+          :options="options"
+          class="q-mr-md q-mt-xs"
+          dense
+        />
+      </div>
+      <CardCalendario />
+    </div>
+
+  </div>
 </template>
 
 <script>
+import CardCalendario from "src/components/Cards/CardCalendario.vue";
 import BarraLayout from "src/layouts/BarraLayout.vue";
-import CardBase from "src/components/CardBase.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
-  components: { BarraLayout, CardBase },
+  components: { BarraLayout, CardCalendario},
   name: "Agenda",
   data() {
     return {
+      filtro: "Dia",
+      options: ["Dia", "Semanal", "Mês"],
       ObjDashboard: [],
       IndexGrupoAtual: 0,
       Grupos: [],
       GrupoCards: [],
-      GrupoCardsOpcionais: []
+      GrupoCardsOpcionais: [],
+      date: this.DataCompleta,
+      Anotacao: [],
+      Bloco: false,
+      hoje: new Date()
+        .toLocaleString("pt-br", { day: "numeric" })
+        .padStart(2, "0"),
+      mes: (new Date().getMonth() + 1).toString().padStart(2, "0"),
+      ano: new Date()
+        .getFullYear()
+        .toString()
+        .padStart(2, "0")
     };
   },
   methods: {
@@ -46,6 +95,14 @@ export default defineComponent({
       this.Grupo = this.ObjDashboard["grupos"][IndexGrupo];
       this.GrupoCards = this.Grupo["cards"];
       this.GrupoCardsOpcionais = this.Grupo["cards_opcionais"];
+    },
+    onClickAnotar() {
+      this.Bloco = !this.Bloco;
+    }
+  },
+  computed: {
+    DataCompleta() {
+      return this.hoje + "/" + this.mes + "/" + this.ano;
     }
   },
   created() {
