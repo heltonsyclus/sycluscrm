@@ -7,8 +7,8 @@ export const LayoutCard = {
     sub_tipo: String,
     conteudo_card: String,
     formato_card: String,
-    layout_lin_col:String
-  }
+    layout_lin_col:String,
+  },
 };
 
 export const LayoutWorkFlow = {

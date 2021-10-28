@@ -2,21 +2,25 @@
   <div style="width:100%" class="text-dark">
     <q-list
       bordered
-      class="rounded-borders bg-blue-11 q-mb-md q-my-none margin-bot"
+      class="rounded-borders bg-grey-1 q-mb-md q-my-none margin-bot"
       v-for="(resposta, index) in Conteudo"
       :key="index"
     >
       <q-expansion-item
-       dense="dense"
+        dense="dense"
         expand-separator
         :label="resposta.TituloModelo"
         class="q-mb-md"
       >
         <q-card>
-          <q-card-section class="text-dark flex justify-between items-center">
-            <p class="q-pt-md pl" style="font-weight:400;font-style:italic">{{ resposta.respostaModelo }}</p>
+          <q-card-section
+            class="text-light-blue-10 flex justify-between items-center"
+          >
+            <p class="q-pt-md pl" style="font-weight:400;font-style:italic;padding-left:20px">
+              <strong>{{ resposta.respostaModelo }}</strong>
+            </p>
             <q-btn
-              color="dark"
+              color="light-blue-10"
               round
               flat
               icon="more_vert"
@@ -54,7 +58,7 @@ export default {
           respostaModelo: "Reunião"
         }
       ],
-      numero:"2"
+      numero: "2"
     };
   }
 };
@@ -63,9 +67,11 @@ export default {
 * {
   padding: 0;
   margin: 0;
-  }
-  .margin-bot{
-    margin-bottom: 3px;
-  }
-  .pl{padding-left: 5px;}
+}
+.margin-bot {
+  margin-bottom: 3px;
+}
+.pl {
+  padding-left: 5px;
+}
 </style>

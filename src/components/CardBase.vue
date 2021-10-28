@@ -37,6 +37,7 @@
         @click.prevent="btnSetaBaixa"
       >
       </q-btn>
+
       <q-btn
         v-if="btn_comando === 'btn-play'"
         round
@@ -85,12 +86,13 @@
       <CardSlide v-if="tipo_card === 'Slide'" />
       <CardAgenda v-if="tipo_card === 'Agenda'" />
       <CardExpansao v-if="tipo_card === 'Expansao'" />
-      <CardGrafico v-if="tipo_card === 'Grafico'" />
+      <CardGrafico v-if="tipo_card === 'Grafico'" :funcao_card="sub_tipo" />
       <CardSecao v-if="tipo_card === 'Secao'" :funcao_card="sub_tipo" />
       <CardInput
         v-if="tipo_card === 'Input'"
         :funcao_card="sub_tipo"
         :conteudo_cards="layout_lin_col"
+        @arrModels="valorModels"
       />
       <CardLista
         v-if="tipo_card === 'Lista'"
@@ -117,6 +119,7 @@ import CardGrafico from "./Cards/CardGrafico.vue";
 import CardInput from "./Cards/CardInput.vue";
 import CardSecao from "./Cards/CardSecao.vue";
 import CardBotao from "./Cards/CardBotao.vue";
+
 export default {
   mixins: [LayoutCard],
   components: {
@@ -133,9 +136,9 @@ export default {
     return {
       model: ref("Hoje"),
       modelos: ["Hoje", "Semana", "Mês"],
-      formato_padrao: "my-card-s"
+      formato_padrao: "my-card-s",
+      inputValores: []
     };
   }
 };
 </script>
-

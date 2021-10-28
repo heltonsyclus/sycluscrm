@@ -15,7 +15,7 @@
       <div v-if="Aplicacao === 'AplicativosPadrao'">
         <q-btn flat dense>
           <q-icon name="settings" />
-          <q-menu auto-close class="flex" style="width: 345px;">
+          <q-menu auto-close class="flex" style="width: 345px">
             <q-item
               class="rounded-borders"
               clickable
@@ -45,13 +45,13 @@
         style="paddding:10px 0px"
         v-if="Aplicacao === 'AplicativosPesquisa'"
       >
-        <q-select v-model="model" dense :options="options" class="q-mr-md" />
         <q-input
-          v-model="text"
+          v-model="pesquisaInput"
           style="width:150px"
           dense
           label="Pesquisa"
           v-show="pesquisa"
+          @keyup.enter="InputValor"
         />
         <q-btn
           unelevated
@@ -67,19 +67,8 @@
           color="primary"
           icon="filter_list"
           class="q-mr-md"
-          @click="darkDialog = true"
+          @click="$emit('onClickFiltros')"
         />
-        <q-dialog
-          v-model="darkDialog"
-          persistent
-          transition-show="flip-down"
-          transition-hide="flip-up"
-        >
-          <EtapasPesquisa
-            :EtapasWorkFlow="ResultWorkflow"
-            @close="darkDialog = false"
-          />
-        </q-dialog>
       </div>
       <div v-if="Aplicacao === 'AplicativosSalvar'">
         <q-btn
@@ -107,19 +96,17 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
-import EtapasPesquisa from "src/layouts/EtapasPesquisa.vue";
+
 export default defineComponent({
   props: ["ConteudoBtn", "ConteudoApp", "Aplicacao"],
   name: "BarraLayout",
-  components: { EtapasPesquisa },
   setup() {
     return {
       pesquisa: ref(false),
       ResultWorkflow: ref([]),
       darkDialog: ref(false),
-      text: ref(""),
-      model: ref("Desenvolvimento"),
-      options: ["Desenvolvimento", "Administração", "Contas", "Fiscal"]
+      pesquisaInput: ref([]),
+      pesquisaArray: ref([]),
     };
   },
   data() {
@@ -135,6 +122,10 @@ export default defineComponent({
     },
     tagsCard() {
       this.ResultWorkflow;
+    },
+    InputValor() {
+      this.$emit("valorInputPesquisa", this.pesquisaInput);
+      this.$emit("valorSelectPesquisa", this.pesquisaSelect);
     }
   },
   computed: {

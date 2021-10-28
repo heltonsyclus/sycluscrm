@@ -51,7 +51,7 @@ export default defineComponent({
   },
   created() {
     const json =
-      '{"id_dashboard":3,"dashboard":"Projeto","grupos":[{"id_grupo":1,"grupo":"Criar projeto","icone":"assignment_turned_in","cards":[{"id_card":31,"card":"Criar Projeto","ordem":1,"altura":300,"comprimento":250,"tipo_card":"Botao","sub_tipo":"lista-padrao","conteudo_card":["Crie sua Projeto de forma rápida e eficaz."]}],"cards_opcionais":[{"id_card":31,"card":"Criar Projeto","ordem":1,"icone":"search","cor":"primary"}]},{"id_grupo":2,"grupo":"Pesquisa","icone":"search","cards":[{"id_card":32,"card":"Pesquisa","ordem":1,"tipo_card":"Botao","sub_tipo":"lista-padrao","conteudo_card":["Pesquisa de Projeto."]}],"cards_opcionais":[{"id_card":32,"card":"Meus projetos","ordem":1,"icone":"search","cor":"orange"}]}]}';
+      '{"id_dashboard":3,"dashboard":"Projeto","grupos":[{"id_grupo":1,"grupo":"Criar projeto","icone":"assignment_turned_in","cards":[{"id_card":31,"card":"Criar Projeto","ordem":1,"altura":300,"comprimento":250,"tipo_card":"Botao","sub_tipo":"lista-padrao","conteudo_card":[{"conteudo":"Crie sua Projeto de forma rápida e eficaz.","get_workflow":"WorkFlowProjeto"}]}],"cards_opcionais":[{"id_card":31,"card":"Criar Projeto","ordem":1,"icone":"search","cor":"primary"}]},{"id_grupo":2,"grupo":"Pesquisa","icone":"search","cards":[{"id_card":32,"card":"Pesquisa","ordem":1,"tipo_card":"Botao","sub_tipo":"lista-padrao","conteudo_card":["Pesquisa de Projeto."]}],"cards_opcionais":[{"id_card":32,"card":"Meus projetos","ordem":1,"icone":"search","cor":"orange"}]}]}';
     this.ObjDashboard = JSON.parse(json);
     this.Grupos = this.ObjDashboard["grupos"];
   }

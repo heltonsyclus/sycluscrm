@@ -1,13 +1,27 @@
 <template>
   <q-drawer
-    class="bg-primary text-white no-scroll"
+    class="bg-primary text-white no-scroll black"
     :width="58"
     :breakpoint="500"
     behavior="desktop"
     show-if-above
   >
     <q-toolbar>
-      <q-btn flat round dense icon="menu" @click.prevent="MenuLista()" />
+      <q-btn
+        flat
+        round
+        dense
+        icon="menu"
+        style="margin:10px 0px 50px"
+        @click="open('left')"
+      />
+      <q-dialog
+        v-model="dialog"
+        :position="position"
+        persistent
+      >
+        <MenuCompleto @close="dialog = false" />
+      </q-dialog>
     </q-toolbar>
     <q-item
       v-for="(list, index) in linksList"
@@ -24,35 +38,25 @@
   <q-page-container>
     <router-view />
   </q-page-container>
-  <div
-    v-show="MenuFlutuante"
-    class="text-dark no-scroll menu"
-    behavior="desktop"
-    show-if-above
-  >
-    <q-toolbar>
-      <q-btn flat round dense icon="close" @click.prevent="MenuLista()" />
-    </q-toolbar>
-    <q-item
-      v-for="(list, index) in linksList"
-      :key="index"
-      :to="list.rota"
-      exact
-    >
-      <q-item-section avatar>
-        <q-icon :name="list.icon" />
-      </q-item-section>
-    </q-item>
-  </div>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
-
+import MenuCompleto from "./MenuCompleto.vue";
 export default defineComponent({
   name: "MenuFlutuante",
+  components:{MenuCompleto},
   setup() {
+    const dialog = ref(false);
+    const position = ref("top");
+
     return {
+      dialog,
+      position,
+      open(pos) {
+        position.value = pos;
+        dialog.value = true;
+      },
       linksList: [
         {
           icon: "dashboard",
@@ -84,21 +88,11 @@ export default defineComponent({
         }
       ]
     };
-  },
-  data() {
-    return {
-      MenuFlutuante: false
-    };
-  },
-  methods: {
-    MenuLista() {
-      this.MenuFlutuante = !this.MenuFlutuante;
-    }
   }
 });
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .menu {
   width: 450px;
   height: 100vh;

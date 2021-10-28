@@ -1,9 +1,9 @@
 <template>
   <div
     class="flex justify-between "
-    style="padding:0;margin:20px auto;width:95%;"
+    style="padding:0;margin:25px auto;width:90%;"
   >
-    <h1 style="font-weight:600;letter-spacing: -8px;">
+    <h1 style="font-weight:600;letter-spacing: -5px;">
       {{ hoje }}
     </h1>
     <div>
@@ -16,7 +16,7 @@
       <q-btn
         unelevated
         class="q-mt-xl capitalize"
-        style="width:80px;margin-top:10px"
+        style="width:80px;margin-top:5px"
         size="12px"
         color="primary"
         label="Veja mais"
@@ -47,6 +47,6 @@ export default {
 
 h5,
 h1 {
-  color: rgb(0, 49, 114);
+  color: rgb(67, 128, 207);
 }
 </style>

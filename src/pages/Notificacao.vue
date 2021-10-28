@@ -1,10 +1,9 @@
 <template>
   <BarraLayout
-    @OnClick="OnClickValor"
+    @OnClick="OnClickvalorNotificacaoor"
     :ConteudoBtn="Grupos"
     Aplicacao="AplicativosPesquisa"
   />
-
   <div class="column ContainerCardRetangular">
     <CardRetangulo
       v-for="(ObjCardRetangulo, index) in GrupoCardsRetangular"
@@ -20,9 +19,11 @@
 import BarraLayout from "src/layouts/BarraLayout.vue";
 import CardRetangulo from "src/components/Cards/CardRetangulo.vue";
 import { defineComponent } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default defineComponent({
   components: { BarraLayout, CardRetangulo },
-  name: "Ocorrencia",
+  name: "Notificacao",
   data() {
     return {
       ObjDashboard: [],
@@ -33,10 +34,15 @@ export default defineComponent({
     };
   },
   methods: {
-    OnClickValor(IndexGrupo) {
+    OnClickvalorNotificacaoor(IndexGrupo) {
       this.IndexGrupoAtual = IndexGrupo;
       this.Grupo = this.ObjDashboard["grupos"][IndexGrupo];
       this.GrupoCardsRetangular = this.Grupo["cards_retangulo"];
+    }
+  },
+  computed: {
+    valorNotificacao() {
+      return this.GrupoCardsRetangular.length;
     }
   },
   created() {
@@ -44,6 +50,18 @@ export default defineComponent({
       '{"id_dashboard":8,"dashboard":"Notificação","grupos":[{"id_grupo":1,"cards_retangulo":[{"id_card":1,"card":"Notificação 1","tipo_card_retangulo":"RetanguloNotificacao"},{"id_card":2,"card":"Notificação 2","tipo_card_retangulo":"RetanguloNotificacao"},{"id_card":3,"card":"Notificação 3","tipo_card_retangulo":"RetanguloNotificacao"}]}]}';
     this.ObjDashboard = JSON.parse(json);
     this.Grupos = this.ObjDashboard["grupos"];
+  },
+  setup() {
+    const $store = useStore();
+    const notificacao = computed({
+      get: () => $store.state.showcase.notificacao,
+      set: val => {
+        $store.commit("showcase/numeroNotificacao", val);
+      }
+    });
+    return {
+      notificacao
+    };
   }
 });
 </script>

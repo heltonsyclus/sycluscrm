@@ -34,26 +34,6 @@
         :ConteudoApp="GrupoCardsOpcionais"
         Aplicacao="AplicativosPadrao"
       />
-      <div class="flex justify-between">
-        <q-btn
-          unelevated
-          rounded
-          dense
-          size="14px"
-          style="padding:0px 15px"
-          color="light-blue-9"
-          text-color="white"
-          class="q-mt-xs q-ml-sm capitalize"
-          label="Adicionar"
-          @click="darkDialog = true"
-        />
-        <q-select
-          v-model="filtro"
-          :options="options"
-          class="q-mr-md q-mt-xs"
-          dense
-        />
-      </div>
       <CardCalendario />
     </div>
 

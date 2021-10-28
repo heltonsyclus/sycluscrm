@@ -7,8 +7,9 @@
           class="text-primary"
           style="font-size: 4.4em;"
         />
-        <p style="font-weight:600" class="text-grey-7">{{ lista }}</p>
+        <p style="font-weight:600" class="text-grey-7">{{ lista.conteudo }}</p>
       </div>
+
       <div class="q-gutter-sm">
         <q-btn
           size="14px"
@@ -22,13 +23,34 @@
         />
       </div>
       <q-dialog
+        v-if="lista.get_workflow === 'WorkFlowAtividade'"
         v-model="darkDialog"
         persistent
-        transition-show="flip-down"
-        transition-hide="flip-up"
       >
         <EtapasWorkflow
-          :EtapasWorkFlow="ResultWorkflow"
+          :EtapasWorkFlow="WorkFlowAtividade"
+          @close="darkDialog = false"
+        />
+      </q-dialog>
+
+      <q-dialog
+        v-if="lista.get_workflow === 'WorkFlowProjeto'"
+        v-model="darkDialog"
+        persistent
+      >
+        <EtapasWorkflow
+          :EtapasWorkFlow="WorkFlowProjeto"
+          @close="darkDialog = false"
+        />
+      </q-dialog>
+
+      <q-dialog
+        v-if="lista.get_workflow === 'WorkFlowWorkflow'"
+        v-model="darkDialog"
+        persistent
+      >
+        <EtapasWorkflow
+          :EtapasWorkFlow="WorkFlowWorkflow"
           @close="darkDialog = false"
         />
       </q-dialog>
@@ -77,19 +99,29 @@ export default {
     return {
       nomeAtividade: "Dashboard",
       darkDialog: ref(false),
-      ResultWorkflow: [],
+      WorkFlowAtividade: [],
+      WorkFlowProjeto: [],
+      WorkFlowWorkflow: [],
       ListaTags: []
     };
   },
   methods: {
     tagsCard() {
-      this.ResultWorkflow;
+      this.WorkFlowAtividade;
+      this.WorkFlowProjeto;
+      this.WorkFlowWorkflow;
     }
   },
   created() {
-    const json =
+    const atividades =
       '{"etapas":[{"titulo_etapa":"Dados","id_etapa":1,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"input_texto","placeholder":"Descrição de atividade","vmodel":""},{"tipo_componente":"selecao_padrao","placeholder":"Modelo","vmodel":"","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]},{"tipo_componente":"selecao_multipla","placeholder":"Colaborador","vmodel":"","modelo":["Henrique","Helton","Danilo"]},{"tipo_componente":"selecao_padrao","placeholder":"Situação","vmodel":"","modelo":["Inicial","Planejamento","Execução","Acompanhamento"]},{"tipo_componente":"selecao_padrao","placeholder":"Workflow","vmodel":"","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]}]},{"titulo_etapa":"Cronograma","id_etapa":2,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"selecao_padrao","placeholder":"Cliente","vmodel":"","modelo":["ACT CONTABILIDADE","BOBS","SUCOLANDIA"]},{"tipo_componente":"selecao_padrao","placeholder":"Tags","vmodel":"","modelo":["Syclus 1","Syclus 2","Fiscal"]},{"tipo_componente":"input_data","vmodel":""},{"tipo_componente":"selecao_padrao","placeholder":"Prioridade","vmodel":"","modelo":["Normal","Alta","Baixa"]}]}]}';
-    this.ResultWorkflow = JSON.parse(json);
+    const projeto =
+      '{"etapas":[{"titulo_etapa":"Dados","id_etapa":1,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"input_texto","placeholder":"Descrição do projeto"},{"tipo_componente":"selecao_padrao","placeholder":"Modelo","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]},{"tipo_componente":"selecao_multipla","placeholder":"Colaborador","modelo":["Henrique","Helton","Danilo"]},{"tipo_componente":"selecao_padrao","placeholder":"Situação","modelo":["Inicial","Planejamento","Execução","Acompanhamento"]},{"tipo_componente":"selecao_padrao","placeholder":"Workflow","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]}]},{"titulo_etapa":"Cronograma","id_etapa":2,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"selecao_padrao","placeholder":"Cliente","modelo":["ACT CONTABILIDADE","BOBS","SUCOLANDIA"]},{"tipo_componente":"selecao_padrao","placeholder":"Tags","modelo":["Syclus 1","Syclus 2","Fiscal"]},{"tipo_componente":"input_data"},{"tipo_componente":"selecao_padrao","placeholder":"Prioridade","modelo":["Normal","Alta","Baixa"]}]}]}';
+    const workflow =
+      '{"etapas":[{"titulo_etapa":"Etapas","id_etapa":1,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"input_texto","placeholder":"Descrição de workflow"},{"tipo_componente":"selecao_padrao","placeholder":"Modelo","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]},{"tipo_componente":"selecao_multipla","placeholder":"Colaborador","modelo":["Henrique","Helton","Danilo"]},{"tipo_componente":"selecao_padrao","placeholder":"Situação","modelo":["Inicial","Planejamento","Execução","Acompanhamento"]},{"tipo_componente":"selecao_padrao","placeholder":"Workflow","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]}]},{"titulo_etapa":"Cronograma","id_etapa":2,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"selecao_padrao","placeholder":"Cliente","modelo":["ACT CONTABILIDADE","BOBS","SUCOLANDIA"]},{"tipo_componente":"selecao_padrao","placeholder":"Tags","modelo":["Syclus 1","Syclus 2","Fiscal"]},{"tipo_componente":"input_data"},{"tipo_componente":"selecao_padrao","placeholder":"Prioridade","modelo":["Normal","Alta","Baixa"]}]}]}';
+    this.WorkFlowWorkflow = JSON.parse(workflow);
+    this.WorkFlowProjeto = JSON.parse(projeto);
+    this.WorkFlowAtividade = JSON.parse(atividades);
     this.tagsCard();
   }
 };

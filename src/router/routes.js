@@ -23,6 +23,13 @@ const routes = [
     ]
   },
   {
+    path: "/perfil-usuario",
+    component: () => import("src/layouts/PerfilUsuario.vue"),
+    children: [
+      { path: "", name: "perfil-usuario", component: () => import("src/layouts/PerfilUsuario.vue") },
+    ]
+  },
+  {
     path: "/atividade",
     component: () => import("layouts/MainLayout.vue"),
     children: [
@@ -53,20 +60,14 @@ const routes = [
         component: () => import("pages/Projeto.vue")
       },
       {
+        path: "/projetos",
+        name: "projetos",
+        component: () => import("pages/LayoutProjetos.vue")
+      },
+      {
         path: "/pesquisa",
         name: "pesquisa",
         component: () => import("pages/LayoutPesquisa.vue")
-      }
-    ]
-  },
-  {
-    path: "/cliente",
-    component: () => import("layouts/MainLayout.vue"),
-    children: [
-      {
-        path: "",
-        name: "cliente",
-        component: () => import("pages/Cliente.vue")
       }
     ]
   },
@@ -79,6 +80,14 @@ const routes = [
         name: "ocorrencia",
         component: () => import("pages/Ocorrencia.vue")
       }
+    ]
+  },
+
+  {
+    path: "/cliente",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+      { path: "", name: "cliente", component: () => import("pages/Cliente.vue") }
     ]
   },
   {

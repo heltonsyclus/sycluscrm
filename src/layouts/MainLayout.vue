@@ -3,7 +3,10 @@
     <q-header class="bg-grey-1">
       <q-toolbar class="text-primary">
         <img src="../assets/syclus.png" alt="Syclus" class="rotate-225" />
-        <q-toolbar-title class="text-weight-bold " @click="$router.push({name:'Dashboard'})">
+        <q-toolbar-title
+          class="text-weight-bold "
+          @click="$router.push({ name: 'Dashboard' })"
+        >
           Syclus CRM
         </q-toolbar-title>
         <div class="q-gutter-sm row items-center no-wrap">
@@ -13,10 +16,10 @@
             flat
             color="grey-8"
             icon="notifications"
-            @click="$router.push({name:'notificacao'})"
+            @click="$router.push({ name: 'notificacao' })"
           >
             <q-badge color="blue" text-color="white" floating>
-              {{ result }}
+              {{ notificacao }}
             </q-badge>
             <q-tooltip>Syclus Notificação</q-tooltip>
           </q-btn>
@@ -28,12 +31,27 @@
               <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
             </q-avatar>
             <q-tooltip>Colaborador</q-tooltip>
-            <q-menu auto-close>
+            <q-menu>
               <q-list dense>
                 <q-item clickable class="GL__menu-link">
-                  <q-item-section>Perfil</q-item-section>
+                  <q-item-section @click="darkDialog = true"
+                    >Perfil</q-item-section
+                  >
+                  <q-dialog
+                    v-model="darkDialog"
+                    persistent
+                    transition-show="flip-down"
+                    transition-hide="flip-up"
+                  >
+                    <PerfilUsuario />
+                  </q-dialog>
                 </q-item>
-                <q-item clickable class="GL__menu-link" @click="$router.push({name:'Login'})">
+
+                <q-item
+                  clickable
+                  class="GL__menu-link"
+                  @click="$router.push({ name: 'Login' })"
+                >
                   <q-item-section>Sair</q-item-section>
                 </q-item>
               </q-list>
@@ -48,16 +66,24 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import PerfilUsuario from "./PerfilUsuario.vue";
 import MenuFlutuante from "./MenuFlutuante.vue";
-
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default defineComponent({
-  components: { MenuFlutuante },
+  components: { MenuFlutuante, PerfilUsuario },
   name: "MainLayout",
   setup() {
+    const $store = useStore();
+    const notificacao = computed({
+      get: () => $store.state.showcase.notificacao
+    });
+
     return {
-      result: 4,
+      notificacao,
       Ocorrencia: 250,
       MenuFlutuante: false,
+      darkDialog: ref(false),
       linksList: [
         {
           icon: "dashboard",
@@ -89,6 +115,6 @@ export default defineComponent({
         }
       ]
     };
-  },
+  }
 });
 </script>

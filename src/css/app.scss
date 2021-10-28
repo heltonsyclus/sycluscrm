@@ -28,17 +28,31 @@ body {
 .my-card-s-270-304 {
   @include cards;
   height: 270px;
-  min-height: 250px;
+  min-height: 200px;
 }
+
 .my-card-s-500-304 { 
   @include cards;
   min-height: 250px;
   max-height: 500px;
 }
+
+.my-card-s-310-380 { 
+  @include cards;
+  min-height: 250px;
+  height: 310px;
+  width:380px;
+}
+
+.my-card-pesquisa { 
+  @include cards;
+  min-height: 250px;
+  max-height: 100%;
+}
 .my-card-s-100mx-30 {
   width: 100%;
   overflow: auto;
-  min-height: 50px;
+  min-height: 30px;
   margin: 10px 2px 10px 20px;
   padding: 3px 20px 0px 20px;
   background-color: #fff;
