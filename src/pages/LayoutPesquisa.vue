@@ -64,6 +64,8 @@
         @click.prevent="filtroAvancados"
         v-show="btnAdicionarCampoAvancado"
       />
+
+      {{this.valorFiltro}}
     </div>
     <CardTabela
       v-for="(ObjCardTabela, index) in GrupoCardsTabela"
@@ -79,7 +81,9 @@
         v-for="(status, index) in titulo_lista"
         :key="index"
       >
-        <span v-show="MostrarTitulo" style="font-weight:500">{{ status }}</span>
+        <span v-show="MostrarTitulo" style="font-weight:500;color:#fff">{{
+          status
+        }}</span>
         <CardBase
           v-for="(ObjCard, index) in GrupoCards"
           :key="index"
@@ -104,7 +108,7 @@ import CardPesquisa from "src/components/Cards/CardPesquisa.vue";
 import CardTabela from "src/components/Cards/CardTabela.vue";
 import { defineComponent } from "vue";
 import { ref } from "vue";
-  
+
 export default defineComponent({
   components: { BarraLayout, CardBase, CardTabela, CardPesquisa },
   name: "Pesquisa",
@@ -123,8 +127,7 @@ export default defineComponent({
       showDrawer: false,
       valorFiltro: [],
       btnAdicionarCampoAvancado: false,
-      ArrayFiltros: [],
-     
+      ArrayFiltros: []
     };
   },
   methods: {
@@ -134,19 +137,17 @@ export default defineComponent({
       this.GrupoCards = this.Grupo["cards"];
       this.GrupoCardsTabela = this.Grupo["cards_tabela"];
       if (this.IndexGrupoAtual === 1) {
-        this.CorCardLista = "bg-grey-5 q-pa-sm q-ma-sm";
+        this.CorCardLista = "bg-blue-grey-4 q-pa-sm q-ma-sm";
         this.MostrarTitulo = true;
       } else {
         this.CorCardLista = "";
         this.MostrarTitulo = false;
       }
     },
-    limparInputs(){
-    },
     EsconderCardInputs() {
       this.showDrawer = !this.showDrawer;
+      console.log(this.valorFiltro);
       if (this.showDrawer) {
-          // console.log(this.ArrayFiltros); 
         this.valorFiltro = {
           vAvaliar: null,
           vDataInicial: null,
@@ -159,12 +160,12 @@ export default defineComponent({
           valorInput: null,
           vOP: null
         };
-     //console.log(this.valorFiltro);
+        //console.log(this.valorFiltro);
         for (let i = 0; i < this.ArrayFiltros.length; i++) {
           this.ArrayFiltros[i]["valor"];
-          this.valorFiltro[i]
+          this.valorFiltro[i];
         }
-        console.log(this.valorFiltro);
+        // console.log(this.valorFiltro);
       }
     },
     valorPesquisa(pesquisaInput) {

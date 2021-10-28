@@ -23,7 +23,7 @@
     </q-item>
 
     <q-card-section style="padding:0;margin:5px auto;width:95%">
-      <form @reset="$emit('limparDados')">
+      <q-form  @reset="onReset">
         <div class="fundo-card">
           <p><strong>Filtros por período:</strong></p>
           <div style="padding:0px 5px 5px 5px">
@@ -70,6 +70,7 @@
               label="Colaborador"
             />
           </div>
+          {{this.arrModels}}
         </div>
         <div class="fundo-card" v-show="filtroAvancado">
           <p><strong>Filtros por avançados:</strong></p>
@@ -102,7 +103,7 @@
             <q-input v-model="valorInput" label="Valor" dense clearable />
           </div>
         </div>
-      </form>
+      </q-form>
     </q-card-section>
   </q-card>
 </template>
@@ -133,18 +134,6 @@ export default {
     };
   },
   methods: {
-    /*limparDados() {
-      (this.vAvaliar = null),
-        (this.vDataInicial = null),
-        (this.vDataFinal = null),
-        (this.vSituacao = null),
-        (this.vTags = null),
-        (this.vColaborador = null),
-        (this.vCriterio = null),
-        (this.vCampo = null),
-        (this.valorInput = null),
-        (this.vOP = null);
-    },*/
     aplicaFiltro() {
       this.arrModels.unshift({
         vAvaliar: this.vAvaliar,
@@ -168,11 +157,5 @@ export default {
 * {
   padding: 0;
   margin: 0;
-}
-fieldset {
-  border: 1px solid #0886d4;
-}
-legend {
-  color: #0668a5;
 }
 </style>
