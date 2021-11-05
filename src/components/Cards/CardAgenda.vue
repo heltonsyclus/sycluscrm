@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex justify-between "
-    style="padding:0;margin:25px auto;width:90%;"
+    style="padding:0;margin:25px auto;width:92%;"
   >
     <h1 style="font-weight:600;letter-spacing: -5px;">
       {{ hoje }}

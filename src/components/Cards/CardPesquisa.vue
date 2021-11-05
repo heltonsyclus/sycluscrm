@@ -23,10 +23,14 @@
     </q-item>
 
     <q-card-section style="padding:0;margin:5px auto;width:95%">
-      <q-form  @reset="onReset">
+      <q-form>
         <div class="fundo-card">
           <p><strong>Filtros por período:</strong></p>
           <div style="padding:0px 5px 5px 5px">
+            {{ this.drawerState.vAvaliar }} <br />
+            {{ this.drawerState.vDataInicial }}<br />
+            {{ this.drawerState.vDataFinal }}<br />
+            {{ this.showDrawer }}
             <q-select
               clearable
               dense="dense"
@@ -70,7 +74,6 @@
               label="Colaborador"
             />
           </div>
-          {{this.arrModels}}
         </div>
         <div class="fundo-card" v-show="filtroAvancado">
           <p><strong>Filtros por avançados:</strong></p>
@@ -99,7 +102,6 @@
               :options="criterio"
               label="Critério"
             />
-
             <q-input v-model="valorInput" label="Valor" dense clearable />
           </div>
         </div>
@@ -107,9 +109,13 @@
     </q-card-section>
   </q-card>
 </template>
+
 <script>
+import { ref } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default {
-  props: ["funcao_card", "conteudo_cards"],
+  props: ["funcao_card", "conteudo_cards", "filtroAvancado"],
   data() {
     return {
       avaliar: ["Emissão", "Previsão", "Finalização"],
@@ -126,11 +132,10 @@ export default {
       vSituacao: null,
       vTags: null,
       vColaborador: null,
-      vCriterio: null,
-      vCampo: null,
-      valorInput: null,
       vOP: null,
-      filtroAvancado: false
+      vCampo: null,
+      vCriterio: null,
+      valorInput: null
     };
   },
   methods: {
@@ -141,14 +146,55 @@ export default {
         vDataFinal: this.vDataFinal,
         vSituacao: this.vSituacao,
         vTags: this.vTags,
-        vColaborador: this.vColaborador,
-        vCriterio: this.vCriterio,
+        vColaborador: this.Colaborador,
+        vOP: this.vOP,
         vCampo: this.vCampo,
-        valorInput: this.valorInput,
-        vOP: this.vOP
+        vCriterio: this.vCriterio,
+        valorInput: this.valorInput
       });
-      this.$emit("arrModels", this.arrModels);
+      this.$emit("arrModels", (this.drawerState = this.arrModels));
+      if (this.showDrawer === true) {
+        alert("true");
+      }
+      /*(this.vAvaliar = null),
+        (this.vDataInicial = null),
+        (this.vDataFinal = null),
+        (this.vSituacao = null),
+        (this.vTags = null),
+        (this.vColaborador = null),
+        (this.vOP = null),
+        (this.vCampo = null),
+        (this.vCriterio = null),
+        (this.valorInput = null);*/
     }
+  },
+  setup() {
+    const $store = useStore();
+    const drawerState = computed({
+      get: () => $store.state.showcase.drawerState,
+      set: val => {
+        $store.commit("showcase/updateDrawerState", val);
+      }
+    });
+    const showDrawer = computed({
+      get: () => $store.state.showcase.showDrawer,
+      set: val => {
+        $store.commit("showcase/abrirTelaPesquisa", val);
+      }
+    });
+    const miniState = ref(false);
+    return {
+      drawerState,
+      showDrawer,
+      drawer: ref(false),
+      miniState,
+      drawerClick(e) {
+        if (miniState.value) {
+          miniState.value = false;
+          e.stopPropagation();
+        }
+      }
+    };
   }
 };
 </script>

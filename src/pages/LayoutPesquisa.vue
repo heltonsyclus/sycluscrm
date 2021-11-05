@@ -6,7 +6,6 @@
     :ConteudoBtn="Grupos"
     Aplicacao="AplicativosPesquisa"
   />
-
   <q-layout container style="height: 90vh">
     <q-drawer
       v-model="drawer"
@@ -24,6 +23,7 @@
           <CardPesquisa
             style="margin-left:15px"
             @arrModels="onClickValorInput"
+            :filtroAvancado="filtrosAvancado"
           />
         </q-list>
       </q-scroll-area>
@@ -42,7 +42,7 @@
     <div class="flex q-mr-sm">
       <div
         class="flex btn-chip"
-        v-for="(objFiltro, i) in ArrayFiltros"
+        v-for="(objFiltro, i) in arrayFiltros"
         :key="i"
       >
         <span>{{ objFiltro["campo"] }}: {{ objFiltro["valor"] }}</span>
@@ -53,7 +53,8 @@
           @click="removerChip(i)"
         />
       </div>
-
+      {{ this.drawerState }}
+      {{ this.showDrawer }}
       <q-btn
         round
         unelevated
@@ -64,8 +65,6 @@
         @click.prevent="filtroAvancados"
         v-show="btnAdicionarCampoAvancado"
       />
-
-      {{this.valorFiltro}}
     </div>
     <CardTabela
       v-for="(ObjCardTabela, index) in GrupoCardsTabela"
@@ -108,6 +107,8 @@ import CardPesquisa from "src/components/Cards/CardPesquisa.vue";
 import CardTabela from "src/components/Cards/CardTabela.vue";
 import { defineComponent } from "vue";
 import { ref } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: { BarraLayout, CardBase, CardTabela, CardPesquisa },
@@ -124,10 +125,11 @@ export default defineComponent({
       CorCardLista: null,
       MostrarTitulo: false,
       Chip: true,
-      showDrawer: false,
+      filtrosAvancado: false,
       valorFiltro: [],
       btnAdicionarCampoAvancado: false,
-      ArrayFiltros: []
+      arrayFiltros: [],
+      objArrayFiltros: []
     };
   },
   methods: {
@@ -145,35 +147,74 @@ export default defineComponent({
       }
     },
     EsconderCardInputs() {
-      this.showDrawer = !this.showDrawer;
-      console.log(this.valorFiltro);
-      if (this.showDrawer) {
-        this.valorFiltro = {
-          vAvaliar: null,
-          vDataInicial: null,
-          vDataFinal: null,
-          vSituacao: null,
-          vTags: null,
-          vColaborador: null,
-          vCriterio: null,
-          vCampo: null,
-          valorInput: null,
-          vOP: null
-        };
-        //console.log(this.valorFiltro);
-        for (let i = 0; i < this.ArrayFiltros.length; i++) {
-          this.ArrayFiltros[i]["valor"];
-          this.valorFiltro[i];
+      for (let i = 0; i < this.arrayFiltros.length; i++) {
+        let itemArray = this.arrayFiltros[i];
+        if (
+          itemArray.campo === "Emissão" ||
+          itemArray.campo === "Previsão" ||
+          itemArray.campo === "Finalização"
+        ) {
+          this.valorFiltro.vAvaliar = itemArray.campo;
+          if (itemArray.criterio === "maior_igual") {
+            this.valorFiltro.vDataInicial = itemArray.valor;
+          }
+          if (itemArray.criterio === "menor_igual") {
+            this.valorFiltro.vDataFinal = itemArray.valor;
+          }
         }
-        // console.log(this.valorFiltro);
+        if (itemArray.criterio === "contendo") {
+          if (
+            itemArray.valor === "Inicial" ||
+            itemArray.valor === "Planejamento" ||
+            itemArray.valor === "Execução" ||
+            itemArray.valor === "Finalizado"
+          ) {
+            this.valorFiltro.vSituacao = itemArray.valor;
+          }
+          if (
+            itemArray.valor === "Syclus 1" ||
+            itemArray.valor === "Syclus 2" ||
+            itemArray.valor === "Fiscal"
+          ) {
+            this.valorFiltro.vTags = itemArray.valor;
+          }
+          if (
+            itemArray.valor === "Henrique" ||
+            itemArray.valor === "Helton" ||
+            itemArray.valor === "Danilo" ||
+            itemArray.valor === "João Paulo"
+          ) {
+            this.valorFiltro.vColaborador = itemArray.valor;
+          }
+        }
       }
+      if(this.showDrawer === false){
+        alert('false')
+      }
+      this.drawerState = this.valorFiltro;
+      this.showDrawer = !this.showDrawer;
+    },
+    removerChip(i) {
+      this.arrayFiltros.splice(i, 1);
     },
     valorPesquisa(pesquisaInput) {
-      this.valorFiltro.push({
+      valorFiltros.push({
         pesquisaInput: pesquisaInput
       });
     },
-    GetItemFiltro(pCampo, pCriterio, pValor) {
+    GetitemFiltro(pCampo, pCriterio, pValor) {
+      return JSON.parse(
+        '{"campo":"' +
+          pCampo +
+          '",' +
+          '"criterio":"' +
+          pCriterio +
+          '",' +
+          '"valor":"' +
+          pValor +
+          '"}'
+      );
+      /*
       return (
         '{"campo":"' +
         pCampo +
@@ -184,65 +225,89 @@ export default defineComponent({
         '"valor":"' +
         pValor +
         '"}'
-      );
+      );*/
     },
     onClickValorInput(arrModels) {
       this.valorFiltro = arrModels;
-      this.ArrayFiltros = [];
-      let ItemFiltro;
-      if (arrModels[0]["vAvaliar"] != null) {
-        if (arrModels[0]["vDataInicial"] != null) {
-          ItemFiltro = this.GetItemFiltro(
-            arrModels[0]["vAvaliar"],
+      const valorFiltros = this.valorFiltro[0];
+      let itemFiltro;
+      if (valorFiltros.vAvaliar != null) {
+        if (valorFiltros.vDataInicial != null) {
+          itemFiltro = this.GetitemFiltro(
+            valorFiltros.vAvaliar,
             "maior_igual",
-            arrModels[0]["vDataInicial"]
+            valorFiltros.vDataInicial
           );
-          this.ArrayFiltros.push(JSON.parse(ItemFiltro));
+          this.arrayFiltros.push(itemFiltro);
         }
-        if (arrModels[0]["vDataFinal"] != null) {
-          ItemFiltro = this.GetItemFiltro(
-            arrModels[0]["vAvaliar"],
+        if (valorFiltros.vDataFinal != null) {
+          itemFiltro = this.GetitemFiltro(
+            valorFiltros.vAvaliar,
             "menor_igual",
-            arrModels[0]["vDataFinal"]
+            valorFiltros.vDataFinal
           );
-          this.ArrayFiltros.push(JSON.parse(ItemFiltro));
+          this.arrayFiltros.push(itemFiltro);
         }
       }
-      if (arrModels[0]["vSituacao"] != null) {
-        ItemFiltro = this.GetItemFiltro(
-          "situação",
+      if (valorFiltros.vSituacao != null) {
+        itemFiltro = this.GetitemFiltro(
+          "Situação",
           "contendo",
-          arrModels[0]["vSituacao"]
+          valorFiltros.vSituacao
         );
-        this.ArrayFiltros.push(JSON.parse(ItemFiltro));
+        this.arrayFiltros.push(itemFiltro);
       }
-      if (arrModels[0]["vTags"] != null) {
-        ItemFiltro = this.GetItemFiltro(
-          "tags",
-          "contendo",
-          arrModels[0]["vTags"]
-        );
-        this.ArrayFiltros.push(JSON.parse(ItemFiltro));
+      if (valorFiltros.vTags != null) {
+        itemFiltro = this.GetitemFiltro("Tags", "contendo", valorFiltros.vTags);
+        this.arrayFiltros.push(itemFiltro);
       }
-      if (arrModels[0]["vColaborador"] != null) {
-        ItemFiltro = this.GetItemFiltro(
-          "colaborador",
+      if (valorFiltros.vColaborador != null) {
+        itemFiltro = this.GetitemFiltro(
+          "Colaborador",
           "contendo",
-          arrModels[0]["vColaborador"]
+          valorFiltros.vColaborador
         );
-        this.ArrayFiltros.push(JSON.parse(ItemFiltro));
+        this.arrayFiltros.push(itemFiltro);
+      }
+      if (valorFiltros.vOP != null) {
+        itemFiltro = this.GetitemFiltro(
+          "Operacao",
+          "contendo",
+          valorFiltros.vOP
+        );
+        this.arrayFiltros.push(itemFiltro);
+      }
+      if (valorFiltros.vCriterio != null) {
+        itemFiltro = this.GetitemFiltro(
+          "Criterio",
+          "contendo",
+          valorFiltros.vCriterio
+        );
+        this.arrayFiltros.push(itemFiltro);
+      }
+      if (valorFiltros.vCampo != null) {
+        itemFiltro = this.GetitemFiltro(
+          "Campo",
+          "contendo",
+          valorFiltros.vCampo
+        );
+        this.arrayFiltros.push(itemFiltro);
+      }
+      if (valorFiltros.valorInput != null) {
+        itemFiltro = this.GetitemFiltro(
+          "Valor",
+          "contendo",
+          valorFiltros.valorInput
+        );
+        this.arrayFiltros.push(itemFiltro);
       }
       this.btnAdicionarCampoAvancado = true;
       this.showDrawer = false;
     },
-    removerChip(i) {
-      this.ArrayFiltros.splice(i, 1);
-    },
-    filtroAvancados(filtroAvancado) {
-      alert(filtroAvancado);
-      this.filtroAvancada = filtroAvancado;
-      this.filtroAvancada = true;
-      //this.onClickCamposAvancados(this.AdicionarCampoAvancado = true);
+
+    filtroAvancados() {
+      this.showDrawer = !this.showDrawer;
+      this.filtrosAvancado = true;
     }
   },
   created() {
@@ -252,8 +317,23 @@ export default defineComponent({
     this.Grupos = this.ObjDashboard["grupos"];
   },
   setup() {
+    const $store = useStore();
+    const drawerState = computed({
+      get: () => $store.state.showcase.drawerState,
+      set: val => {
+        $store.commit("showcase/updateDrawerState", val);
+      },
+    });
+    const showDrawer = computed({
+      get: () => $store.state.showcase.showDrawer,
+      set: val => {
+        $store.commit("showcase/abrirTelaPesquisa", val);
+      }
+    });
     const miniState = ref(false);
     return {
+      drawerState,
+      showDrawer,
       drawer: ref(false),
       miniState,
       drawerClick(e) {
