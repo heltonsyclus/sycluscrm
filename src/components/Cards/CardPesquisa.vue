@@ -27,19 +27,21 @@
         <div class="fundo-card">
           <p><strong>Filtros por período:</strong></p>
           <div style="padding:0px 5px 5px 5px">
-            {{ this.drawerState.vAvaliar }} <br />
-            {{ this.drawerState.vDataInicial }}<br />
-            {{ this.drawerState.vDataFinal }}<br />
-            {{ this.showDrawer }}
+            {{ this.arrModels.vAvaliar }} <br />
+            {{ this.arrModels.vDataInicial }}<br />
+            {{ this.arrModels.vDataFinal }}<br />
+            {{ this.arrModels.vSituacao }} <br />
+            {{ this.arrModels.vTags }}<br />
+            {{ this.arrModels.vColaborador }}<br />
             <q-select
               clearable
               dense="dense"
-              v-model="vAvaliar"
+              v-model="this.arrModels.vAvaliar"
               :options="avaliar"
               label="Avaliar"
             />
-            <q-input v-model="vDataInicial" type="date" dense />
-            <q-input v-model="vDataFinal" type="date" dense />
+            <q-input v-model="this.arrModels.vDataInicial" type="date" dense />
+            <q-input v-model="this.arrModels.vDataFinal" type="date" dense />
           </div>
         </div>
 
@@ -49,7 +51,7 @@
             <q-select
               dense="dense"
               multiple
-              v-model="vSituacao"
+              v-model="this.arrModels.vSituacao"
               :options="situacao"
               label="Situação"
               clearable
@@ -60,7 +62,7 @@
               dense="dense"
               clearable
               multiple
-              v-model="vTags"
+              v-model="this.arrModels.vTags"
               :options="tags"
               label="Tags"
             />
@@ -68,7 +70,7 @@
             <q-select
               clearable
               dense="dense"
-              v-model="vColaborador"
+              v-model="this.arrModels.vColaborador"
               :options="colaborador"
               multiple
               label="Colaborador"
@@ -81,7 +83,7 @@
             <q-select
               clearable
               dense="dense"
-              v-model="vOP"
+              v-model="this.arrModels.vOP"
               :options="situacao"
               label="OP"
             />
@@ -90,7 +92,7 @@
               clearable
               bottom-slots
               dense="dense"
-              v-model="vCampo"
+              v-model="this.arrModels.vCampo"
               :options="Campo"
               label="Campo"
             />
@@ -98,11 +100,11 @@
             <q-select
               clearable
               dense="dense"
-              v-model="vCriterio"
+              v-model="this.arrModels.vCriterio"
               :options="criterio"
               label="Critério"
             />
-            <q-input v-model="valorInput" label="Valor" dense clearable />
+            <q-input v-model="this.arrModels.valorInput" label="Valor" dense clearable />
           </div>
         </div>
       </q-form>
@@ -124,68 +126,26 @@ export default {
       colaborador: ["Henrique", "Helton", "Danilo", "João Paulo"],
       OP: ["E", "OU"],
       Campo: ["Situação"],
-      criterio: ["Contendo"],
-      arrModels: [],
-      vAvaliar: null,
-      vDataInicial: null,
-      vDataFinal: null,
-      vSituacao: null,
-      vTags: null,
-      vColaborador: null,
-      vOP: null,
-      vCampo: null,
-      vCriterio: null,
-      valorInput: null
+      criterio: ["Contendo"]
     };
   },
   methods: {
     aplicaFiltro() {
-      this.arrModels.unshift({
-        vAvaliar: this.vAvaliar,
-        vDataInicial: this.vDataInicial,
-        vDataFinal: this.vDataFinal,
-        vSituacao: this.vSituacao,
-        vTags: this.vTags,
-        vColaborador: this.Colaborador,
-        vOP: this.vOP,
-        vCampo: this.vCampo,
-        vCriterio: this.vCriterio,
-        valorInput: this.valorInput
-      });
-      this.$emit("arrModels", (this.drawerState = this.arrModels));
-      if (this.showDrawer === true) {
-        alert("true");
-      }
-      /*(this.vAvaliar = null),
-        (this.vDataInicial = null),
-        (this.vDataFinal = null),
-        (this.vSituacao = null),
-        (this.vTags = null),
-        (this.vColaborador = null),
-        (this.vOP = null),
-        (this.vCampo = null),
-        (this.vCriterio = null),
-        (this.valorInput = null);*/
+      this.$emit("arrModels", this.arrModels);
+      this.arrModels=[]
     }
   },
   setup() {
     const $store = useStore();
-    const drawerState = computed({
-      get: () => $store.state.showcase.drawerState,
+    const arrModels = computed({
+      get: () => $store.state.showcase.arrModels,
       set: val => {
         $store.commit("showcase/updateDrawerState", val);
       }
     });
-    const showDrawer = computed({
-      get: () => $store.state.showcase.showDrawer,
-      set: val => {
-        $store.commit("showcase/abrirTelaPesquisa", val);
-      }
-    });
     const miniState = ref(false);
     return {
-      drawerState,
-      showDrawer,
+      arrModels,
       drawer: ref(false),
       miniState,
       drawerClick(e) {

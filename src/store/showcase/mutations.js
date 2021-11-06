@@ -3,7 +3,7 @@ export const numeroNotificacao = (state, notificar) => {
 };
 
 export const updateDrawerState = (state, payload) => {
-  state.drawerState = payload
+  state.arrModels = payload
 }
 
 export const abrirTelaPesquisa = (state, opened) => {
