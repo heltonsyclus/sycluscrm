@@ -2,7 +2,7 @@
   <BarraLayout
     @OnClick="OnClickBarra"
     @onClickFiltros="EsconderCardInputs"
-    @valorInputPesquisa="valorPesquisa"
+    @valorInputPesquisa="modelArray"
     :ConteudoBtn="Grupos"
     Aplicacao="AplicativosPesquisa"
   />
@@ -78,7 +78,7 @@
         v-for="(status, index) in titulo_lista"
         :key="index"
       >
-        <span v-show="MostrarTitulo" style="font-weight:500;color:#fff">{{
+        <span v-show="MostrarTitulo" style="font-weight:500;color:#000000">{{
           status
         }}</span>
         <CardBase
@@ -120,9 +120,10 @@ export default defineComponent({
       GrupoCards: [],
       GruposFiltro: [],
       GrupoCardsTabela: [],
-      CorCardLista: null,
+      CorCardLista: "",
       MostrarTitulo: false,
       Chip: true,
+      showDrawer: false,
       filtrosAvancado: false,
       valorFiltro: [],
       btnAdicionarCampoAvancado: false,
@@ -137,10 +138,9 @@ export default defineComponent({
       this.GrupoCards = this.Grupo["cards"];
       this.GrupoCardsTabela = this.Grupo["cards_tabela"];
       if (this.IndexGrupoAtual === 1) {
-        this.CorCardLista = "bg-blue-grey-4 q-pa-sm q-ma-sm";
+        this.CorCardLista = "bg-blue-grey-2 q-pa-sm q-ma-sm";
         this.MostrarTitulo = true;
-      }
-      {
+      } else {
         this.CorCardLista = "";
         this.MostrarTitulo = false;
       }
@@ -149,7 +149,6 @@ export default defineComponent({
       this.valorFiltro = [];
       for (let i = 0; i < this.arrayFiltros.length; i++) {
         let itemArray = this.arrayFiltros[i];
-        console.log(itemArray);
         if (
           itemArray.campo === "Emissão" ||
           itemArray.campo === "Previsão" ||
@@ -191,10 +190,12 @@ export default defineComponent({
     removerChip(i) {
       this.arrayFiltros.splice(i, 1);
     },
-    valorPesquisa(pesquisaInput) {
-      this.valorFiltro.push({
-        pesquisaInput: pesquisaInput
+    modelArray(pesquisaInput) {
+      this.arrayFiltros.push({
+        campo: "Pesquisa",
+        valor: pesquisaInput
       });
+      console.log(this.arrayFiltros);
     },
     GetitemFiltro(pCampo, pCriterio, pValor) {
       return JSON.parse(
@@ -310,16 +311,9 @@ export default defineComponent({
         $store.commit("showcase/updateDrawerState", val);
       }
     });
-    const showDrawer = computed({
-      get: () => $store.state.showcase.showDrawer,
-      set: val => {
-        $store.commit("showcase/abrirTelaPesquisa", val);
-      }
-    });
     const miniState = ref(false);
     return {
       arrModels,
-      showDrawer,
       drawer: ref(false),
       miniState,
       drawerClick(e) {

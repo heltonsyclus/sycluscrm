@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div
+  <div>
+    <!-- <div
       class="column col-3 window-height bg-grey-4"
       style="padding:10px 18px"
     >
@@ -25,18 +25,18 @@
           style="margin:5px 0px"
         />
       </q-card>
-    </div>
+    </div>-->
 
-    <div class="col-9">
-      <BarraLayout
-        @OnClick="OnClickValor"
-        :ConteudoBtn="Grupos"
-        :ConteudoApp="GrupoCardsOpcionais"
-        Aplicacao="AplicativosPadrao"
-      />
-      <CardCalendario />
+    <BarraLayout
+      @OnClick="OnClickValor"
+      :ConteudoBtn="Grupos"
+      :ConteudoApp="GrupoCardsOpcionais"
+      Aplicacao="AplicativosPadrao"
+    />
+    <div style="width: 300px;margin-left:20px">
+      <q-select v-model="filtro" :options="options" label="Filtro" />
     </div>
-
+    <CardCalendario />
   </div>
 </template>
 
@@ -45,11 +45,11 @@ import CardCalendario from "src/components/Cards/CardCalendario.vue";
 import BarraLayout from "src/layouts/BarraLayout.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
-  components: { BarraLayout, CardCalendario},
+  components: { BarraLayout, CardCalendario },
   name: "Agenda",
   data() {
     return {
-      filtro: "Dia",
+      filtro: "Mês",
       options: ["Dia", "Semanal", "Mês"],
       ObjDashboard: [],
       IndexGrupoAtual: 0,

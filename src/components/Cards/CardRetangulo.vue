@@ -200,7 +200,7 @@
               flat
               text-color="primary"
               icon="delete"
-              @click.prevent="RemoverCheckBox(index)"
+              @click.prevent="removerBox(index)"
             >
             </q-btn>
           </div>
@@ -457,7 +457,7 @@ export default {
       }
       this.TituloCheckBox = "";
     },
-    RemoverCheckBox(index) {
+    removerBox(index) {
       this.CheckBoxResult.splice(index, 1);
     },
 

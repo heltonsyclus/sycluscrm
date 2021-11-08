@@ -3,7 +3,7 @@
     <navigation-bar @hoje="onToday" @voltar="onPrev" @adiantar="onNext" />
 
     <div class="row justify-center">
-      <div style="display: flex; max-width: 900px; width: 100%;">
+      <div style="display: flex;width: 80%;">
         <q-calendar-month
           ref="calendar"
           v-model="selectedDate"

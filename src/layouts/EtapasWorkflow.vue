@@ -125,6 +125,7 @@ export default {
         this.etapaAtual++;
         if (this.matrizModels.length > this.etapaAtual) {
           this.arrModels = this.matrizModels[this.etapaAtual];
+          this.arrModels = [];
         } else {
           this.arrWorkflow = this.arrModels;
         }
@@ -133,7 +134,6 @@ export default {
           this.$router.push({ name: "atividades" });
         } else {
           this.arrModels = [];
-          alert("quatro");
         }
       }
     },

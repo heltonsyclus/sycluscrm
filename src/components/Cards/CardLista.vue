@@ -3,7 +3,7 @@
     <div
       class="flex justify-between items-center bg q-my-none"
       v-if="funcao_card === 'lista-padrao'">
-      <span class="q-pt-md q-pl-sm capitalize text-grey-7" style="font-weight:700">{{ lista }}</span>
+      <span class="q-pt-md q-pl-sm capitalize text-grey-9" style="font-weight:700">{{ lista }}</span>
       <q-btn color="dark" round flat icon="more_vert" class="items-center">
         <q-menu cover auto-close dense="dense">
           <q-list>

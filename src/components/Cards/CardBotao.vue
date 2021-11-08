@@ -4,7 +4,7 @@
       <div class="container-flex">
         <q-icon
           name="description"
-          class="text-primary"
+          class="text-blue-8"
           style="font-size: 4.4em;"
         />
         <p style="font-weight:600" class="text-grey-7">{{ lista.conteudo }}</p>
@@ -61,8 +61,8 @@
         rounded
         v-for="tags in lista['tags']"
         :key="tags"
-        style="padding:4px 15px;"
-        color="grey-9"
+        style="padding:5px 12px;color: #000000;font-size:14px"
+        color="amber-7"
       >
         {{ tags }}
       </q-badge>

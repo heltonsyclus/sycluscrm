@@ -126,7 +126,6 @@ export default {
   methods: {
     aplicaFiltro() {
       this.$emit("arrModels", this.arrModels);
-      this.arrModels=[]
     }
   },
   setup() {
