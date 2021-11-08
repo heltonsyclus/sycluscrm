@@ -1,9 +1,9 @@
 <template>
-  <q-card class="my-card q-pa-md" style="width: 550px">
+  <q-card class="my-card q-pa-md" style="width: 500px">
     <q-card-section>
       <q-form
         ref="formulario"
-        @submit="onSubmit"
+        @submit.prevent="onSubmit"
         class="q-gutter-md"
         v-for="(arrEtapas, index) in EtapasWorkFlow"
         :key="index"
@@ -26,7 +26,6 @@
         >
           <q-input
             v-if="objComponenteTela.tipo_componente === 'input_texto'"
-            id="input_valor"
             bottom-slots
             v-model="arrModels[index]"
             :label="objComponenteTela.placeholder"
@@ -36,7 +35,6 @@
 
           <q-select
             v-if="objComponenteTela.tipo_componente === 'selecao_multipla'"
-            id="input_valor"
             bottom-slots
             v-model="arrModels[index]"
             multiple
@@ -46,7 +44,6 @@
             :rules="[val => (val && val.length > 0) || 'Campo Obrigatório']"
           />
           <q-select
-            id="input_valor"
             v-if="objComponenteTela.tipo_componente === 'selecao_padrao'"
             bottom-slots
             v-model="arrModels[index]"
@@ -56,7 +53,6 @@
             :rules="[val => (val && val.length > 0) || 'Campo Obrigatório']"
           />
           <q-input
-            id="input_valor"
             v-if="objComponenteTela.tipo_componente === 'input_numero'"
             bottom-slots
             type="number"
@@ -70,7 +66,6 @@
           />
 
           <q-input
-            id="input_valor"
             v-if="objComponenteTela.tipo_componente === 'input_data'"
             v-model="arrModels[index]"
             bottom-slots
@@ -94,7 +89,6 @@
             color="primary"
             v-if="arrEtapas[this.etapaAtual]['id_etapa'] == 1"
           />
-
           <q-btn
             label="Concluído"
             type="submit"
@@ -103,7 +97,6 @@
               arrEtapas[this.etapaAtual]['id_etapa'] ===
                 arrEtapas[this.etapaAtual]['qtde_etapa']
             "
-            :to="rotas"
           />
         </div>
       </q-form>
@@ -111,51 +104,59 @@
   </q-card>
 </template>
 <script>
-import { useQuasar } from "quasar";
-import { ref } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default {
   props: ["EtapasWorkFlow"],
   emits: ["close"],
-  setup() {
-    const $q = useQuasar();
-    const accept = ref(false);
-    const etapaAtual = ref(0);
-    const matrizModels = [];
-    const arrModels = ref([]);
-    const formulario = ref(null);
-    const qtdeEtapas = 2;
+  data() {
     return {
-      rotas: ref("/projetos"),
-      accept,
-      etapaAtual,
-      matrizModels,
-      arrModels,
-      formulario,
-      qtdeEtapas,
-      onSubmit() {
-        if (accept.value !== true) {
-          matrizModels[etapaAtual.value] = arrModels.value;
-          etapaAtual.value++;
-          if (matrizModels.length > etapaAtual.value) {
-            arrModels.value = matrizModels[etapaAtual.value];
-          } else {
-            arrModels.value = [];
-          }
-          if (etapaAtual.value === qtdeEtapas) {
-            rotas.value = "/projetos";
-          } else {
-            formulario.value.resetValidation();
-          }
+      accept: false,
+      etapaAtual: 0,
+      matrizModels: [],
+      arrModels: [],
+      qtdeEtapas: 2
+    };
+  },
+  methods: {
+    onSubmit() {
+      if (this.accept !== true) {
+        this.matrizModels[this.etapaAtual] = this.arrModels;
+        this.etapaAtual++;
+        if (this.matrizModels.length > this.etapaAtual) {
+          this.arrModels = this.matrizModels[this.etapaAtual];
+        } else {
+          this.arrWorkflow = this.arrModels;
         }
-      },
-      onReset() {
-        formulario.value.resetValidation();
-      },
-      onRetornar() {
-        matrizModels[etapaAtual.value] = arrModels.value;
-        etapaAtual.value--;
-        arrModels.value = matrizModels[etapaAtual.value];
+        if (this.etapaAtual === this.qtdeEtapas) {
+          this.arrWorkflow = this.arrModels;
+          this.$router.push({ name: "atividades" });
+        } else {
+          this.arrModels = [];
+          alert("quatro");
+        }
       }
+    },
+    onReset() {
+      this.arrModels = [];
+    },
+    onRetornar() {
+      this.matrizModels[this.etapaAtual] = this.arrModels;
+      this.etapaAtual--;
+      this.arrModels = this.matrizModels[this.etapaAtual];
+    }
+  },
+  setup() {
+    const $store = useStore();
+    const arrWorkflow = computed({
+      get: () => $store.state.showcase.arrWorkflow,
+      set: val => {
+        $store.commit("showcase/getWorkflow", val);
+      }
+    });
+
+    return {
+      arrWorkflow
     };
   }
 };
@@ -163,7 +164,7 @@ export default {
 
 <style scoped>
 * {
-  padding: 4px 8px 8px 8px;
+  padding: 4px 7px 8px 7px;
   margin: 0px;
 }
 .color-titulo::before {

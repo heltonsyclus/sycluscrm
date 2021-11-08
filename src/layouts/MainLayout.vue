@@ -95,23 +95,23 @@ export default defineComponent({
         },
         {
           icon: "assignment",
-          rota: "/Projeto"
+          rota: "/projeto"
         },
         {
           icon: "supervisor_account",
-          rota: "/Cliente"
+          rota: "/cliente"
         },
         {
           icon: "done_all",
-          rota: "/Ocorrencia"
+          rota: "/ocorrencia"
         },
         {
           icon: "event",
-          rota: "/Agenda"
+          rota: "/agenda"
         },
         {
           icon: "account_tree",
-          rota: "/Workflow"
+          rota: "/workflow"
         }
       ]
     };

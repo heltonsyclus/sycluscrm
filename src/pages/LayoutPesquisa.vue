@@ -146,9 +146,10 @@ export default defineComponent({
       }
     },
     EsconderCardInputs() {
+      this.valorFiltro = [];
       for (let i = 0; i < this.arrayFiltros.length; i++) {
         let itemArray = this.arrayFiltros[i];
-        console.log(itemArray)
+        console.log(itemArray);
         if (
           itemArray.campo === "Emissão" ||
           itemArray.campo === "Previsão" ||
@@ -162,28 +163,26 @@ export default defineComponent({
             this.valorFiltro.vDataFinal = itemArray.valor;
           }
         }
-        if (
-          itemArray.valor === "Inicial" ||
-          itemArray.valor === "Planejamento" ||
-          itemArray.valor === "Execução" ||
-          itemArray.valor === "Finalizado"
-        ) {
+        if (itemArray.campo === "Situação") {
           this.valorFiltro.vSituacao = itemArray.valor;
         }
-        if (
-          itemArray.valor === "Syclus 1" ||
-          itemArray.valor === "Syclus 2" ||
-          itemArray.valor === "Fiscal"
-        ) {
+        if (itemArray.campo === "Tags") {
           this.valorFiltro.vTags = itemArray.valor;
         }
-        if (
-          itemArray.valor === "Henrique" ||
-          itemArray.valor === "Helton" ||
-          itemArray.valor === "Danilo" ||
-          itemArray.valor === "João Paulo"
-        ) {
+        if (itemArray.campo === "Colaborador") {
           this.valorFiltro.vColaborador = itemArray.valor;
+        }
+        if (itemArray.campo === "Operacao") {
+          this.valorFiltro.vOP = itemArray.valor;
+        }
+        if (itemArray.campo === "Campo") {
+          this.valorFiltro.vCampo = itemArray.valor;
+        }
+        if (itemArray.campo === "Criterio") {
+          this.valorFiltro.vCriterio = itemArray.valor;
+        }
+        if (itemArray.campo === "Valor") {
+          this.valorFiltro.valorInput = itemArray.valor;
         }
       }
       this.arrModels = this.valorFiltro;
@@ -211,7 +210,7 @@ export default defineComponent({
       );
     },
     onClickValorInput(arrModels) {
-      this.arrayFiltros=[]
+      this.arrayFiltros = [];
       this.valorFiltro = arrModels;
       let itemFiltro;
       if (this.valorFiltro.vAvaliar != null) {
@@ -288,7 +287,7 @@ export default defineComponent({
         );
         this.arrayFiltros.push(itemFiltro);
       }
-      this.btnAdicionarCampoAvancado = true;
+      this.btnAdicionarCampoAvancado = !this.btnAdicionarCampoAvancado;
       this.showDrawer = false;
     },
 

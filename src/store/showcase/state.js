@@ -1,7 +1,6 @@
 export default function() {
   return {
     notificacao: 3,
-   // arrTemp: [],
     arrModels: [
       {
         vAvaliar: null,
@@ -16,6 +15,6 @@ export default function() {
         valorInput: null
       }
     ],
-    showDrawer: false
+    arrWorkflow: []
   };
 }

@@ -27,12 +27,6 @@
         <div class="fundo-card">
           <p><strong>Filtros por período:</strong></p>
           <div style="padding:0px 5px 5px 5px">
-            {{ this.arrModels.vAvaliar }} <br />
-            {{ this.arrModels.vDataInicial }}<br />
-            {{ this.arrModels.vDataFinal }}<br />
-            {{ this.arrModels.vSituacao }} <br />
-            {{ this.arrModels.vTags }}<br />
-            {{ this.arrModels.vColaborador }}<br />
             <q-select
               clearable
               dense="dense"

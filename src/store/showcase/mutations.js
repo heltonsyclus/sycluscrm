@@ -6,6 +6,6 @@ export const updateDrawerState = (state, payload) => {
   state.arrModels = payload
 }
 
-export const abrirTelaPesquisa = (state, opened) => {
-  state.showDrawer = opened
+export const getWorkflow = (state, payload) => {
+  state.arrWorkflow = payload
 }
