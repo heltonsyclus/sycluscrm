@@ -2,13 +2,21 @@
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-grey-1">
       <q-toolbar class="text-primary">
-        <img src="../assets/syclus.png" alt="Syclus" class="rotate-225" />
+        <img
+          src="../assets/syclus.png"
+          alt="Syclus"
+          class="rotate-225"
+          style="cursor:pointer"
+          @click="$router.push({ name: 'dashboard' })"
+        />
         <q-toolbar-title
           class="text-weight-bold "
-          @click="$router.push({ name: 'Dashboard' })"
+          style="cursor:pointer"
+          @click="$router.push({ name: 'dashboard' })"
         >
           Syclus CRM
         </q-toolbar-title>
+
         <div class="q-gutter-sm row items-center no-wrap">
           <q-btn
             round

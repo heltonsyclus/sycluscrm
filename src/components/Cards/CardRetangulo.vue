@@ -51,7 +51,7 @@
   >
     <div class="flex justify-between items-center">
       <span
-        style="font-weight:700;color:#109CF1;font-size:17px"
+        style="font-weight:700;color:#02456e;font-size:17px"
         class="color-paragrafo-blue q-my-sm"
       >
         {{ card }}
@@ -115,7 +115,7 @@
   <!--Edicao-Padrao-->
   <div class="my-card-s-100mx-30" v-if="tipo_card_retangulo === 'EdicaoTitulo'">
     <div class="flex justify-between">
-      <q-item-section style="height:38px;font-weight:700;color:#109CF1;">
+      <q-item-section style="height:38px;font-weight:700;color:#02456e;">
         {{ card }}
       </q-item-section>
       <q-btn
@@ -139,7 +139,7 @@
     <div class="columns">
       <div class="flex justify-between">
         <q-item-section
-          style="height:38px;font-weight:700;color:#109CF1;padding-top:18px"
+          style="height:38px;font-weight:700;color:#02456e;padding-top:18px"
         >
           {{ card }}
         </q-item-section>
@@ -216,7 +216,7 @@
     <div class="columns">
       <div class="flex justify-between">
         <q-item-section
-          style="height:38px;font-weight:700;color:#109CF1;padding-top:18px"
+          style="height:38px;font-weight:700;color:#02456e;padding-top:18px"
         >
           {{ card }}
         </q-item-section>
@@ -242,7 +242,7 @@
   >
     <div class="flex justify-between">
       <q-item-section
-        style="height:38px;font-weight:700;color:#109CF1;padding-top:18px"
+        style="height:38px;font-weight:700;color:#02456e;padding-top:18px"
       >
         {{ card }}
       </q-item-section>
@@ -285,7 +285,7 @@
           v-model="Ocorrencia"
           min-height="5rem"
           style="margin-bottom:10px"
-          toolbar-bg="primary"
+          toolbar-bg="blue-5"
           content-class="bg-grey-3"
           toolbar-text-color="dark"
           dense="dense"
@@ -313,6 +313,7 @@
           <div>
             <q-btn
               round
+              unelevated 
               size="12px"
               :color="ColorFinalizaAtv"
               icon="done_all"
@@ -321,6 +322,7 @@
             <q-btn
               dense
               rounded
+              unelevated 
               color="primary"
               label="Enviar"
               style="margin-left:10px"

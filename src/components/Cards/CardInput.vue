@@ -38,7 +38,7 @@
       </q-input>
 
       <q-input
-           class="col-12"
+        class="col-12"
         v-if="objColuna['sub_tipo'] === 'input-data'"
         v-model="arrModels[i]"
         type="date"
@@ -52,19 +52,20 @@
         dense
         type="time"
       />
-
-      <q-btn
-        :class="ConverteColuna"
-        v-if="objColuna['sub_tipo'] === 'input-btn'"
-        unelevated
-        rounded
-        dense
-        class="capitalize"
-        color="primary"
-        :label="objColuna['label']"
-        style="padding:2px 15px;margin:12px 0"
-        @click.prevent="enviarValorInput"
-      />
+      <div class="text-center">
+        <q-btn
+          :class="ConverteColuna"
+          v-if="objColuna['sub_tipo'] === 'input-btn'"
+          unelevated
+          rounded
+          dense
+          class="capitalize"
+          color="primary"
+          :label="objColuna['label']"
+          style="padding:2px 15px;margin:12px 0"
+          @click.prevent="enviarValorInput"
+        />
+      </div>
     </div>
   </div>
 </template>

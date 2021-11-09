@@ -80,7 +80,7 @@
         unelevated
         rounded
         color="blue-8"
-        class="spaccing"
+        class="spaccing capitalize"
         label="Veja mais"
         style="margin:5px 0"
         dense
