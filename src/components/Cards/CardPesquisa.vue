@@ -25,7 +25,7 @@
     <q-card-section style="padding:0;margin:5px auto;width:95%">
       <q-form>
         <div class="fundo-card">
-          <p><strong>Filtros por período:</strong></p>
+          <p><strong>Período:</strong></p>
           <div style="padding:0px 5px 5px 5px">
             <q-select
               clearable
@@ -40,7 +40,7 @@
         </div>
 
         <div class="fundo-card">
-          <p><strong>Filtros por execução:</strong></p>
+          <p><strong>Comuns:</strong></p>
           <div style="padding:0px 5px 5px 5px">
             <q-select
               dense="dense"
@@ -71,36 +71,6 @@
             />
           </div>
         </div>
-        <div class="fundo-card" v-show="filtroAvancado">
-          <p><strong>Filtros por avançados:</strong></p>
-          <div style="padding:0px 5px 5px 5px">
-            <q-select
-              clearable
-              dense="dense"
-              v-model="this.arrModels.vOP"
-              :options="situacao"
-              label="OP"
-            />
-
-            <q-select
-              clearable
-              bottom-slots
-              dense="dense"
-              v-model="this.arrModels.vCampo"
-              :options="Campo"
-              label="Campo"
-            />
-
-            <q-select
-              clearable
-              dense="dense"
-              v-model="this.arrModels.vCriterio"
-              :options="criterio"
-              label="Critério"
-            />
-            <q-input v-model="this.arrModels.valorInput" label="Valor" dense clearable />
-          </div>
-        </div>
       </q-form>
     </q-card-section>
   </q-card>
@@ -111,16 +81,13 @@ import { ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
 export default {
-  props: ["funcao_card", "conteudo_cards", "filtroAvancado"],
+  props: ["funcao_card", "conteudo_cards"],
   data() {
     return {
       avaliar: ["Emissão", "Previsão", "Finalização"],
       situacao: ["Inicial", "Planejamento", "Execução", "Finalizado"],
       tags: ["Syclus 1", "Syclus 2", "Fiscal"],
       colaborador: ["Henrique", "Helton", "Danilo", "João Paulo"],
-      OP: ["E", "OU"],
-      Campo: ["Situação"],
-      criterio: ["Contendo"]
     };
   },
   methods: {

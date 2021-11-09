@@ -20,7 +20,7 @@
               <strong>{{ resposta.respostaModelo }}</strong>
             </p>
             <q-btn
-              color="light-blue-10"
+              color="light-blue-10" 
               round
               flat
               icon="more_vert"

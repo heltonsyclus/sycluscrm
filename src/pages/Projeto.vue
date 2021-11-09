@@ -45,7 +45,7 @@ export default defineComponent({
       this.GrupoCards = this.Grupo["cards"];
       this.GrupoCardsOpcionais = this.Grupo["cards_opcionais"];
       if (this.IndexGrupoAtual === 1) {
-        this.$router.push({ name: "pesquisa" });
+        this.$router.push({ name: "pesquisa-projeto" });
       }
     }
   },

@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div style="padding-top:10px">
     <div v-if="funcao_card === 'grafico_linha'">
       <apexchart type="line" :options="chartOptions" :series="series">
       </apexchart>
     </div>
     <div v-if="funcao_card === 'grafico_padrao'">
-      <apexchart type="area" :options="chartOptions" :series="series">
+      <apexchart  type="area" :options="chartOptions" :series="series">
       </apexchart>
     </div>
     <div v-if="funcao_card === 'grafico_pontos'">
@@ -23,7 +23,6 @@
     <div v-if="funcao_card === 'grafico_update'">
       <button @click="mudarGrafico">Mudar</button>
       <apexchart
-        height="200"
         type="bar"
         :options="chartOptions2"
         :series="series"

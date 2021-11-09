@@ -15,14 +15,14 @@
         :label="objColuna['label']"
       />
       <q-select
-        :class="ConverteColuna"
+        class="col-12"
         v-if="objColuna['sub_tipo'] === 'input-selecao'"
         dense="dense"
         v-model="arrModels[i]"
         :options="objColuna['opcao']"
         :label="objColuna['label']"
-        style="padding-right:5px;max-width:100%;display:inline-block"
       />
+
       <q-input
         :class="ConverteColuna"
         v-if="objColuna['sub_tipo'] === 'input-adicao'"
@@ -38,16 +38,15 @@
       </q-input>
 
       <q-input
-        :class="ConverteColuna"
+           class="col-12"
         v-if="objColuna['sub_tipo'] === 'input-data'"
         v-model="arrModels[i]"
         type="date"
         :label="objColuna['label']"
         dense
       />
-
       <q-input
-        :class="ConverteColuna"
+        class="col-12"
         v-if="objColuna['sub_tipo'] === 'input-time'"
         v-model="arrModels[i]"
         dense

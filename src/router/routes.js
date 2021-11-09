@@ -44,9 +44,9 @@ const routes = [
         component: () => import("pages/LayoutAtividade.vue")
       },
       {
-        path: "/pesquisa",
-        name: "pesquisa",
-        component: () => import("pages/LayoutPesquisa.vue")
+        path: "/pesquisa-atividade",
+        name: "pesquisa-atividade",
+        component: () => import("src/pages/LayoutPesquisaAtividade.vue")
       }
     ]
   },
@@ -62,12 +62,12 @@ const routes = [
       {
         path: "/projetos",
         name: "projetos",
-        component: () => import("pages/LayoutProjetos.vue")
+        component: () => import("pages/LayoutPesquisaAtividade.vue")
       },
       {
-        path: "/pesquisa",
-        name: "pesquisa",
-        component: () => import("pages/LayoutPesquisa.vue")
+        path: "/pesquisa-projeto",
+        name: "pesquisa-projeto",
+        component: () => import("pages/LayoutPesquisaProjeto.vue")
       }
     ]
   },

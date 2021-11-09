@@ -3,16 +3,16 @@ export default function() {
     notificacao: 3,
     arrModels: [
       {
-        vAvaliar: null,
-        vDataInicial: null,
-        vDataFinal: null,
-        vSituacao: null,
-        vTags: null,
-        vColaborador: null,
-        vOP: null,
-        vCampo: null,
-        vCriterio: null,
-        valorInput: null
+        vAvaliar:"",
+        vDataInicial:"",
+        vDataFinal:"",
+        vSituacao:"",
+        vTags:"",
+        vColaborador:"",
+        vOP:"",
+        vCampo:"",
+        vCriterio:"",
+        valorInput:""
       }
     ],
     arrWorkflow: []
