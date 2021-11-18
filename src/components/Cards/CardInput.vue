@@ -89,7 +89,7 @@ export default {
     };
   },
   methods: {
-    enviarValorInput(arrModels) {
+    enviarValorInput() {
       this.$emit("arrModels", this.arrModels);
     }
   },

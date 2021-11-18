@@ -6,8 +6,8 @@
     :ConteudoBtn="Grupos"
     Aplicacao="AplicativosPesquisa"
   />
-
-  <q-layout container style="height: 100vh">
+  
+  <q-layout container style="height: 90vh">
     <q-drawer
       v-model="drawer"
       show-if-above
@@ -38,8 +38,8 @@
           @click="EsconderCardInputs"
         />
       </div>
-    </q-drawer>
-    <div class="flex q-mr-sm">
+    </q-drawer> 
+    <div class="flex q-mr-sm q-mt-sm">
       <div
         class="flex btn-chip"
         v-for="(objFiltro, i) in GetTextoChipItemFiltro"
@@ -53,39 +53,88 @@
           @click="removerChip(i)"
         />
       </div>
-    </div>
-    <div class="column ContainerCardRetangular">
-      <CardRetangulo
-        v-for="(ObjCardRetangulo, index) in GrupoCardsRetangular"
-        :key="index"
-        :card="ObjCardRetangulo.card"
-        :tipo_card_retangulo="ObjCardRetangulo.tipo_card_retangulo"
-        :sub_tipo="ObjCardRetangulo.sub_tipo"
+      <q-btn
+        round
+        unelevated
+        color="green"
+        icon="add"
+        size="14px"
+        style="margin-left:5px"
+        v-show="filtroAvancado"
+        @click="darkDialog = true"
       />
+      <q-dialog v-model="darkDialog" persistent>
+        <PesquisaAvancada
+          @arrModels="onClickValorInput"
+          @close="darkDialog = false"
+        />
+      </q-dialog>
+    </div>
+    <CardTabela
+      v-for="(ObjCardTabela, index) in GrupoCardsTabela"
+      :key="index"
+      :card="ObjCardTabela.card"
+      :tipo_card_tabela="ObjCardTabela.tipo_card_tabela"
+    />
+
+    <div class="row">
+      <div
+        :class="CorCardLista"
+        style="height:100vh;width:320px;margin:2px;border-radius:10px"
+        v-for="(status, index) in titulo_lista"
+        :key="index"
+      >
+        <span v-show="MostrarTitulo" style="font-weight:500;color:#000000">{{
+          status
+        }}</span>
+        <CardBase
+          v-for="(ObjCard, index) in GrupoCards"
+          :key="index"
+          :id="ObjCard.id_card"
+          :card="ObjCard.card"
+          :ordem="ObjCard.ordem"
+          cor_header="bg-primary"
+          :btn_comando="ObjCard.btn_comando"
+          :tipo_card="ObjCard.tipo_card"
+          :sub_tipo="ObjCard.sub_tipo"
+          :conteudo_card="ObjCard.conteudo_card"
+        />
+      </div>
     </div>
   </q-layout>
 </template>
 
 <script>
 import BarraLayout from "src/layouts/BarraLayout.vue";
+import CardBase from "src/components/CardBase.vue";
 import CardPesquisa from "src/components/Cards/CardPesquisa.vue";
-import CardRetangulo from "src/components/Cards/CardRetangulo.vue";
+import CardTabela from "src/components/Cards/CardTabela.vue";
+import PesquisaAvancada from "src/layouts/PesquisaAvancada.vue";
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  components: { BarraLayout, CardRetangulo, CardPesquisa },
-  name: "Ocorrencia",
+  components: {
+    BarraLayout,
+    CardBase,
+    CardTabela,
+    CardPesquisa,
+    PesquisaAvancada
+  },
+  name: "Pesquisa",
   data() {
     return {
+      titulo_lista: ["Inicial", "Planejamento", "Execução", "Finalizado"],
       ObjDashboard: [],
       IndexGrupoAtual: 0,
-      Grupo: [],
       Grupos: [],
-      GrupoCardsRetangular: [],
-       MostrarTitulo: false,
+      GrupoCards: [],
+      GruposFiltro: [],
+      GrupoCardsTabela: [],
+      CorCardLista: "",
+      MostrarTitulo: false,
       showDrawer: false,
       filtroAvancado: false,
       valorFiltro: [],
@@ -98,10 +147,17 @@ export default defineComponent({
     OnClickBarra(IndexGrupo) {
       this.IndexGrupoAtual = IndexGrupo;
       this.Grupo = this.ObjDashboard["grupos"][IndexGrupo];
-      this.GrupoCardsRetangular = this.Grupo["cards_retangulo"];
+      this.GrupoCards = this.Grupo["cards"];
+      this.GrupoCardsTabela = this.Grupo["cards_tabela"];
+      if (this.IndexGrupoAtual === 1) {
+        this.CorCardLista = "bg-blue-grey-2 q-pa-sm q-ma-sm";
+        this.MostrarTitulo = true;
+      } else {
+        this.CorCardLista = "";
+        this.MostrarTitulo = false;
+      }
     },
-
-     EsconderCardInputs() {
+    EsconderCardInputs() {
       this.valorFiltro = [];
       console.log(this.arrayFiltros);
       for (let i = 0; i < this.arrayFiltros.length; i++) {
@@ -264,7 +320,7 @@ export default defineComponent({
   },
   created() {
     const json =
-      '{"id_dashboard":4,"dashboard":"Ocorrências","grupos":[{"id_grupo":1,"grupo":"Filtro","icone":"filter_list","cards_retangulo":[{"id_card":1,"card":"Atividade1","tipo_card_retangulo":"RetanguloOcorrencia"},{"id_card":2,"card":"Atividade2","tipo_card_retangulo":"RetanguloOcorrencia"},{"id_card":3,"card":"Atividade3","tipo_card_retangulo":"RetanguloOcorrencia"}]}]}';
+      '{"id_dashboard":10,"dashboard":"pesquisa","grupos":[{"id_grupo":1,"grupo":"Card","icone":"label","cards":[{"id_card":32,"card":"Pesquisa","ordem":1,"tipo_card":"Botao","sub_tipo":"lista-tags","conteudo_card":[{"tags":["Syclus 2.0","Desenvolvimento","Helton","Execução"],"entrada":"29/09/2021","saida":"29/09/2021"}]}]},{"id_grupo":2,"grupo":"Lista","icone":"fact_check","cards":[{"id_card":32,"card":"Pesquisa","ordem":1,"tipo_card":"Botao","sub_tipo":"lista-tags","conteudo_card":[{"tags":["Syclus 2.0","Desenvolvimento","Helton","Execução"],"entrada":"29/09/2021","saida":"29/09/2021"}]}]},{"id_grupo":3,"grupo":"Grid","icone":"grading","cards_tabela":[{"id_card":1,"card":"Vínculos","tipo_card_tabela":"tabela_padrao"}]}]}';
     this.ObjDashboard = JSON.parse(json);
     this.Grupos = this.ObjDashboard["grupos"];
   },
@@ -294,9 +350,11 @@ export default defineComponent({
 </script>
 
 <style>
-.ContainerCardRetangular {
-  width: 95%;
+p {
+  padding: 0px;
+  margin: 0px;
 }
+
 .btn-chip {
   display: flex;
   align-items: center;

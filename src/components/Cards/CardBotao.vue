@@ -56,25 +56,35 @@
       </q-dialog>
     </div>
 
-    <div v-if="funcao_card === 'lista-tags'">
+    <div v-if="funcao_card === 'lista-tags'" style="margin-left:5px">
       <q-badge
         rounded
         v-for="tags in lista['tags']"
         :key="tags"
-        style="padding:5px 12px;color: #000000;font-size:14px"
-        color="amber-7"
+        style="padding:6px 12px;color: #000000;font-size:14px;margin:2px"
+        color="amber-5"
       >
         {{ tags }}
       </q-badge>
-      <div class="flex items-center" style="margin:5px 0">
-        <q-icon name="calendar_today" class="text-primary" size="20px" />{{
-          lista["entrada"]
-        }}
+      <div class="flex items-center" style="margin:2px 0">
+        <q-icon
+          name="calendar_today"
+          class="text-primary"
+          size="20px"
+          style="margin-right:4px"
+        />
+        <strong style="padding-right:4px">Previsão: </strong>
+        {{ lista["entrada"] }}
       </div>
-      <div class="flex items-center" style="margin:5px 0">
-        <q-icon name="calendar_today" class="text-red" size="20px" />{{
-          lista["entrada"]
-        }}
+      <div class="flex items-center" style="margin:2px 0">
+        <q-icon
+          name="calendar_today"
+          class="text-red"
+          size="20px"
+          style="margin-right:4px"
+        />
+        <strong style="padding-right:4px">Emissão: </strong>
+        {{ lista["entrada"] }}
       </div>
       <q-btn
         unelevated
@@ -129,7 +139,7 @@ export default {
 <style scoped>
 * {
   padding: 0;
-  margin: 1px 5px;
+  margin: 0;
 }
 .spaccing {
   padding: 0px 20px;

@@ -1,42 +1,15 @@
 <template>
   <div>
-    <!-- <div
-      class="column col-3 window-height bg-grey-4"
-      style="padding:10px 18px"
-    >
-      <q-date v-model="date" minimal dense />
-      <q-card class="bg-primary" style="padding: 5px 5px;margin:10px 0px" dense>
-        <div class="flex justify-between items-center">
-          <span style="color:white;font-weight:700">Anotações</span>
-          <q-btn
-            round
-            dense
-            color="green"
-            size="10px"
-            icon="add"
-            @click.prevent="onClickAnotar"
-          />
-        </div>
-        <q-input
-          v-show="Bloco"
-          v-model="Anotacao"
-          filled
-          type="textarea"
-          style="margin:5px 0px"
-        />
-      </q-card>
-    </div>-->
-
     <BarraLayout
       @OnClick="OnClickValor"
       :ConteudoBtn="Grupos"
       :ConteudoApp="GrupoCardsOpcionais"
       Aplicacao="AplicativosPadrao"
     />
-    <div style="width: 300px;margin-left:20px">
-      <q-select v-model="filtro" :options="options" label="Filtro" />
+    <div class="filtros">
+      <q-select label="Filtro" v-model="filtro" :options="options" />
     </div>
-    <CardCalendario />
+    <CardCalendario :filtro_calendario="filtro" />
   </div>
 </template>
 
@@ -47,26 +20,16 @@ import { defineComponent } from "vue";
 export default defineComponent({
   components: { BarraLayout, CardCalendario },
   name: "Agenda",
+
   data() {
     return {
-      filtro: "Mês",
-      options: ["Dia", "Semanal", "Mês"],
+      filtro: "Diário",
+      options: ["Diário", "Semanal", "Mensal"],
       ObjDashboard: [],
       IndexGrupoAtual: 0,
       Grupos: [],
       GrupoCards: [],
-      GrupoCardsOpcionais: [],
-      date: this.DataCompleta,
-      Anotacao: [],
-      Bloco: false,
-      hoje: new Date()
-        .toLocaleString("pt-br", { day: "numeric" })
-        .padStart(2, "0"),
-      mes: (new Date().getMonth() + 1).toString().padStart(2, "0"),
-      ano: new Date()
-        .getFullYear()
-        .toString()
-        .padStart(2, "0")
+      GrupoCardsOpcionais: []
     };
   },
   methods: {
@@ -75,14 +38,6 @@ export default defineComponent({
       this.Grupo = this.ObjDashboard["grupos"][IndexGrupo];
       this.GrupoCards = this.Grupo["cards"];
       this.GrupoCardsOpcionais = this.Grupo["cards_opcionais"];
-    },
-    onClickAnotar() {
-      this.Bloco = !this.Bloco;
-    }
-  },
-  computed: {
-    DataCompleta() {
-      return this.hoje + "/" + this.mes + "/" + this.ano;
     }
   },
   created() {
@@ -93,3 +48,12 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+.filtros {
+  position: absolute;
+  top: 3;
+  right: 0;
+  margin-right: 65px;
+}
+</style>

@@ -2,7 +2,7 @@
   <div class="q-pl-md q-pr-md q-mt-md" v-if="tipo_card_tabela === 'tabela_padrao'">
     <q-table
       ref="tableRef"
-      title="Víncuclos"
+      title="Tabela Syclus"
       :rows="rows"
       color="cyan"
       :columns="columns"
@@ -24,7 +24,7 @@ const columns = [
     name: "desc",
     required: true,
     label: "Descrição",
-    align: "left",
+    align: "center  ",
     field: row => row.name,
     format: val => `${val}`,
     sortable: true
@@ -64,7 +64,7 @@ const rows = [
   {
     name: "XML",
     Clientes: "Sucolândia",
-    Tag: "Slyclus 1.0",
+    Tag: "Syclus 2.0",
     Workflow: "Desenvolvimento",
     Status: "A",
     Duração: "1:10",
@@ -76,17 +76,17 @@ const rows = [
     NPS: "0"
   },
   {
-    name: "XML",
-    Clientes: "Sucolândia",
-    Tag: "Slyclus 1.0",
+    name: "Figma",
+    Clientes: "",
+    Tag: "Syclus 1.0",
     Workflow: "Desenvolvimento",
     Status: "A",
-    Duração: "1:10",
-    Previsão: "14/06/2021",
+    Duração: "1:25",
+    Previsão: "14/08/2021",
     Tipos: "",
-    Responsável: "Weverton",
+    Responsável: "Helton",
     Situação: "A",
-    GUT: "0",
+    GUT: "2",
     NPS: "0"
   }
 ];

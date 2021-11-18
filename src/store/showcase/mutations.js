@@ -9,3 +9,7 @@ export const updateDrawerState = (state, payload) => {
 export const getWorkflow = (state, payload) => {
   state.arrWorkflow = payload
 }
+
+export const eventosAgenda = (state, payload) => {
+  state.events = payload
+}
