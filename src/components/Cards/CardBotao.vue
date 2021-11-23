@@ -56,25 +56,35 @@
       </q-dialog>
     </div>
 
-    <div v-if="funcao_card === 'lista-tags'">
+    <div v-if="funcao_card === 'lista-tags'" style="margin-left:5px">
       <q-badge
         rounded
         v-for="tags in lista['tags']"
         :key="tags"
-        style="padding:5px 12px;color: #000000;font-size:14px"
-        color="amber-7"
+        style="padding:6px 12px;color: #000000;font-size:14px;margin:2px"
+        color="amber-5"
       >
         {{ tags }}
       </q-badge>
-      <div class="flex items-center" style="margin:5px 0">
-        <q-icon name="calendar_today" class="text-primary" size="20px" />{{
-          lista["entrada"]
-        }}
+      <div class="flex items-center" style="margin:2px 0">
+        <q-icon
+          name="calendar_today"
+          class="text-primary"
+          size="20px"
+          style="margin-right:4px"
+        />
+        <strong style="padding-right:4px">Previsão: </strong>
+        {{ lista["entrada"] }}
       </div>
-      <div class="flex items-center" style="margin:5px 0">
-        <q-icon name="calendar_today" class="text-red" size="20px" />{{
-          lista["entrada"]
-        }}
+      <div class="flex items-center" style="margin:2px 0">
+        <q-icon
+          name="calendar_today"
+          class="text-red"
+          size="20px"
+          style="margin-right:4px"
+        />
+        <strong style="padding-right:4px">Emissão: </strong>
+        {{ lista["entrada"] }}
       </div>
       <q-btn
         unelevated
@@ -114,7 +124,7 @@ export default {
   },
   created() {
     const atividades =
-      '{"etapas":[{"workflow": "/atividades","titulo_etapa":"Dados","id_etapa":1,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"input_texto","placeholder":"Descrição de atividade","vmodel":""},{"tipo_componente":"selecao_padrao","placeholder":"Modelo","vmodel":"","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]},{"tipo_componente":"selecao_multipla","placeholder":"Colaborador","vmodel":"","modelo":["Henrique","Helton","Danilo"]},{"tipo_componente":"selecao_padrao","placeholder":"Situação","vmodel":"","modelo":["Inicial","Planejamento","Execução","Acompanhamento"]},{"tipo_componente":"selecao_padrao","placeholder":"Workflow","vmodel":"","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]}]},{"titulo_etapa":"Cronograma","id_etapa":2,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"selecao_padrao","placeholder":"Cliente","vmodel":"","modelo":["ACT CONTABILIDADE","BOBS","SUCOLANDIA"]},{"tipo_componente":"selecao_padrao","placeholder":"Tags","vmodel":"","modelo":["Syclus 1","Syclus 2","Fiscal"]},{"tipo_componente":"input_data","vmodel":""},{"tipo_componente":"selecao_padrao","placeholder":"Prioridade","vmodel":"","modelo":["Normal","Alta","Baixa"]}]}]}';
+      '{"etapas":[{"workflow":"atividades","titulo_etapa":"Dados","id_etapa":1,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"input_texto","placeholder":"Descrição de atividade"},{"tipo_componente":"selecao_padrao","placeholder":"Modelo","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]},{"tipo_componente":"selecao_multipla","placeholder":"Colaborador","modelo":["Henrique","Helton","Danilo"]},{"tipo_componente":"selecao_padrao","placeholder":"Situação","modelo":["Inicial","Planejamento","Execução","Acompanhamento"]},{"tipo_componente":"selecao_padrao","placeholder":"Workflow","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]},{"tipo_componente":"selecao_padrao","placeholder":"Cliente","modelo":["ACT CONTABILIDADE","BOBS","SUCOLANDIA"]},{"tipo_componente":"selecao_padrao","placeholder":"Tags","modelo":["Syclus 1","Syclus 2","Fiscal"]},{"tipo_componente":"input_data"},{"tipo_componente":"selecao_padrao","placeholder":"Prioridade","modelo":["Normal","Alta","Baixa"]}]}]}';
     const projeto =
       '{"etapas":[{"workflow": "/projetos","titulo_etapa":"Dados","id_etapa":1,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"input_texto","placeholder":"Descrição do projeto"},{"tipo_componente":"selecao_padrao","placeholder":"Modelo","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]},{"tipo_componente":"selecao_multipla","placeholder":"Colaborador","modelo":["Henrique","Helton","Danilo"]},{"tipo_componente":"selecao_padrao","placeholder":"Situação","modelo":["Inicial","Planejamento","Execução","Acompanhamento"]},{"tipo_componente":"selecao_padrao","placeholder":"Workflow","modelo":["Administrativo","Suporte","Fiscal","Desenvolvimento"]}]},{"titulo_etapa":"Cronograma","id_etapa":2,"qtde_etapa":2,"componente_tela":[{"tipo_componente":"selecao_padrao","placeholder":"Cliente","modelo":["ACT CONTABILIDADE","BOBS","SUCOLANDIA"]},{"tipo_componente":"selecao_padrao","placeholder":"Tags","modelo":["Syclus 1","Syclus 2","Fiscal"]},{"tipo_componente":"input_data"},{"tipo_componente":"selecao_padrao","placeholder":"Prioridade","modelo":["Normal","Alta","Baixa"]}]}]}';
     const workflow =
@@ -129,7 +139,7 @@ export default {
 <style scoped>
 * {
   padding: 0;
-  margin: 1px 5px;
+  margin: 0;
 }
 .spaccing {
   padding: 0px 20px;

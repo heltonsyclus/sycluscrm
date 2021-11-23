@@ -3,9 +3,9 @@ export const numeroNotificacao = (state, notificar) => {
 };
 
 export const updateDrawerState = (state, payload) => {
-  state.arrModels = payload
-}
+  state.arrModels = payload;
+};
 
 export const getWorkflow = (state, payload) => {
-  state.arrWorkflow = payload
-}
+  state.arrWorkflow = payload;
+};

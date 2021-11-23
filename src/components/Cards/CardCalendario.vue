@@ -1,9 +1,32 @@
 <template>
-  <div class="subcontent">
-    <navigation-bar @hoje="onToday" @voltar="onPrev" @adiantar="onNext" />
-
-    <div class="row justify-center">
-      <div style="display: flex;width: 80%;">
+  <div>
+    <CardEvento
+      v-show="cardEvento"
+      :dataEventual="data"
+      :dataEscolhido="this.dataEscohida"
+      @close="fecharCardEvento"
+      @arrayAgenda="retornoArrayAgenda"
+    />
+    <div>
+      <div
+        class="flex justify-between items-center"
+        style="max-width:95%; margin: 15px auto"
+      >
+        <span class="titulo-mes text-grey-9"
+          >{{ this.nomeMes }}, {{ this.nomeAno }}</span
+        >
+        <navigation-bar
+          @hoje="onToday"
+          @voltar="onPrev"
+          @adiantar="onNext"
+          style="padding-top:5px"
+        />
+        <q-select v-model="caledarioAtual" :options="opcoes" dense />
+      </div>
+      <div
+        style="display: flex;width: 100%;"
+        v-if="caledarioAtual === 'Mensal'"
+      >
         <q-calendar-month
           ref="calendar"
           v-model="selectedDate"
@@ -11,36 +34,229 @@
           bordered
           focusable
           hoverable
-          locale="pt-BR"
           no-active-date
-          :day-min-height="70"
+          locale="pt-BR"
+          :day-min-height="72"
           :day-height="0"
+          short-weekday-label
           @change="onChange"
           @moved="onMoved"
-          @click-date="onClickDate"
+          @click-date="onClickDay"
           @click-day="onClickDay"
           @click-workweek="onClickWorkweek"
           @click-head-workweek="onClickHeadWorkweek"
           @click-head-day="onClickHeadDay"
         >
-          <template #day="{ scope: { timestamp } }">
+          <template #week="{ scope: { week, weekdays } }">
             <template
-              v-for="event in eventsMap[timestamp.date]"
-              :key="event.id"
+              v-for="(computedEvent, index) in getWeekEvents(week, weekdays)"
+              :key="index"
             >
               <div
-                :class="badgeClasses(event, 'day')"
-                :style="badgeStyles(event, 'day')"
-                class="my-event"
+                :class="badgeClasses(computedEvent)"
+                :style="badgeStyles(computedEvent, week.length)"
               >
-                <div class="title q-calendar__ellipsis">
-                  {{ event.title + (event.time ? " - " + event.time : "") }}
-                  <q-tooltip>{{ event.details }}</q-tooltip>
+                <div
+                  v-if="computedEvent.event && computedEvent.event.details"
+                  class="title q-calendar__ellipsis"
+                >
+                  {{
+                    computedEvent.event.title +
+                      (computedEvent.event.time
+                        ? " - " + computedEvent.event.time
+                        : "")
+                  }}
+                  <q-tooltip>{{ computedEvent.event.details }}</q-tooltip>
                 </div>
               </div>
             </template>
           </template>
         </q-calendar-month>
+      </div>
+
+      <div
+        style="display: flex;width: 100%; height: 450px;"
+        v-if="caledarioAtual === 'Diário'"
+      >
+        <q-calendar-day
+          ref="calendar"
+          v-model="selectedDate"
+          view="day"
+          animated
+          short-weekday-label
+          bordered
+          transition-next="slide-left"
+          transition-prev="slide-right"
+          no-active-date
+          :hour24-format="hour24"
+          :interval-minutes="15"
+          :interval-start="24"
+          :interval-count="68"
+          locale="pt-BR"
+          :interval-height="28"
+          @change="onChange"
+          @moved="onMovedDia"
+          @click-date="onClickDateDia"
+          @click-time="onClickTime"
+          @click-interval="onClickInterval"
+          @click-head-intervals="onClickHeadIntervals"
+          @click-head-day="onClickHeadDay"
+        >
+          <template #head-day-event="{ scope: { timestamp } }">
+            <div
+              style="display: flex; justify-content: center; flex-wrap: wrap; padding: 2px;"
+            >
+              <template
+                v-for="event in eventsMapDia[timestamp.date]"
+                :key="event.id"
+              >
+                <q-badge
+                  v-if="!event.time"
+                  :class="badgeClassesDia(event, 'header')"
+                  :style="badgeStylesDia(event, 'header')"
+                  style="width: 100%; cursor: pointer; height: 12px; font-size: 10px; margin: 1px;"
+                >
+                  <div class="title q-calendar__ellipsis">
+                    {{ event.title }}
+                    <q-tooltip>{{ event.details }}</q-tooltip>
+                  </div>
+                </q-badge>
+                <q-badge
+                  v-else
+                  :class="badgeClassesDia(event, 'header')"
+                  :style="badgeStylesDia(event, 'header')"
+                  style="margin: 1px; width: 10px; max-width: 10px; height: 10px; max-height: 10px; cursor: pointer"
+                  @click="scrollToEventDia(event)"
+                >
+                  <q-tooltip>{{
+                    event.time + " - " + event.details
+                  }}</q-tooltip>
+                </q-badge>
+              </template>
+            </div>
+          </template>
+
+          <template
+            #day-body="{ scope: { timestamp, timeStartPos, timeDurationHeight } }"
+          >
+            <template
+              v-for="event in getEventsDia(timestamp.date)"
+              :key="event.id"
+            >
+              <div
+                v-if="event.time !== undefined"
+                class="my-evento"
+                :class="badgeClassesDia(event, 'body')"
+                :style="
+                  badgeStylesDia(
+                    event,
+                    'body',
+                    timeStartPos,
+                    timeDurationHeight
+                  )
+                "
+              >
+                <div class="title q-calendar__ellipsis">
+                  {{ event.title }}
+                  <q-tooltip>{{
+                    event.time + " - " + event.details
+                  }}</q-tooltip>
+                </div>
+              </div>
+            </template>
+          </template>
+        </q-calendar-day>
+      </div>
+
+      <div
+        style="display: flex;width: 100%; height: 400px;"
+        v-if="caledarioAtual === 'Semanal'"
+      >
+        <q-calendar-day
+          ref="calendar"
+          v-model="selectedDate"
+          view="week"
+          animated
+          bordered
+          transition-next="slide-left"
+          transition-prev="slide-right"
+          no-active-date
+          :hour24-format="hour24"
+          :interval-minutes="15"
+          :interval-start="24"
+          :interval-count="68"
+          locale="pt-BR"
+          :interval-height="28"
+          @change="onChange"
+          @moved="onMoved"
+          @click-date="onClickDate"
+          @click-time="onClickTime"
+          @click-interval="onClickInterval"
+          @click-head-intervals="onClickHeadIntervals"
+          @click-head-day="onClickHeadDay"
+        >
+          <template #head-day-event="{ scope: { timestamp } }">
+            <div
+              style="display: flex; justify-content: center; flex-wrap: wrap; padding: 2px;"
+            >
+              <template
+                v-for="event in eventsMapDia[timestamp.date]"
+                :key="event.id"
+              >
+                <q-badge
+                  v-if="!event.time"
+                  :class="badgeClassesDia(event, 'header')"
+                  :style="badgeStylesDia(event, 'header')"
+                  style="width: 100%; cursor: pointer; height: 12px; font-size: 10px; margin: 1px;"
+                >
+                  <span class="title q-calendar__ellipsis">
+                    {{ event.title }}
+                    <q-tooltip>{{ event.details }}</q-tooltip>
+                  </span>
+                </q-badge>
+                <q-badge
+                  v-else
+                  :class="badgeClassesDia(event, 'header')"
+                  :style="badgeStylesDia(event, 'header')"
+                  style="margin: 1px; width: 10px; max-width: 10px; height: 10px; max-height: 10px"
+                  @click="scrollToEventDia(event)"
+                >
+                  <q-tooltip>{{
+                    event.time + " - " + event.details
+                  }}</q-tooltip>
+                </q-badge>
+              </template>
+            </div>
+          </template>
+
+          <template
+            #day-body="{ scope: { timestamp, timeStartPos, timeDurationHeight } }"
+          >
+            <template
+              v-for="event in getEventsDia(timestamp.date)"
+              :key="event.id"
+            >
+              <div
+                v-if="event.time !== undefined"
+                class="my-evento"
+                :class="badgeClassesDia(event, 'body')"
+                :style="
+                  badgeStylesDia(
+                    event,
+                    'body',
+                    timeStartPos,
+                    timeDurationHeight
+                  )
+                "
+              >
+                <span class="title q-calendar__ellipsis">
+                  {{ event.title }}
+                  <q-tooltip>{{ event.details }}</q-tooltip>
+                </span>
+              </div>
+            </template>
+          </template>
+        </q-calendar-day>
       </div>
     </div>
   </div>
@@ -49,17 +265,25 @@
 <script>
 import {
   QCalendarMonth,
-  addToDate,
+  daysBetween,
+  isOverlappingDates,
+  parsed,
   parseDate,
+  today,
+  indexOf,
+  QCalendarDay,
+  addToDate,
   parseTimestamp,
-  today
+  isBetweenDates,
+  parseTime
 } from "@quasar/quasar-ui-qcalendar/src/index.js";
 import "@quasar/quasar-ui-qcalendar/src/QCalendarVariables.sass";
 import "@quasar/quasar-ui-qcalendar/src/QCalendarTransitions.sass";
 import "@quasar/quasar-ui-qcalendar/src/QCalendarMonth.sass";
-
-import { defineComponent } from "vue";
+import CardEvento from "app/src/components/Cards/CardEvento.vue";
 import NavigationBar from "app/src/components/Cards/NavigationBar.vue";
+import "@quasar/quasar-ui-qcalendar/src/QCalendarDay.sass";
+import { defineComponent } from "vue";
 
 const CURRENT_DAY = new Date();
 function getCurrentDay(day) {
@@ -68,184 +292,398 @@ function getCurrentDay(day) {
   const tm = parseDate(newDay);
   return tm.date;
 }
-
 export default defineComponent({
-  name: "AgendaAlignment",
+  name: "CardCalendarioMes",
   components: {
+    QCalendarMonth,
     NavigationBar,
-    QCalendarMonth
+    CardEvento,
+    QCalendarDay
   },
   data() {
     return {
       selectedDate: today(),
-      dateAlign: "center",
-      weekdayAlign: "center",
-      dateHeader: "stacked",
-      events: [
-        {
-          id: 1,
-          title: "Reunião",
-          details:
-            "Reunião da area de desenvolvimento",
-          date: getCurrentDay(1),
-          bgcolor: "orange"
-        },
-        {
-          id: 2,
-          title: "Instalar biblioteca",
-          details: "Biblioteca de gráficos",
-          date: getCurrentDay(4),
-          bgcolor: "green"
-        },
-        {
-          id: 3,
-          title: "Layout",
-          details: "Mudança no layout",
-          date: getCurrentDay(10),
-          time: "10:00",
-          duration: 120,
-          bgcolor: "red"
-        },
-        {
-          id: 4,
-          title: "Almoço",
-          details: "Company is paying!",
-          date: getCurrentDay(10),
-          time: "12:00",
-          duration: 90,
-          bgcolor: "teal"
-        },
-        {
-          id: 5,
-          title: "Visitar cliente",
-          details: "Ir na sucolândia",
-          date: getCurrentDay(20),
-          time: "17:00",
-          duration: 90,
-          bgcolor: "grey"
-        },
-        {
-          id: 6,
-          title: "Javascript",
-          details: "Estudar Javascript 101",    
-          date: getCurrentDay(22),
-          time: "18:00",
-          duration: 540,
-          bgcolor: "blue",
-        },
-        {
-          id: 7,
-          title: "Academia",
-          details: "Ir para academia",
-          date: getCurrentDay(22),
-          time: "19:00",
-          duration: 180,
-          bgcolor: "teal"
-        },
-        {
-          id: 9,
-          title: "Férias",
-          details: "Descanso",
-          date: getCurrentDay(27),
-          bgcolor: "purple",
-          icon: "fas fa-fish",
-          days: 2
-        },
-        {
-          id: 10,
-          title: "Descanso",
-          details:
-            "Descanso",
-          date: getCurrentDay(29),
-          bgcolor: "purple",
-          icon: "fas fa-plane",
-          days: 5
-        }
-      ]
+      cardEvento: false,
+      data: null,
+      nomeMes: new Date().toLocaleString("pt-br", { month: "long" }),
+      nomeAno: new Date().getFullYear(),
+      arrayDia: null,
+      dataPesquisada: null,
+      hour24: true,
+      dataEscohida: null,
+      events: [],
+      caledarioAtual: "Semanal",
+      opcoes: ["Diário", "Semanal", "Mensal"]
     };
   },
+
   computed: {
-    eventsMap() {
+    // convert the events into a map of lists keyed by date
+    eventsMapDia() {
       const map = {};
-      if (this.events.length > 0) {
-        this.events.forEach(event => {
-          (map[event.date] = map[event.date] || []).push(event);
-          if (event.days !== undefined) {
-            let timestamp = parseTimestamp(event.date);
-            let days = event.days;
-            // add a new event for each day
-            // skip 1st one which would have been done above
-            do {
-              timestamp = addToDate(timestamp, { day: 1 });
-              if (!map[timestamp.date]) {
-                map[timestamp.date] = [];
-              }
-              map[timestamp.date].push(event);
-              // already accounted for 1st day
-            } while (--days > 1);
-          }
-        });
-      }
       console.log(map);
+      // this.events.forEach(event => (map[ event.date ] = map[ event.date ] || []).push(event))
+      this.events.forEach(event => {
+        if (!map[event.date]) {
+          map[event.date] = [];
+        }
+        map[event.date].push(event);
+        if (event.days) {
+          let timestamp = parseTimestamp(event.date);
+          let days = event.days;
+
+          do {
+            timestamp = addToDate(timestamp, { day: 1 });
+            if (!map[timestamp.date]) {
+              map[timestamp.date] = [];
+            }
+            map[timestamp.date].push(event);
+          } while (--days > 0);
+        }
+      });
       return map;
     }
   },
-
   methods: {
-    badgeClasses(event, type) {
+    getWeekEvents(week, weekdays) {
+      const firstDay = parsed(week[0].date + " 00:00");
+      const lastDay = parsed(week[week.length - 1].date + " 23:59");
+      const eventsWeek = [];
+      this.events.forEach((event, id) => {
+        const startDate = parsed(event.start + " 00:00");
+        const endDate = parsed(event.end + " 23:59");
+
+        if (isOverlappingDates(startDate, endDate, firstDay, lastDay)) {
+          const left = daysBetween(firstDay, startDate, true);
+          const right = daysBetween(endDate, lastDay, true);
+          eventsWeek.push({
+            id, // index event
+            left, // Position initial day [0-6]
+            right, // Number days available
+            size: week.length - (left + right), // Size current event (in days)
+            event // Info
+          });
+        }
+      });
+
+      const events = [];
+      if (eventsWeek.length > 0) {
+        const infoWeek = eventsWeek.sort((a, b) => a.left - b.left);
+        infoWeek.forEach((_, i) => {
+          this.insertEvent(events, week.length, infoWeek, i, 0, 0);
+        });
+      }
+      return events;
+    },
+
+    insertEvent(events, weekLength, infoWeek, index, availableDays, level) {
+      const iEvent = infoWeek[index];
+      if (iEvent !== undefined && iEvent.left >= availableDays) {
+        // If you have space available, more events are placed
+        if (iEvent.left - availableDays) {
+          // It is filled with empty events
+          events.push({ size: iEvent.left - availableDays });
+        }
+        // The event is built
+        events.push({ size: iEvent.size, event: iEvent.event });
+
+        if (level !== 0) {
+          // If it goes into recursion, then the item is deleted
+          infoWeek.splice(index, 1);
+        }
+        const currentAvailableDays = iEvent.left + iEvent.size;
+        if (currentAvailableDays < weekLength) {
+          const indexNextEvent = indexOf(
+            infoWeek,
+            e => e.id !== iEvent.id && e.left >= currentAvailableDays
+          );
+
+          this.insertEvent(
+            events,
+            weekLength,
+            infoWeek,
+            indexNextEvent !== -1 ? indexNextEvent : index,
+            currentAvailableDays,
+            level + 1
+          );
+        } // else: There are no more days available, end of iteration
+      } else {
+        events.push({ size: weekLength - availableDays });
+        // end of iteration
+      }
+    },
+    badgeClasses(computedEvent) {
+      if (computedEvent.event !== undefined) {
+        return {
+          "my-event": true,
+          "text-white": true,
+          [`bg-${computedEvent.event.bgcolor}`]: true,
+          "rounded-border": true,
+          "q-calendar__ellipsis": true
+        };
+      }
+      return {
+        "my-void-event": true
+      };
+    },
+
+    badgeStyles(computedEvent, weekLength) {
+      const s = {};
+      if (computedEvent.size !== undefined) {
+        s.width = (100 / weekLength) * computedEvent.size + "%";
+      }
+      return s;
+    },
+
+    isBetweenDatesWeek(dateStart, dateEnd, weekStart, weekEnd) {
+      return (
+        (dateEnd < weekEnd && dateEnd >= weekStart) ||
+        dateEnd === weekEnd ||
+        (dateEnd > weekEnd && dateStart <= weekEnd)
+      );
+    },
+
+    badgeClassesDia(event, type) {
+      const isHeader = type === "header";
       return {
         [`text-white bg-${event.bgcolor}`]: true,
+        "full-width": !isHeader && (!event.side || event.side === "full"),
+        "left-side": !isHeader && event.side === "left",
+        "right-side": !isHeader && event.side === "right",
         "rounded-border": true
       };
     },
 
-    badgeStyles(day, event) {
+    badgeStylesDia(
+      event,
+      type,
+      timeStartPos = undefined,
+      timeDurationHeight = undefined
+    ) {
       const s = {};
-      // s.left = day.weekday === 0 ? 0 : (day.weekday * this.parsedCellWidth) + '%'
-      // s.top = 0
-      // s.bottom = 0
-      // s.width = (event.days * this.parsedCellWidth) + '%'
+      if (timeStartPos && timeDurationHeight) {
+        s.top = timeStartPos(event.time) + "px";
+        s.height = timeDurationHeight(event.duration) + "px";
+      }
+      s["align-items"] = "flex-start";
       return s;
+    },
+
+    getEventsDia(dt) {
+      // get all events for the specified date
+      const events = this.eventsMapDia[dt] || [];
+
+      if (events.length === 1) {
+        events[0].side = "full";
+      } else if (events.length === 2) {
+        // this example does no more than 2 events per day
+        // check if the two events overlap and if so, select
+        // left or right side alignment to prevent overlap
+        const startTime = addToDate(parsed(events[0].date), {
+          minute: parseTime(events[0].time)
+        });
+        const endTime = addToDate(startTime, { minute: events[0].duration });
+        const startTime2 = addToDate(parsed(events[1].date), {
+          minute: parseTime(events[1].time)
+        });
+        const endTime2 = addToDate(startTime2, { minute: events[1].duration });
+        if (
+          isBetweenDates(startTime2, startTime, endTime, true) ||
+          isBetweenDates(endTime2, startTime, endTime, true)
+        ) {
+          events[0].side = "left";
+          events[1].side = "right";
+        } else {
+          events[0].side = "full";
+          events[1].side = "full";
+        }
+      }
+
+      return events;
+    },
+
+    scrollToEventDia(event) {
+      this.$refs.calendar.scrollToTime(event.time, 350);
+    },
+
+    onMovedDia(data) {
+      var meses = [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+      ];
+      this.nomeMes = meses[data.month - 1];
+    },
+    onClickDateDia(data) {
+      this.cardEvento = true;
+      var meses = [
+        "Dezembro",
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro"
+      ];
+      var semanas = [
+        "Domingo",
+        "Segunda-feira",
+        "Terça-feira",
+        "Quarta-feira",
+        "Quinta-feira",
+        "Sexta-feira",
+        "Sábado"
+      ];
+      var arraySemana = data.scope.timestamp.weekday;
+      this.arrayDia = data.scope.timestamp.day;
+      var arrayMes = data.scope.timestamp.month;
+      this.dataEscohida = data.scope.timestamp.date;
+      this.data =
+        semanas[arraySemana] + ", " + this.arrayDia + " de " + meses[arrayMes];
     },
 
     onToday() {
       this.$refs.calendar.moveToToday();
     },
+
     onPrev() {
       this.$refs.calendar.prev();
     },
+
     onNext() {
       this.$refs.calendar.next();
     },
-    onMoved(data) {
-      console.log("onMoved", data);
-    },
-    onChange(data) {
-      console.log("onChange", data);
-    },
+
     onClickDate(data) {
+      this.onClickDay(data);
       console.log("onClickDate", data);
     },
+
+    onMoved(data) {
+      var meses = [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+      ];
+      this.nomeMes = meses[data.month - 1];
+    },
+
+    onChange(data) {
+      // this.dataEscohida = data.start
+    },
+
+    onClickTime(data) {
+      // console.log('onClickTime', data)
+    },
+
     onClickDay(data) {
-      console.log("onClickDay", data);
+      this.cardEvento = true;
+      var meses = [
+        "Dezembro",
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro"
+      ];
+      var semanas = [
+        "Domingo",
+        "Segunda-feira",
+        "Terça-feira",
+        "Quarta-feira",
+        "Quinta-feira",
+        "Sexta-feira",
+        "Sábado"
+      ];
+      this.dataEscohida = data.scope.timestamp.date;
+      var arraySemana = data.scope.timestamp.weekday;
+      this.arrayDia = data.scope.timestamp.day;
+      var arrayMes = data.scope.timestamp.month;
+      this.data =
+        semanas[arraySemana] + ", " + this.arrayDia + " de " + meses[arrayMes];
     },
+
+    fecharCardEvento() {
+      this.cardEvento = false;
+    },
+
+    retornoArrayAgenda(arrayAgenda) {
+      this.events.push(arrayAgenda);
+    },
+
     onClickWorkweek(data) {
-      console.log("onClickWorkweek", data);
+      //console.log("onClickWorkweek", data);
     },
+
     onClickHeadDay(data) {
-      console.log("onClickHeadDay", data);
+      //console.log("onClickHeadDay", data);
     },
+
     onClickHeadWorkweek(data) {
-      console.log("onClickHeadWorkweek", data);
+      //console.log("onClickHeadWorkweek", data);
+    },
+
+    onClickInterval(data) {
+      //  console.log("onClickInterval", data);
+    },
+    onClickHeadIntervals(data) {
+      // console.log("onClickHeadIntervals", data);
     }
   }
 });
 </script>
+
 <style lang="sass" scoped>
+.titulo-mes
+ font-size:20px
+ font-weight:700
+ text-transform: capitalize
+
+.my-evento
+  position: absolute
+  font-size: 12px
+  justify-content: center
+  margin: 0 1px
+  text-overflow: ellipsis
+  overflow: hidden
+  cursor: pointer
+
 .my-event
   position: relative
+  display: inline-flex
+  white-space: nowrap
   font-size: 12px
-  width: 100%
+  height: 16px
+  max-height: 16px
   margin: 1px 0 0 0
   justify-content: center
   text-overflow: ellipsis
@@ -258,6 +696,11 @@ export default defineComponent({
   justify-content: center
   align-items: center
   height: 100%
+
+.my-void-event
+  display: inline-flex
+  white-space: nowrap
+  height: 1px
 
 .text-white
   color: white

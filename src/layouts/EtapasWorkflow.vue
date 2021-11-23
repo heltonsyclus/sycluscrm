@@ -27,6 +27,7 @@
           <q-input
             v-if="objComponenteTela.tipo_componente === 'input_texto'"
             bottom-slots
+            dense
             v-model="arrModels[index]"
             :label="objComponenteTela.placeholder"
             lazy-rules
@@ -38,6 +39,7 @@
             bottom-slots
             v-model="arrModels[index]"
             multiple
+            dense
             :options="objComponenteTela.modelo"
             :label="objComponenteTela.placeholder"
             lazy-rules
@@ -46,6 +48,7 @@
           <q-select
             v-if="objComponenteTela.tipo_componente === 'selecao_padrao'"
             bottom-slots
+            dense
             v-model="arrModels[index]"
             :options="objComponenteTela.modelo"
             :label="objComponenteTela.placeholder"
@@ -55,6 +58,7 @@
           <q-input
             v-if="objComponenteTela.tipo_componente === 'input_numero'"
             bottom-slots
+            dense
             type="number"
             v-model="arrModels[index]"
             :label="objComponenteTela.placeholder"
@@ -69,6 +73,7 @@
             v-if="objComponenteTela.tipo_componente === 'input_data'"
             v-model="arrModels[index]"
             bottom-slots
+            dense
             type="date"
           />
         </div>
@@ -122,6 +127,7 @@ export default {
     onSubmit() {
       if (this.accept !== true) {
         this.matrizModels[this.etapaAtual] = this.arrModels;
+        console.log(this.matrizModels[1]);
         this.etapaAtual++;
         if (this.matrizModels.length > this.etapaAtual) {
           this.arrModels = this.matrizModels[this.etapaAtual];
@@ -164,7 +170,7 @@ export default {
 
 <style scoped>
 * {
-  padding: 4px 7px 8px 7px;
+  padding: 3px 7px 3px 7px;
   margin: 0px;
 }
 .color-titulo::before {

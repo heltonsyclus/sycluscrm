@@ -87,13 +87,13 @@ export default {
       avaliar: ["Emissão", "Previsão", "Finalização"],
       situacao: ["Inicial", "Planejamento", "Execução", "Finalizado"],
       tags: ["Syclus 1", "Syclus 2", "Fiscal"],
-      colaborador: ["Henrique", "Helton", "Danilo", "João Paulo"],
+      colaborador: ["Henrique", "Helton", "Danilo", "João Paulo"]
     };
   },
   methods: {
     aplicaFiltro() {
       this.$emit("arrModels", this.arrModels);
-    }
+    } 
   },
   setup() {
     const $store = useStore();

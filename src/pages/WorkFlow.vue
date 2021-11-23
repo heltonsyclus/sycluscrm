@@ -19,17 +19,15 @@
       :sub_tipo="ObjCard.sub_tipo"
       :conteudo_card="ObjCard.conteudo_card"
     />
-    <drag />
   </div>
 </template>
 
 <script>
 import BarraLayout from "src/layouts/BarraLayout.vue";
 import CardBase from "src/components/CardBase.vue";
-import drag from "src/components/Cards/drag.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
-  components: { BarraLayout, CardBase, drag },
+  components: { BarraLayout, CardBase },
   name: "WorkFlow",
   data() {
     return {

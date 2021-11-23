@@ -9,12 +9,11 @@ export default function() {
         vSituacao:"",
         vTags:"",
         vColaborador:"",
-        vOP:"",
         vCampo:"",
         vCriterio:"",
         valorInput:""
       }
     ],
-    arrWorkflow: []
+    arrWorkflow: [],
   };
 }

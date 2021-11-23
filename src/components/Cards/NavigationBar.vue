@@ -1,29 +1,34 @@
 <template>
   <div class="row justify-center">
-    <div class="q-pa-md q-gutter-sm row">
+    <div class="q-pb-sm row">
       <q-btn
-        no-caps
-        class="button"
-        style="margin: 2px;"
+        flat
+        class="capitalize"
+        color="primary"
+        style="margin: 5px 2px 0px;"
         @click="$emit('hoje')"
       >
-        Today
+        Hoje
       </q-btn>
       <q-btn
         no-caps
+        color="primary"
         class="button"
+        unelevated
         style="margin: 2px;"
         @click="$emit('voltar')"
       >
-        &lt; Prev
+        &lt;
       </q-btn>
       <q-btn
         no-caps
+        unelevated
+        color="primary"
         class="button"
         style="margin: 2px;"
         @click="$emit('adiantar')"
       >
-        Next &gt;
+        &gt;
       </q-btn>
     </div>
   </div>
