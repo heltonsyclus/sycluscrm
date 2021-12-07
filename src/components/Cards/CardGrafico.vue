@@ -1,11 +1,11 @@
 <template>
-  <div style="padding-top:10px">
+  <div style="width:98%;">
     <div v-if="funcao_card === 'grafico_linha'">
       <apexchart type="line" :options="chartOptions" :series="series">
       </apexchart>
     </div>
     <div v-if="funcao_card === 'grafico_padrao'">
-      <apexchart  type="area" :options="chartOptions" :series="series">
+      <apexchart type="area" :options="chartOptions" :series="series">
       </apexchart>
     </div>
     <div v-if="funcao_card === 'grafico_pontos'">
@@ -104,6 +104,7 @@ export default {
 button {
   background-color: rgb(33, 140, 228);
   color: #fff;
+  padding: 2px 5px;
   border: none;
 }
 </style>

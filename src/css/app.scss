@@ -31,20 +31,20 @@ body {
   min-height: 200px;
 }
 
-.my-card-s-500-304 { 
+.my-card-s-500-304 {
   @include cards;
   min-height: 250px;
   max-height: 500px;
 }
 
-.my-card-s-310-380 { 
+.my-card-s-310-380 {
   @include cards;
   min-height: 250px;
   height: 310px;
-  width:380px;
+  width: 380px;
 }
 
-.my-card-pesquisa { 
+.my-card-pesquisa {
   @include cards;
   min-height: 250px;
   max-height: 100%;

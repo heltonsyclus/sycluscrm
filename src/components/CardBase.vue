@@ -80,12 +80,25 @@
       <div v-if="btn_comando === 'btn-filtro'">
         <q-select v-model="model" :options="modelos" dense="dense" />
       </div>
+      <div v-if="btn_comando === 'btn-atualizar'">
+        <q-btn
+          round
+          flat
+          text-color="white"
+          icon="autorenew"
+          @click.prevent="$emit('atualizarConteudo')"
+        >
+        </q-btn>
+      </div>
     </q-item>
 
-    <q-card-section style="padding:0;margin:5px auto;width:95%">
+    <q-card-section style="padding:0;margin:5px auto;width:95%;">
       <CardSlide v-if="tipo_card === 'Slide'" />
       <CardAgenda v-if="tipo_card === 'Agenda'" />
-      <CardExpansao v-if="tipo_card === 'Expansao'" />
+      <CardExpansao
+        v-if="tipo_card === 'Expansao'"
+        :conteudo_cards="conteudo_card"
+      />
       <CardGrafico v-if="tipo_card === 'Grafico'" :funcao_card="sub_tipo" />
       <CardSecao v-if="tipo_card === 'Secao'" :funcao_card="sub_tipo" />
       <CardInput
@@ -114,7 +127,7 @@ import { LayoutCard } from "../commands/props-commands";
 import CardSlide from "../components/Cards/CardSlide.vue";
 import CardLista from "../components/Cards/CardLista.vue";
 import CardAgenda from "../components/Cards/CardAgenda.vue";
-import CardExpansao from "./Cards/CardExpansao.vue";
+import CardExpansao from "./Cards/CardGrupoApi.vue";
 import CardGrafico from "./Cards/CardGrafico.vue";
 import CardInput from "./Cards/CardInput.vue";
 import CardSecao from "./Cards/CardSecao.vue";
@@ -122,6 +135,7 @@ import CardBotao from "./Cards/CardBotao.vue";
 
 export default {
   mixins: [LayoutCard],
+  emits: ["atualizarConteudo"],
   components: {
     CardSlide,
     CardLista,
@@ -142,3 +156,5 @@ export default {
   }
 };
 </script>
+
+<style scoped></style>

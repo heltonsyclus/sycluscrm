@@ -3,11 +3,8 @@
     <q-card class="my-card-calendario">
       <form @submit.prevent="salvarAgenda()">
         <q-card-section>
-          <q-input
-            v-model="this.arrayAgenda.title"
-            label="Adicionar título e horário"
-            dense
-          />
+          <q-input v-model="this.arrayAgenda.title" label="Título" dense />
+
           <div style="margin-top:8px">
             <q-btn
               class="capitalize"
@@ -26,16 +23,6 @@
               size="12px"
               style="margin-right: 8px"
               @click.prevent="atividadeBnt()"
-            />
-            <q-btn
-              class="capitalize"
-              :color="ativoLembrete"
-              text-color="dark"
-              label="Lembrete"
-              dense
-              size="12px"
-              style="margin-right: 8px"
-              @click.prevent="lembreteBnt()"
             />
           </div>
         </q-card-section>
@@ -78,7 +65,7 @@
               v-model="this.arrayAgenda.colaborar"
               multiple
               dense
-              label="Adicionar colaboradores"
+              label="Colaboradores"
               :options="colaborador"
               style="width: 260px;padding-left:5px"
             />
@@ -91,9 +78,10 @@
               style="font-size: 20px;"
             />
             <q-input
-              label="Lembrete"
+              label="Observações"
               dense
               v-model="this.arrayAgenda.details"
+              style="width: 260px;padding-left:5px"
             />
           </div>
         </q-card-actions>
@@ -116,58 +104,39 @@
               class="text-primary"
               style="font-size: 20px;"
             />
+
             <q-input
-              v-model="this.arrayAgenda.time"
+              v-model="this.timeEscolhida"
               type="time"
               dense
+              label="Horário"
               style="width: 100px;margin-left:5px;margin-right:20px"
             />
             <q-input
               v-model.number="this.arrayAgenda.duration"
               type="number"
               dense
-              label="Tempo previsto"
+              label="Previsão"
               Style="width: 120px;"
             />
           </div>
-          <div class="flex items-center" style="margin-top:8px">
+          <div class="flex items-center">
             <q-icon
               name="subject"
               class="text-primary"
-              style="font-size: 20px;"
+              style="font-size: 20px"
             />
             <q-input
-              label="Lembrete"
+              label="Observações"
               dense
               v-model="this.arrayAgenda.atividades"
+              style="width: 260px;padding-left:5px"
             />
-          </div>
-        </q-card-actions>
-
-        <q-card-actions vertical v-show="lembrete">
-          <div class="flex items-center">
-            <q-icon
-              name="schedule"
-              class="text-primary"
-              style="font-size: 20px;"
-            />
-            <div class="text-h7" style="margin-left:6px">
-              {{ dataEventual }}
-            </div>
           </div>
 
-          <div class="flex items-center" style="margin-top:8px">
-            <input
-              type="checkbox"
-              id="checkbox"
-              v-model="this.arrayAgenda.checked"
-              style="margin-left:2px"
-            />
-            <label for="checkbox" style="margin-left:12px">Dia inteiro</label>
-          </div>
           <div class="flex items-center">
             <q-icon
-              name="subject"
+              name="history"
               class="text-primary"
               style="font-size: 20px;"
             />
@@ -179,6 +148,7 @@
             />
           </div>
         </q-card-actions>
+
         <div class="flex justify-end">
           <q-btn
             text-color="dark"
@@ -204,11 +174,8 @@
   </div>
 </template>
 <script>
-import { ref } from "vue";
-import { computed } from "vue";
-import { useStore } from "vuex";
 export default {
-  props: ["dataEventual", "dataEscolhido"],
+  props: ["dataEventual", "dataEscolhido", "horarioEscolhido"],
   emits: ["close"],
   data() {
     return {
@@ -216,8 +183,9 @@ export default {
       evento: true,
       atividade: false,
       lembrete: false,
+      timesON: true,
+      timesOff: false,
       ativoEvent: "white",
-      ativoLembrete: "white",
       ativoatividade: "white",
       options: [
         "Não se repete",
@@ -240,22 +208,19 @@ export default {
         "Cinza"
       ],
       arrayAgenda: {
-        time: new Date().toLocaleString("pt-br", {
-          hour: "numeric",
-          minute: "numeric"
-        }),
+        time: null,
         model: "Não se repete",
-        duration: 10,
+        duration: 30,
         title: null,
         details: null,
-        checked: null,
         atividades: null,
         colaborar: null,
         descricao: null,
         date: null,
         start: null,
         end: null,
-        bgcolor: "Azul"
+        bgcolor: "Azul",
+        icon: null
       }
     };
   },
@@ -263,31 +228,22 @@ export default {
     eventoBnt() {
       this.evento = true;
       this.atividade = false;
-      this.lembrete = false;
       this.ativoEvent = "primary";
-      this.ativoLembrete = " white";
       this.ativoatividade = " white";
     },
     atividadeBnt() {
       this.ativoEvent = "white";
       this.ativoatividade = "primary";
-      this.ativoLembrete = "white";
       this.evento = false;
       this.atividade = true;
-      this.lembrete = false;
-    },
-    lembreteBnt() {
-      this.evento = false;
-      this.atividade = false;
-      this.lembrete = true;
-      this.ativoEvent = "white";
-      this.ativoLembrete = "primary";
-      this.ativoatividade = "white";
     },
     abrirEditor() {
       this.editor = !this.editor;
     },
     salvarAgenda() {
+      if (this.arrayAgenda.time === null) {
+        this.arrayAgenda.time = this.timeEscolhida;
+      }
       if (this.arrayAgenda.bgcolor === "Amarelo") {
         this.arrayAgenda.bgcolor = "yellow";
       }
@@ -320,25 +276,30 @@ export default {
         this.arrayAgenda.start = this.dataEscolhida;
         this.arrayAgenda.end = this.dataEscolhida;
       }
+      if (this.atividade === !null) {
+        this.arrayAgenda.icon = "description";
+      }
       this.$emit("arrayAgenda", this.arrayAgenda);
       this.arrayAgenda = {
         start: null,
         end: null,
-        time: new Date().toLocaleString("pt-br", {
-          hour: "numeric",
-          minute: "numeric"
-        }),
-        duration: 10,
+        time: null,
+        model: "Não se repete",
+        duration: 30,
         title: null,
         details: null,
-        checked: null,
         atividades: null,
         colaborar: null,
         descricao: null,
         date: null,
-        bgcolor: "Azul"
+        bgcolor: "Azul",
+        icon: null
       };
       this.$emit("close");
+      this.evento = true;
+      this.atividade = false;
+      this.ativoEvent = "primary";
+      this.ativoatividade = " white";
     }
   },
   created() {
@@ -347,28 +308,10 @@ export default {
   computed: {
     dataEscolhida() {
       return this.dataEscolhido;
+    },
+    timeEscolhida() {
+      return this.horarioEscolhido;
     }
-  },
-
-  setup() {
-    const $store = useStore();
-    const arrayEvents = computed({
-      get: () => $store.state.showcase.arrayEvents,
-      set: val => {
-        $store.commit("showcase/getEventos", val);
-      }
-    });
-    const miniState = ref(false);
-    return {
-      arrayEvents,
-      miniState,
-      drawerClick(e) {
-        if (miniState.value) {
-          miniState.value = false;
-          e.stopPropagation();
-        }
-      }
-    };
   }
 };
 </script>

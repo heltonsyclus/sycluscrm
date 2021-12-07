@@ -11,6 +11,20 @@
         class="capitalize"
         @click.prevent="onclickGrupo(index)"
       />
+      <div class="flex items-center" v-if="Aplicacao === 'Agenda'">
+        <span class="capitalize q-ml-md" style="font-size:15px;color:#000000">
+          {{ this.nomeMes }}</span
+        >
+        <q-btn flat class="capitalize  q-ml-md" @click="$emit('hoje')">
+          Hoje
+        </q-btn>
+        <q-btn unelevated style="margin: 2px;" @click="$emit('voltar')">
+          &lt;
+        </q-btn>
+        <q-btn unelevated style="margin: 2px;" @click="$emit('adiantar')">
+          &gt;
+        </q-btn>
+      </div>
       <q-space />
       <div v-if="Aplicacao === 'AplicativosPadrao'">
         <q-btn flat dense>
@@ -89,6 +103,20 @@
           size="12px"
         />
       </div>
+      <div class="flex items-center " v-if="Aplicacao === 'Agenda'">
+        <q-select
+          v-model="calendarioEventos"
+          dense
+          class="q-mr-md"
+          :options="statusEventos"
+        />
+        <q-select
+          v-model="calendarioAtual"
+          dense
+          :options="calendario"
+          class="q-mr-md"
+        />
+      </div>
     </q-tabs>
   </div>
 </template>
@@ -96,17 +124,36 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
-  props: ["ConteudoBtn", "ConteudoApp", "Aplicacao"],
+  props: ["ConteudoBtn", "ConteudoApp", "Aplicacao", "nomeMes"],
   name: "BarraLayout",
   setup() {
+    const $store = useStore();
+    const calendarioAtual = computed({
+      get: () => $store.state.showcase.calendarioAtual,
+      set: val => {
+        $store.commit("showcase/selectAgenda", val);
+      }
+    });
+    const calendarioEventos = computed({
+      get: () => $store.state.showcase.calendarioEventos,
+      set: val => {
+        $store.commit("showcase/selectStatusAgenda", val);
+      }
+    });
     return {
+      calendarioAtual,
+      calendarioEventos,
       pesquisa: ref(false),
       ResultWorkflow: ref([]),
       darkDialog: ref(false),
       pesquisaInput: ref([]),
       pesquisaArray: ref([]),
+      calendario: ref(["Mensal", "Semanal", "Diário"]),
+      statusEventos: ref(["Todos", "Eventos", "Atividades"])
     };
   },
   data() {

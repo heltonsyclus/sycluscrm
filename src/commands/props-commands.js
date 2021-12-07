@@ -5,10 +5,10 @@ export const LayoutCard = {
     tipo_card: String,
     cor_header: String,
     sub_tipo: String,
-    conteudo_card: String,
+    conteudo_cards: String,
     formato_card: String,
-    layout_lin_col:String,
-  },
+    layout_lin_col: String
+  }
 };
 
 export const LayoutWorkFlow = {
