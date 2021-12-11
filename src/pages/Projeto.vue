@@ -6,6 +6,7 @@
     Aplicacao="AplicativosPadrao"
   />
   <div class="row">
+    {{ this.login }}
     <CardBase
       class="q-ma-xs"
       v-for="(ObjCard, index) in GrupoCards"
@@ -26,6 +27,8 @@
 import BarraLayout from "src/layouts/BarraLayout.vue";
 import CardBase from "src/components/CardBase.vue";
 import { defineComponent } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default defineComponent({
   components: { BarraLayout, CardBase },
   name: "Projeto",
@@ -48,6 +51,15 @@ export default defineComponent({
         this.$router.push({ name: "pesquisa-projeto" });
       }
     }
+  },
+  setup() {
+    const $store = useStore();
+    const login = computed({
+      get: () => $store.state.showcase.login
+    });
+    return {
+      login
+    };
   },
   created() {
     const json =

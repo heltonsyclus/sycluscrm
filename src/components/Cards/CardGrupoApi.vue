@@ -1,5 +1,10 @@
 <template>
-  <q-card class="my-card-s" flat bordered style="max-width:100%">
+  <q-card
+    class="my-card-s"
+    flat
+    bordered
+    :style="{ width: `${width}`, height: `${height}` }"
+  >
     <q-item class="items-center" :class="cor_header" dense="dense">
       <q-item-section
         style="height:40px;font-weight:700;color:White;padding-left:10px"
@@ -19,7 +24,7 @@
     </q-item>
     <q-card-section class="corpo">
       <div class="text-dark">
-        <div class="spin" style="width:230px" v-show="carregar">
+        <div class="spin" style="width:230px" v-show="carregarKnob">
           <q-knob
             v-model="value"
             size="30px"
@@ -28,48 +33,60 @@
             track-color="cyan-3"
           />
         </div>
+        <div
+          v-show="carregarText"
+          style="margin:0 auto;text-align:center;padding-top:20px;color:red"
+        >
+          <span>Não possui grupos...</span>
+        </div>
         <q-list class="rounded-borders bg-grey-1 q-mb-md q-my-none margin-bot">
           <q-expansion-item
-            dense
             dense-toggle
             expand-separator
-            icon="perm_identity"
             v-for="(grupos, indexGrupo) in this.ObjConteudo.grupos"
             :key="indexGrupo"
             @before-show="showItem(indexGrupo)"
             :label="grupos.grupo"
+            :caption="grupos.qtde + ' itens'"
+            :caption-lines="1"
           >
             <q-card>
               <q-card-section
-                class="text-light-blue-10 flex justify-between items-center"
                 v-for="(itens, indexItem) in this.ObjConteudo.grupos[indexGrupo]
                   .itens"
                 :key="indexItem"
               >
-                <p
-                  class="q-pt-md pl"
-                  style="font-weight:400;font-style:italic;padding-left:15px;min-width:230px"
+                <div
+                  class="text-light-blue-10 flex justify-between items-center"
                 >
-                  <strong class="capitalize">{{ itens.item }}</strong>
-                </p>
-                <q-btn
-                  color="light-blue-10"
-                  round
-                  flat
-                  icon="more_vert"
-                  class="items-center"
-                >
-                  <q-menu cover auto-close style="pading:0px 5px">
-                    <q-list>
-                      <q-item clickable>
-                        <q-item-section
-                          @click.prevent="abrirItem(indexGrupo, indexItem)"
-                          >Abrir</q-item-section
-                        >
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn>
+                  <a
+                    @click.prevent="abrirItem(indexGrupo, indexItem)"
+                    class="q-pt-md pl text-class"
+                  >
+                    <strong class="capitalize">{{ itens.item }}</strong>
+                  </a>
+                  <q-btn
+                    color="dark"
+                    round
+                    flat
+                    icon="more_vert"
+                    class="items-center"
+                  >
+                    <q-menu cover auto-close style="pading:0px 5px">
+                      <q-list>
+                        <q-item clickable>
+                          <q-item-section
+                            @click.prevent="abrirItem(indexGrupo, indexItem)"
+                            >Abrir</q-item-section
+                          >
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-btn>
+                </div>
+                <div style="width:95%;margin-left:15px">
+                  <q-separator />
+                </div>
               </q-card-section>
             </q-card>
           </q-expansion-item>
@@ -81,10 +98,12 @@
 
 <script>
 import {
-  bodyAtividesPendentesPorTipo,
-  bodyAtividesPendentesPorClienteTipo,
-  bodyProjetosAtivosPorTipo,
-  bodyProjetosAtivosPorClienteTipo
+  bodyAtividadeCliente,
+  bodyAtividadeClientePorTipoAtividade,
+  bodyAtividadeClientePorResponsavel,
+  bodyAtividadeClientePorTag,
+  bodyAtividadeClientePorSituacao,
+  bodyAtividadeClientePorWorkflow
 } from "src/boot/consultaSql.js";
 export default {
   props: [
@@ -94,12 +113,16 @@ export default {
     "btn_comando",
     "cor_header",
     "formato_card",
-    "msg"
+    "msg",
+    "link_item",
+    "width",
+    "height"
   ],
   data() {
     return {
       value: 71,
-      carregar: false,
+      carregarKnob: false,
+      carregarText: false,
       ObjConteudo: {
         grupos: [
           {
@@ -119,9 +142,11 @@ export default {
   },
   methods: {
     getUrlItem(pIndexGrupo, pIndexItem) {
-      let url =
-        "https://crm.syclus.com.br/atividades/" +
-        this.ObjConteudo.grupos[pIndexGrupo].itens[pIndexItem].id;
+      let url = this.link_item.replace(
+        "<id_item>",
+        this.ObjConteudo.grupos[pIndexGrupo].itens[pIndexItem].id
+      );
+
       return url;
     },
     abrirItem(pIndexGrupo, pIndexItem) {
@@ -133,11 +158,12 @@ export default {
     atualizarConteudoItens(pIndex) {
       this.limparConteudoItens(pIndex);
       let body = this.getBody(
-        this.conteudo_card.bodyItem,
+        this.conteudo_card.body_item,
         this.ObjConteudo.grupos[pIndex].id
       );
       this.$api.post("consultasql", body).then(res => {
         let arrRetorno = res.data;
+
         for (let i = 0; i < arrRetorno.length; i++) {
           let item = {
             id: Object.values(arrRetorno[i])[0],
@@ -150,28 +176,50 @@ export default {
     showItem(pIndex) {
       this.atualizarConteudoItens(pIndex);
     },
+
     getBody(pNomeBody, pIdGrupo) {
-      if (pNomeBody === "bodyAtividesPendentesPorTipo") {
-        return bodyAtividesPendentesPorTipo(this.idPrincipal);
+      let filtros = this.conteudo_card.filtro_sql_grupo.replace(
+        "<id_principal>",
+        this.idPrincipal
+      );
+
+      if (pNomeBody === "bodyAtividadeCliente") {
+        filtros = this.conteudo_card.filtro_sql_item.replace(
+          "<id_principal>",
+          this.idPrincipal
+        );
       }
-      if (pNomeBody === "bodyAtividesPendentesPorClienteTipo") {
-        return bodyAtividesPendentesPorClienteTipo(this.idPrincipal, pIdGrupo);
+      filtros = filtros.replace("<id_grupo>", pIdGrupo);
+
+      if (pNomeBody === "bodyAtividadeCliente") {
+        return bodyAtividadeCliente(filtros);
       }
-      if (pNomeBody === "bodyProjetosAtivosPorTipo") {
-        return bodyProjetosAtivosPorTipo(this.idPrincipal);
+      if (pNomeBody === "bodyAtividadeClientePorTipoAtividade") {
+        return bodyAtividadeClientePorTipoAtividade(filtros);
       }
-      if (pNomeBody === "bodyProjetosAtivosPorClienteTipo") {
-        return bodyProjetosAtivosPorClienteTipo(this.idPrincipal, pIdGrupo);
+      if (pNomeBody === "bodyAtividadeClientePorResponsavel") {
+        return bodyAtividadeClientePorResponsavel(filtros);
+      }
+      if (pNomeBody === "bodyAtividadeClientePorTag") {
+        return bodyAtividadeClientePorTag(filtros);
+      }
+      if (pNomeBody === "bodyAtividadeClientePorSituacao") {
+        return bodyAtividadeClientePorSituacao(filtros);
+      }
+      if (pNomeBody === "bodyAtividadeClientePorWorkflow") {
+        return bodyAtividadeClientePorWorkflow(filtros);
       }
     },
+
     atualizarConteudo() {
       this.limparConteudo();
+
       if (this.idPrincipal !== null) {
-        let body = this.getBody(this.conteudo_card.bodyGrupo);
+        let body = this.getBody(this.conteudo_card.body_grupo);
         if (body == null) {
           return false;
         }
-        this.carregar = true;
+        this.carregarKnob = true;
         this.$api.post("consultasql", body).then(res => {
           let arrRetorno = res.data;
           for (let i = 0; i < arrRetorno.length; i++) {
@@ -180,8 +228,19 @@ export default {
               grupo: Object.values(arrRetorno[i])[1],
               qtde: Object.values(arrRetorno[i])[2]
             };
-            this.carregar = false;
+
+            this.carregarKnob = false;
             this.ObjConteudo.grupos.push(item);
+          }
+
+          setTimeout(() => {
+            arrRetorno == "";
+          }, 2000);
+          if (arrRetorno == "") {
+            this.carregarText = true;
+            this.carregarKnob = false;
+          } else {
+            this.carregarText = false;
           }
         });
       }
@@ -227,6 +286,13 @@ export default {
   padding: 0;
   margin: 0px auto;
 }
+.text-class {
+  font-weight: 400;
+  font-style: italic;
+  padding-left: 15px;
+  width: 90%;
+  cursor: pointer;
+}
 .spin {
   text-align: center;
   margin: 30px auto;
@@ -235,6 +301,11 @@ export default {
 @keyframes spins {
   to {
     transform: rotate(360deg);
+  }
+}
+@media only screen and (max-width: 1320px) {
+  .my-card-s {
+    width: 350px;
   }
 }
 </style>

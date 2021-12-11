@@ -95,10 +95,7 @@
     <q-card-section style="padding:0;margin:5px auto;width:95%;">
       <CardSlide v-if="tipo_card === 'Slide'" />
       <CardAgenda v-if="tipo_card === 'Agenda'" />
-      <CardExpansao
-        v-if="tipo_card === 'Expansao'"
-        :conteudo_cards="conteudo_card"
-      />
+
       <CardGrafico v-if="tipo_card === 'Grafico'" :funcao_card="sub_tipo" />
       <CardSecao v-if="tipo_card === 'Secao'" :funcao_card="sub_tipo" />
       <CardInput
@@ -110,7 +107,8 @@
       <CardLista
         v-if="tipo_card === 'Lista'"
         :funcao_card="sub_tipo"
-        :conteudo_cards="conteudo_card"
+        :conteudo_cards="conteudo_cards"
+        :link_item="link_item"
       />
       <CardBotao
         v-if="tipo_card === 'Botao'"
@@ -127,7 +125,6 @@ import { LayoutCard } from "../commands/props-commands";
 import CardSlide from "../components/Cards/CardSlide.vue";
 import CardLista from "../components/Cards/CardLista.vue";
 import CardAgenda from "../components/Cards/CardAgenda.vue";
-import CardExpansao from "./Cards/CardGrupoApi.vue";
 import CardGrafico from "./Cards/CardGrafico.vue";
 import CardInput from "./Cards/CardInput.vue";
 import CardSecao from "./Cards/CardSecao.vue";
@@ -140,7 +137,6 @@ export default {
     CardSlide,
     CardLista,
     CardAgenda,
-    CardExpansao,
     CardGrafico,
     CardInput,
     CardSecao,

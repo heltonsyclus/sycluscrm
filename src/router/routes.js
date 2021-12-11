@@ -1,3 +1,15 @@
+import { loginAutenticado } from "app/src/commands/autenticacao";
+
+/*const validaAutenticacao = function(to, from, next) {
+  if (loginAutenticado()) {
+    console.log("autenticado");
+    next();
+  } else {
+    console.log("nao autenticado");
+    window.location.href = "/Login";
+  }
+};*/
+
 const routes = [
   {
     path: "/",
@@ -7,11 +19,14 @@ const routes = [
         path: "",
         name: "dashboard",
         component: () => import("pages/Index.vue")
+        /*  beforeEnter: (to, from, next) => {
+          validaAutenticacao(to, from, next);
+        }*/
       }
     ]
   },
   {
-    path: "/login",
+    path: "/Login",
     component: () => import("layouts/LoginLayout.vue"),
     children: [
       { path: "", name: "Login", component: () => import("pages/Login.vue") },
@@ -26,7 +41,11 @@ const routes = [
     path: "/perfil-usuario",
     component: () => import("src/layouts/PerfilUsuario.vue"),
     children: [
-      { path: "", name: "perfil-usuario", component: () => import("src/layouts/PerfilUsuario.vue") },
+      {
+        path: "",
+        name: "perfil-usuario",
+        component: () => import("src/layouts/PerfilUsuario.vue")
+      }
     ]
   },
   {
@@ -87,7 +106,11 @@ const routes = [
     path: "/cliente",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", name: "cliente", component: () => import("pages/Cliente.vue") }
+      {
+        path: "",
+        name: "cliente",
+        component: () => import("pages/Cliente.vue")
+      }
     ]
   },
   {

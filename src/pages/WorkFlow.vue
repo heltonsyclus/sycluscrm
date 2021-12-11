@@ -6,6 +6,7 @@
     Aplicacao="AplicativosPadrao"
   />
   <div class="flex">
+    {{ this.login }}
     <CardBase
       class="q-ma-xs"
       v-for="(ObjCard, index) in GrupoCards"
@@ -26,6 +27,8 @@
 import BarraLayout from "src/layouts/BarraLayout.vue";
 import CardBase from "src/components/CardBase.vue";
 import { defineComponent } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default defineComponent({
   components: { BarraLayout, CardBase },
   name: "WorkFlow",
@@ -45,6 +48,15 @@ export default defineComponent({
       this.GrupoCards = this.Grupo["cards"];
       this.GrupoCardsOpcionais = this.Grupo["cards_opcionais"];
     }
+  },
+  setup() {
+    const $store = useStore();
+    const login = computed({
+      get: () => $store.state.showcase.login
+    });
+    return {
+      login
+    };
   },
   created() {
     const json =

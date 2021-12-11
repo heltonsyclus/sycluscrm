@@ -6,7 +6,7 @@
     :ConteudoBtn="Grupos"
     Aplicacao="AplicativosPesquisa"
   />
-  
+
   <q-layout container style="height: 90vh">
     <q-drawer
       v-model="drawer"
@@ -38,7 +38,7 @@
           @click="EsconderCardInputs"
         />
       </div>
-    </q-drawer> 
+    </q-drawer>
     <div class="flex q-mr-sm q-mt-sm">
       <div
         class="flex btn-chip"
@@ -212,9 +212,7 @@ export default defineComponent({
       this.arrayFiltros.splice(i, 1);
     },
     modelArray(pesquisaInput) {
-      this.GetTextoChipItemFiltro.push(
-        "pesquisa: " + pesquisaInput
-      );
+      this.GetTextoChipItemFiltro.push("pesquisa: " + pesquisaInput);
     },
     GetitemFiltro(pCampo, pCriterio, pValor) {
       return JSON.parse(
@@ -290,7 +288,7 @@ export default defineComponent({
         itemFiltro = this.GetitemFiltro(
           "Avançado",
           "contendo",
-            this.valorFiltro.vCriterio +
+          this.valorFiltro.vCriterio +
             ", " +
             this.valorFiltro.vCampo +
             ", " +
@@ -305,7 +303,8 @@ export default defineComponent({
             " " +
             this.arrayFiltros[i]["criterio"]
               .replace("maior_igual", "> ")
-              .replace("menor_igual", "< ") + " "+
+              .replace("menor_igual", "< ") +
+            " " +
             this.arrayFiltros[i]["valor"]
         );
       }
@@ -321,6 +320,10 @@ export default defineComponent({
     this.Grupos = this.ObjDashboard["grupos"];
   },
   setup() {
+    const login = computed({
+      get: () => $store.state.showcase.login
+    });
+
     const $store = useStore();
     const arrModels = computed({
       get: () => $store.state.showcase.arrModels,
@@ -330,6 +333,7 @@ export default defineComponent({
     });
     const miniState = ref(false);
     return {
+      login,
       darkDialog: ref(false),
       arrModels,
       drawer: ref(false),

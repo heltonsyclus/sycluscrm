@@ -2,7 +2,7 @@
   <div class="flex" style="max-width:100%">
     <div class="col1 flex">
       <div>
-        <q-card class="my-card" style="margin:10px 0px 0px 10px">
+        <q-card class="my-card">
           <q-card-section>
             <p style="font-weight:500;font-size:16px">Pesquisa de cliente</p>
             <q-separator class="q-mb-sm" />
@@ -13,7 +13,7 @@
               @keyup.enter="ProcurarCliente()"
             >
               <template v-slot:prepend>
-                <q-icon name="search" />
+                <q-icon size="18px" name="search" />
               </template>
             </q-input>
           </q-card-section>
@@ -33,6 +33,7 @@
           </div>
         </q-card>
       </div>
+      {{ this.telaWidth }}
       <q-dialog
         v-model="exibeSelecaoCliente"
         persistent
@@ -58,11 +59,12 @@
           </div>
         </q-card>
       </q-dialog>
+
       <div>
         <q-card
-          v-show="clienteAtivo"
           class="my-card bg-light-blue-9"
-          style="margin:10px 0px 0px 10px;color:#fff"
+          style="color:#fff"
+          v-show="clienteAtivo"
         >
           <q-card-section>
             <div class="flex justify-between items-center">
@@ -86,41 +88,46 @@
               style="font-style:italic;"
             >
               <div style="width:100%">
-                <q-icon name="money" class="q-pr-sm" /><span>{{
+                <q-icon size="18px" name="money" class="q-pr-sm" /><span>{{
                   cliente.id_cliente
                 }}</span>
               </div>
               <div style="width:100%">
-                <q-icon name="business" class="q-pr-sm" /><span>{{
+                <q-icon size="18px" name="business" class="q-pr-sm" /><span>{{
                   cliente.nome_fantasia
                 }}</span>
               </div>
               <div style="width:100%">
-                <q-icon name="business" class="q-pr-sm" /><span>
+                <q-icon size="18px" name="business" class="q-pr-sm" /><span>
                   {{ cliente.razao_social }}
                 </span>
               </div>
               <div style="width:100%">
-                <q-icon name="pin" class="q-pr-sm" />
+                <q-icon size="18px" name="pin" class="q-pr-sm" />
                 <span>{{ cliente.cpf_cnpj }}</span>
               </div>
-              <div style="width:100%">
-                <q-icon name="phone_in_talk" class="q-pr-sm" />
-                <span>{{ cliente.telefone }}</span>
+              <div
+                style="width:100%"
+                v-for="telefones in this.telefone"
+                :key="telefones"
+              >
+                <q-icon size="18px" name="phone_in_talk" class="q-pr-sm" />
+                <span>{{ telefones }}</span>
+              </div>
+              <div v-for="emails in this.email" :key="emails">
+                <q-icon size="18px" name="email" class="q-pr-sm" />
+                <span style="width:100%">{{ emails }}</span>
+              </div>
+              <div
+                style="width:100%"
+                v-for="bairros in this.bairro"
+                :key="bairros"
+              >
+                <q-icon size="18px" name="share_location" class="q-pr-sm" />
+                <span>{{ bairros }}</span>
               </div>
               <div>
-                <q-icon name="email" class="q-pr-sm" />
-                <span style="width:100%">{{ cliente.email }}</span>
-              </div>
-              <div style="width:100%">
-                <q-icon name="share_location" class="q-pr-sm" />
-                <span
-                  >{{ cliente.cidade }}, {{ cliente.bairro }} -
-                  {{ cliente.endereco }}</span
-                >
-              </div>
-              <div>
-                <q-icon name="done" class="q-pr-sm" />
+                <q-icon size="18px" name="done" class="q-pr-sm" />
                 <span
                   class="bg-positive"
                   style="margin-bottom:5px;padding:1px 5px 1px 0px"
@@ -133,11 +140,7 @@
         </q-card>
       </div>
       <div>
-        <q-card
-          v-show="clienteAtivo"
-          class="my-card"
-          style="margin:10px 0px 0px 10px"
-        >
+        <q-card class="my-card" v-show="clienteAtivo">
           <q-card-section>
             <p style="font-weight:500;font-size:16px">Estatísticas</p>
             <q-separator class="q-mb-sm" />
@@ -160,6 +163,8 @@
                   <span class="card-span">{{ "8" }}</span>
                 </div>
               </q-card>
+            </div>
+            <div class="flex">
               <q-card class="card-secundario">
                 <div>
                   <p style="padding-bottom:5px">Suporte</p>
@@ -190,14 +195,15 @@
 
     <div class="col2">
       <BarraLayout
-        @OnClick="OnClickValor"
-        :ConteudoBtn="Grupos"
+        @OnClick="OnClickBarraLayout"
+        :ConteudoBtn="this.ObjDashboard['grupos']"
         :ConteudoApp="GrupoCardsOpcionais"
         Aplicacao="AplicativosPadrao"
       />
       <div class="row">
+        {{ this.login }}
         <CardGrupoApi
-          class="q-mt-xs"
+          class="q-mt-xs card-responsivo"
           style="margin:5px;margin-bottom:5px"
           v-for="(ObjCard, index) in this.ObjDashboard.grupos[
             this.IndexGrupoAtual
@@ -208,10 +214,13 @@
           :ordem="ObjCard.ordem"
           cor_header="bg-primary"
           topo_fixo="topo_fixo"
+          :width="ObjCard.width"
+          :height="ObjCard.height"
           :btn_comando="ObjCard.btn_comando"
           :tipo_card="ObjCard.tipo_card"
           :sub_tipo="ObjCard.sub_tipo"
           :conteudo_card="ObjCard.conteudo_card"
+          :link_item="ObjCard.link_item"
           :idPrincipal="this.idClienteAtivo"
           :msg="this.msgCard"
         />
@@ -224,12 +233,13 @@
 import { layoutDashBoardCliente } from "src/commands/layoutDashboard.js";
 import BarraLayout from "src/layouts/BarraLayout.vue";
 import CardGrupoApi from "src/components/Cards/CardGrupoApi.vue";
-
 import {
   bodyProcuraIdCliente,
   bodyDadosCliente
 } from "src/boot/consultaSql.js";
 import { defineComponent } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: { BarraLayout, CardGrupoApi },
@@ -238,7 +248,6 @@ export default defineComponent({
     return {
       ObjDashboard: [],
       IndexGrupoAtual: 0,
-      Grupos: [],
       GrupoCards: [],
       GrupoCardsOpcionais: [],
       nomeFantasia: null,
@@ -246,22 +255,29 @@ export default defineComponent({
       clienteAtivo: false,
       objCliente: [],
       dadosCliente: null,
-      numeroAtividades: null,
       exibeSelecaoCliente: false,
-      atividadePendente: [],
-      msgCard: ""
+      telaWidth: "",
+      msgCard: "",
+      bairro: "",
+      telefone: "",
+      email: ""
     };
   },
   methods: {
     parar() {
       this.msgCard = null;
     },
-    OnClickValor(IndexGrupo) {
+    OnClickBarraLayout(IndexGrupo) {
       this.IndexGrupoAtual = IndexGrupo;
-      this.Grupo = this.ObjDashboard["grupos"][IndexGrupo];
-      this.GrupoCards = this.Grupo["cards"];
-      this.GrupoCardsOpcionais = this.Grupo["cards_opcionais"];
+      this.AtualizarCardsGrupoAtual();
     },
+    AtualizarCardsGrupoAtual() {
+      this.msgCard = "atualizar_conteudo";
+      setTimeout(() => {
+        this.msgCard = "";
+      }, 1000);
+    },
+
     ProcurarCliente() {
       this.objCliente = "";
       if (this.nomeFantasia === null) {
@@ -310,25 +326,19 @@ export default defineComponent({
       this.$api.post("consultasql", body).then(res => {
         let arrRetorno = res.data;
         this.objCliente = arrRetorno;
-        const bairro = this.objCliente[0]["bairro"].split(",");
-        console.log(bairro);
-        const email = this.objCliente[0]["email"].split(";");
-        console.log(email);
-        const endereco = this.objCliente[0]["endereco"].split(",");
-        console.log(endereco);
-        /*   this.objCliente.push({
-          bairro: bairro,
-          email: email,
-          endereco: endereco
-        });*/
-        console.log(this.objCliente);
+        this.bairro = this.objCliente[0]["bairro"].split(",");
+        this.email = this.objCliente[0]["email"].split(";");
+        this.telefone = this.objCliente[0]["telefone"].split(";");
       });
 
       //atualizar conteudo dos cards do grupo/dashboard atual
+      this.AtualizarCardsGrupoAtual();
+      /*
       this.msgCard = "atualizar_conteudo";
       setTimeout(() => {
         this.msgCard = "";
       }, 2000);
+      */
     },
     selecionarCliente(index) {
       this.exibeSelecaoCliente = false;
@@ -336,15 +346,22 @@ export default defineComponent({
       this.carregarDadosCliente();
     },
     handleResize() {
-      if (window.innerWidth === 1320) {
-        // alert("hey");
+      this.telaWidth = window.innerWidth;
+      if (window.innerWidth) {
       }
     }
   },
-
+  setup() {
+    const $store = useStore();
+    const login = computed({
+      get: () => $store.state.showcase.login
+    });
+    return {
+      login
+    };
+  },
   created() {
     this.ObjDashboard = layoutDashBoardCliente();
-    this.Grupos = this.ObjDashboard["grupos"];
     this.msgCard = "limpar_conteudo";
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
@@ -366,10 +383,12 @@ p {
 .card-primary:hover {
   background-color: #6497ff;
 }
-
+.my-card {
+  margin: 10px 0px 0px 10px;
+}
 .card-secundario {
   background-color: #447dee;
-  width: 88px;
+  width: 32%;
   height: 87px;
   text-align: center;
   margin: 1px;
@@ -407,16 +426,24 @@ p {
 .col2 {
   width: 75%;
 }
-/*
 @media only screen and (max-width: 1320px) {
   .col1 {
     width: 100%;
-    background-color: #005c99;
-    padding-bottom: 10px;
-    min-height: 100vh;
+    background-color: #e6e6e6;
+    min-height: 40vh;
   }
   .col2 {
     width: 100%;
   }
-}*/
+  .my-card {
+    max-width: 100%;
+    min-width: 330px;
+    margin: 10px 10px 10px 10px;
+  }
+  .card-secundario {
+    width: 32%;
+    height: 87px;
+    padding: 12px 5px 0px 5px;
+  }
+}
 </style>

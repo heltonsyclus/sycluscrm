@@ -6,17 +6,16 @@ export const LayoutCard = {
     cor_header: String,
     sub_tipo: String,
     conteudo_cards: String,
+    link_item: String,
     formato_card: String,
     layout_lin_col: String
   }
 };
-
 export const LayoutWorkFlow = {
   props: {
     EtapasWorkFlow: String
   }
 };
-
 export const LayoutAtividades = {
   props: {
     card: String,

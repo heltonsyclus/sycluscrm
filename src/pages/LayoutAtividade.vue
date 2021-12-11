@@ -46,6 +46,8 @@ import CardBase from "src/components/CardBase.vue";
 import { defineComponent } from "vue";
 import CardRetangulo from "src/components/Cards/CardRetangulo.vue";
 import CardTabela from "src/components/Cards/CardTabela.vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: { BarraLayout, CardBase, CardRetangulo, CardTabela },
@@ -75,6 +77,15 @@ export default defineComponent({
         this.ContainerCardRetangular = "container-retangulo";
       }
     }
+  },
+  setup() {
+    const $store = useStore();
+    const login = computed({
+      get: () => $store.state.showcase.login
+    });
+    return {
+      login
+    };
   },
   created() {
     const json =

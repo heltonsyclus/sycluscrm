@@ -25,6 +25,7 @@
         :informacoesCardCalendario="arrayCardAtividade"
         @close="fecharCardEvento"
       />
+      {{ this.login }}
       <div class="flex justify-between items-center">
         <div
           style="display: flex;width: 100%;"
@@ -757,7 +758,11 @@ export default defineComponent({
     const calendarioEventos = computed({
       get: () => $store.state.showcase.calendarioEventos
     });
+    const login = computed({
+      get: () => $store.state.showcase.login
+    });
     return {
+      login,
       calendarioAtual,
       calendarioEventos
     };

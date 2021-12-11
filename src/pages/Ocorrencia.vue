@@ -55,6 +55,7 @@
       </div>
     </div>
     <div class="column ContainerCardRetangular">
+      {{ this.login }}
       <CardRetangulo
         v-for="(ObjCardRetangulo, index) in GrupoCardsRetangular"
         :key="index"
@@ -85,7 +86,7 @@ export default defineComponent({
       Grupo: [],
       Grupos: [],
       GrupoCardsRetangular: [],
-       MostrarTitulo: false,
+      MostrarTitulo: false,
       showDrawer: false,
       filtroAvancado: false,
       valorFiltro: [],
@@ -101,7 +102,7 @@ export default defineComponent({
       this.GrupoCardsRetangular = this.Grupo["cards_retangulo"];
     },
 
-     EsconderCardInputs() {
+    EsconderCardInputs() {
       this.valorFiltro = [];
       console.log(this.arrayFiltros);
       for (let i = 0; i < this.arrayFiltros.length; i++) {
@@ -158,9 +159,7 @@ export default defineComponent({
       this.arrayFiltros.splice(i, 1);
     },
     modelArray(pesquisaInput) {
-      this.GetTextoChipItemFiltro.push(
-        "pesquisa: " + pesquisaInput
-      );
+      this.GetTextoChipItemFiltro.push("pesquisa: " + pesquisaInput);
     },
     GetitemFiltro(pCampo, pCriterio, pValor) {
       return JSON.parse(
@@ -253,7 +252,8 @@ export default defineComponent({
             " " +
             this.arrayFiltros[i]["criterio"]
               .replace("maior_igual", "> ")
-              .replace("menor_igual", "< ") + " "+
+              .replace("menor_igual", "< ") +
+            " " +
             this.arrayFiltros[i]["valor"]
         );
       }
@@ -269,6 +269,9 @@ export default defineComponent({
     this.Grupos = this.ObjDashboard["grupos"];
   },
   setup() {
+    const login = computed({
+      get: () => $store.state.showcase.login
+    });
     const $store = useStore();
     const arrModels = computed({
       get: () => $store.state.showcase.arrModels,
@@ -278,6 +281,7 @@ export default defineComponent({
     });
     const miniState = ref(false);
     return {
+      login,
       darkDialog: ref(false),
       arrModels,
       drawer: ref(false),
