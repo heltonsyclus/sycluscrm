@@ -86,7 +86,11 @@ export default defineComponent({
       Grupo: [],
       Grupos: [],
       GrupoCardsRetangular: [],
+<<<<<<< HEAD
       MostrarTitulo: false,
+=======
+       MostrarTitulo: false,
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       showDrawer: false,
       filtroAvancado: false,
       valorFiltro: [],
@@ -102,7 +106,11 @@ export default defineComponent({
       this.GrupoCardsRetangular = this.Grupo["cards_retangulo"];
     },
 
+<<<<<<< HEAD
     EsconderCardInputs() {
+=======
+     EsconderCardInputs() {
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       this.valorFiltro = [];
       console.log(this.arrayFiltros);
       for (let i = 0; i < this.arrayFiltros.length; i++) {
@@ -159,7 +167,13 @@ export default defineComponent({
       this.arrayFiltros.splice(i, 1);
     },
     modelArray(pesquisaInput) {
+<<<<<<< HEAD
       this.GetTextoChipItemFiltro.push("pesquisa: " + pesquisaInput);
+=======
+      this.GetTextoChipItemFiltro.push(
+        "pesquisa: " + pesquisaInput
+      );
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
     },
     GetitemFiltro(pCampo, pCriterio, pValor) {
       return JSON.parse(
@@ -205,6 +219,7 @@ export default defineComponent({
       if (this.valorFiltro.vSituacao != null) {
         itemFiltro = this.GetitemFiltro(
           "Situação",
+<<<<<<< HEAD
           "contendo",
           this.valorFiltro.vSituacao
         );
@@ -257,6 +272,59 @@ export default defineComponent({
             this.arrayFiltros[i]["valor"]
         );
       }
+=======
+          "contendo",
+          this.valorFiltro.vSituacao
+        );
+        this.arrayFiltros.push(itemFiltro);
+      }
+      if (this.valorFiltro.vTags != null) {
+        itemFiltro = this.GetitemFiltro(
+          "Tags",
+          "contendo",
+          this.valorFiltro.vTags
+        );
+        this.arrayFiltros.push(itemFiltro);
+      }
+      if (this.valorFiltro.vColaborador != null) {
+        itemFiltro = this.GetitemFiltro(
+          "Colaborador",
+          "contendo",
+          this.valorFiltro.vColaborador
+        );
+        this.arrayFiltros.push(itemFiltro);
+      }
+      if (
+        this.valorFiltro.vOP != null ||
+        this.valorFiltro.vCriterio != null ||
+        this.valorFiltro.vCampo != null ||
+        this.valorFiltro.valorInput != null
+      ) {
+        itemFiltro = this.GetitemFiltro(
+          "Avançado",
+          "contendo",
+          this.valorFiltro.vOP +
+            ", " +
+            this.valorFiltro.vCriterio +
+            ", " +
+            this.valorFiltro.vCampo +
+            ", " +
+            this.valorFiltro.valorInput
+        );
+        this.arrayFiltros.push(itemFiltro);
+      }
+      this.GetTextoChipItemFiltro = [];
+      for (let i = 0; i < this.arrayFiltros.length; i++) {
+        this.GetTextoChipItemFiltro.push(
+          this.arrayFiltros[i]["campo"] +
+            " " +
+            this.arrayFiltros[i]["criterio"]
+              .replace("maior_igual", "> ")
+              .replace("menor_igual", "< ") + " "+
+            this.arrayFiltros[i]["valor"]
+        );
+      }
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       this.btnAdicionarCampoAvancado = !this.btnAdicionarCampoAvancado;
       this.showDrawer = false;
       this.filtroAvancado = true;
@@ -269,9 +337,12 @@ export default defineComponent({
     this.Grupos = this.ObjDashboard["grupos"];
   },
   setup() {
+<<<<<<< HEAD
     const login = computed({
       get: () => $store.state.showcase.login
     });
+=======
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
     const $store = useStore();
     const arrModels = computed({
       get: () => $store.state.showcase.arrModels,
@@ -281,7 +352,10 @@ export default defineComponent({
     });
     const miniState = ref(false);
     return {
+<<<<<<< HEAD
       login,
+=======
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       darkDialog: ref(false),
       arrModels,
       drawer: ref(false),

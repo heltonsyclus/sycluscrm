@@ -15,8 +15,12 @@ export default function() {
       }
     ],
     arrWorkflow: [],
+<<<<<<< HEAD
     calendarioAtual: "Mensal",
     calendarioEventos: "Todos",
     login: ["teste"]
+=======
+    events:[],
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
   };
 }

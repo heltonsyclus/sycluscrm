@@ -11,6 +11,7 @@
       @voltar="onPrev"
       @adiantar="onNext"
     />
+<<<<<<< HEAD
     <div>
       <CardEvento
         v-show="cardEvento"
@@ -282,6 +283,12 @@
         </div>
       </div>
     </div>
+=======
+    <div class="filtros">
+      <q-select label="Filtro" v-model="filtro" :options="options" />
+    </div>
+    <CardCalendario :filtro_calendario="filtro" />
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
   </div>
 </template>
 
@@ -328,8 +335,10 @@ export default defineComponent({
     BarraLayout
   },
   name: "Agenda",
+
   data() {
     return {
+<<<<<<< HEAD
       ObjDashboard: [],
       IndexGrupoAtual: 0,
       Grupos: [],
@@ -346,12 +355,22 @@ export default defineComponent({
       horaAtual: null,
       CardCalendarioAtividade: false,
       arrayCardAtividade: []
+=======
+      filtro: "Diário",
+      options: ["Diário", "Semanal", "Mensal"],
+      ObjDashboard: [],
+      IndexGrupoAtual: 0,
+      Grupos: [],
+      GrupoCards: [],
+      GrupoCardsOpcionais: []
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
     };
   },
   methods: {
     OnClickValor(IndexGrupo) {
       this.IndexGrupoAtual = IndexGrupo;
       this.Grupo = this.ObjDashboard["grupos"][IndexGrupo];
+<<<<<<< HEAD
     },
     getWeekEvents(week, weekdays) {
       const firstDay = parsed(week[0].date + " 00:00");
@@ -742,6 +761,10 @@ export default defineComponent({
     },
     dataMensal() {
       return this.nomeMes + ", " + this.nomeAno;
+=======
+      this.GrupoCards = this.Grupo["cards"];
+      this.GrupoCardsOpcionais = this.Grupo["cards_opcionais"];
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
     }
   },
   created() {
@@ -770,6 +793,7 @@ export default defineComponent({
 });
 </script>
 
+<<<<<<< HEAD
 <style lang="sass" scoped>
 .titulo-mes
  font-size:20px
@@ -836,4 +860,13 @@ export default defineComponent({
 
 .rounded-border
   border-radius: 2px
+=======
+<style scoped>
+.filtros {
+  position: absolute;
+  top: 3;
+  right: 0;
+  margin-right: 65px;
+}
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
 </style>

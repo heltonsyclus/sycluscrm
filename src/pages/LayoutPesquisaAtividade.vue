@@ -6,7 +6,11 @@
     :ConteudoBtn="Grupos"
     Aplicacao="AplicativosPesquisa"
   />
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
   <q-layout container style="height: 90vh">
     <q-drawer
       v-model="drawer"
@@ -38,7 +42,11 @@
           @click="EsconderCardInputs"
         />
       </div>
+<<<<<<< HEAD
     </q-drawer>
+=======
+    </q-drawer> 
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
     <div class="flex q-mr-sm q-mt-sm">
       <div
         class="flex btn-chip"
@@ -159,6 +167,10 @@ export default defineComponent({
     },
     EsconderCardInputs() {
       this.valorFiltro = [];
+<<<<<<< HEAD
+=======
+      console.log(this.arrayFiltros);
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       for (let i = 0; i < this.arrayFiltros.length; i++) {
         let itemArray = this.arrayFiltros[i];
         if (
@@ -204,6 +216,10 @@ export default defineComponent({
           this.valorFiltro.valorInput = itemArray.valor;
         }
       }
+<<<<<<< HEAD
+=======
+      console.log(this.valorFiltro);
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       this.arrModels = this.valorFiltro;
       this.showDrawer = !this.showDrawer;
     },
@@ -212,7 +228,13 @@ export default defineComponent({
       this.arrayFiltros.splice(i, 1);
     },
     modelArray(pesquisaInput) {
+<<<<<<< HEAD
       this.GetTextoChipItemFiltro.push("pesquisa: " + pesquisaInput);
+=======
+      this.GetTextoChipItemFiltro.push(
+        "pesquisa: " + pesquisaInput
+      );
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
     },
     GetitemFiltro(pCampo, pCriterio, pValor) {
       return JSON.parse(
@@ -288,7 +310,13 @@ export default defineComponent({
         itemFiltro = this.GetitemFiltro(
           "Avançado",
           "contendo",
+<<<<<<< HEAD
           this.valorFiltro.vCriterio +
+=======
+          this.valorFiltro.vOP +
+            ", " +
+            this.valorFiltro.vCriterio +
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
             ", " +
             this.valorFiltro.vCampo +
             ", " +
@@ -303,8 +331,12 @@ export default defineComponent({
             " " +
             this.arrayFiltros[i]["criterio"]
               .replace("maior_igual", "> ")
+<<<<<<< HEAD
               .replace("menor_igual", "< ") +
             " " +
+=======
+              .replace("menor_igual", "< ") + " "+
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
             this.arrayFiltros[i]["valor"]
         );
       }
@@ -320,10 +352,13 @@ export default defineComponent({
     this.Grupos = this.ObjDashboard["grupos"];
   },
   setup() {
+<<<<<<< HEAD
     const login = computed({
       get: () => $store.state.showcase.login
     });
 
+=======
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
     const $store = useStore();
     const arrModels = computed({
       get: () => $store.state.showcase.arrModels,
@@ -333,7 +368,10 @@ export default defineComponent({
     });
     const miniState = ref(false);
     return {
+<<<<<<< HEAD
       login,
+=======
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       darkDialog: ref(false),
       arrModels,
       drawer: ref(false),

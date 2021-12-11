@@ -7,6 +7,7 @@ export const updateDrawerState = (state, payload) => {
 };
 
 export const getWorkflow = (state, payload) => {
+<<<<<<< HEAD
   state.arrWorkflow = payload;
 };
 
@@ -20,3 +21,11 @@ export const selectStatusAgenda = (state, payload) => {
 export const autenticacaoLogin = (state, payload) => {
   state.login = payload;
 };
+=======
+  state.arrWorkflow = payload
+}
+
+export const eventosAgenda = (state, payload) => {
+  state.events = payload
+}
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b

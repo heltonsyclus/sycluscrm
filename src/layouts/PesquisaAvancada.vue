@@ -13,6 +13,7 @@
             @click="$emit('close')"
           />
         </div>
+<<<<<<< HEAD
 
         <div class="row bg-grey-3">
           <q-select
@@ -45,13 +46,64 @@
             lazy-rules
             :rules="[val => (val && val.length > 0) || 'Campo Obrigatório']"
           />
+=======
+        <div class="bg-grey-2">
+          <div class="row">
+            <q-select
+              clearable
+              dense="dense"
+              label="OP"
+              :options="OP"
+              v-model="this.arrModels.vOP"
+              class="col-6"
+              lazy-rules
+              :rules="[val => (val && val.length > 0) || 'Campo Obrigatório']"
+            />
+
+            <q-select
+              clearable
+              bottom-slots
+              v-model="this.arrModels.vCampo"
+              dense="dense"
+              :options="Campo"
+              label="Campo"
+              class="col-6"
+              lazy-rules
+              :rules="[val => (val && val.length > 0) || 'Campo Obrigatório']"
+            />
+            <q-select
+              clearable
+              dense="dense"
+              label="Critério"
+              class="col-6"
+              v-model="this.arrModels.vCriterio"
+              :options="criterio"
+              lazy-rules
+              :rules="[val => (val && val.length > 0) || 'Campo Obrigatório']"
+            />
+            <q-input
+              v-model="this.arrModels.valorInput"
+              label="Valor"
+              dense
+              clearable
+              class="col-6"
+              lazy-rules
+              :rules="[val => (val && val.length > 0) || 'Campo Obrigatório']"
+            />
+          </div>
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
         </div>
         <div class="text-center">
           <q-btn
             unelevated
             type="submit"
+<<<<<<< HEAD
             class="capitalize q-mt-md"
             label="Avançar"
+=======
+            class="capitalize"
+            label="Buscar"
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
             color="green"
           />
         </div>
@@ -76,6 +128,10 @@ export default {
     const miniState = ref(false);
     return {
       arrModels,
+<<<<<<< HEAD
+=======
+      OP: ref(["E", "OU"]),
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       Campo: ref(["Situação"]),
       criterio: ref(["Contendo"]),
       drawer: ref(false),

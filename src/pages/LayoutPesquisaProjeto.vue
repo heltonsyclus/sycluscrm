@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <template>
+=======
+<template window-height>
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
   <BarraLayout
     @OnClick="OnClickBarra"
     @onClickFiltros="EsconderCardInputs"
@@ -6,8 +10,12 @@
     :ConteudoBtn="Grupos"
     Aplicacao="AplicativosPesquisa"
   />
+<<<<<<< HEAD
 
   <q-layout container style="height: 90vh">
+=======
+  <q-layout container style="height: 100vh">
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
     <q-drawer
       v-model="drawer"
       show-if-above
@@ -159,6 +167,10 @@ export default defineComponent({
     },
     EsconderCardInputs() {
       this.valorFiltro = [];
+<<<<<<< HEAD
+=======
+      console.log(this.arrayFiltros);
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       for (let i = 0; i < this.arrayFiltros.length; i++) {
         let itemArray = this.arrayFiltros[i];
         if (
@@ -204,6 +216,10 @@ export default defineComponent({
           this.valorFiltro.valorInput = itemArray.valor;
         }
       }
+<<<<<<< HEAD
+=======
+      console.log(this.valorFiltro);
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       this.arrModels = this.valorFiltro;
       this.showDrawer = !this.showDrawer;
     },
@@ -288,7 +304,13 @@ export default defineComponent({
         itemFiltro = this.GetitemFiltro(
           "Avançado",
           "contendo",
+<<<<<<< HEAD
           this.valorFiltro.vCriterio +
+=======
+          this.valorFiltro.vOP +
+            ", " +
+            this.valorFiltro.vCriterio +
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
             ", " +
             this.valorFiltro.vCampo +
             ", " +
@@ -321,9 +343,12 @@ export default defineComponent({
   },
   setup() {
     const $store = useStore();
+<<<<<<< HEAD
     const login = computed({
       get: () => $store.state.showcase.login
     });
+=======
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
     const arrModels = computed({
       get: () => $store.state.showcase.arrModels,
       set: val => {
@@ -332,7 +357,10 @@ export default defineComponent({
     });
     const miniState = ref(false);
     return {
+<<<<<<< HEAD
       login,
+=======
+>>>>>>> 663d18ecf27b06ed2325358d29206643f058516b
       darkDialog: ref(false),
       arrModels,
       drawer: ref(false),
